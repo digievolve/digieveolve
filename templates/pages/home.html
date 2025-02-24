@@ -1,0 +1,920 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}DigiEvolve Hub - Digital Transformation & Training{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative min-h-screen">
+    <div class="container mx-auto px-4 py-24">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <!-- Left section with text -->
+            <div class="order-2 lg:order-1">
+                <p class="border px-3 py-2 mb-4 text-xs w-fit rounded-full">
+                    Employee Training and Consultant
+                </p>
+                <h1 class="text-4xl md:text-5xl mb-4 font-normal">
+                    Welcome to DigiEvolve Hub. Empowering Excellence through Consulting and Training.
+                </h1>
+                <p class="text-lg md:text-xl text-gray-600 mb-8 font-light mt-6">
+                    Our expert training and consulting solutions pave the way for your organization's success by driving continuous improvement, innovation and exceptional performance.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 sm:space-x-4">
+                    <a href="{% url 'courses:list' %}" class="bg-[#f2aa40] text-white px-6 py-3 rounded-lg flex items-center justify-center gap-2">
+                        Start Your Transformation 
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="{% url 'services:list' %}" class="border border-[#f2aa40] text-[#f2aa40] px-6 py-3 rounded-lg transition-colors flex items-center justify-center">
+                        Our Services
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right section with images -->
+            <div class="grid grid-cols-3 gap-4 h-[400px] md:h-[500px] lg:h-[600px] order-1 lg:order-2">
+                <div class="col-span-2 rounded-lg overflow-hidden">
+                    <img src="{% static 'images/consulting-meeting.jpg' %}" 
+                         alt="Digital Transformation Consulting"
+                         class="w-full h-full object-cover">
+                </div>
+                <div class="rounded-lg overflow-hidden">
+                    <img src="{% static 'images/ai-visualization.jpg' %}" 
+                         alt="AI and Machine Learning"
+                         class="w-full h-full object-cover">
+                </div>
+                <div class="rounded-lg overflow-hidden">
+                    <img src="{% static 'images/digital-success.jpg' %}" 
+                         alt="Global Training Solutions"
+                         class="w-full h-full object-cover">
+                </div>
+                <div class="col-span-2 rounded-lg overflow-hidden">
+                    <img src="{% static 'images/virtual-training.jpg' %}" 
+                         alt="Business Innovation"
+                         class="w-full h-full object-cover">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Services Banner -->
+    <ul class="flex flex-col md:flex-row justify-between text-base md:text-lg font-medium text-white bg-[#f2aa40] border border-[#f2aa40] my-4 w-full">
+        <li class="flex items-center justify-center flex-1 px-6 py-10 border-b md:border-b-0 md:border-r border-[#ffff40]">
+            <i class="fas fa-user mr-2 text-2xl md:text-3xl"></i>
+            Career Professionals
+        </li>
+        <li class="flex items-center justify-center flex-1 px-6 py-10 border-b md:border-b-0 md:border-r border-[#ffff40]">
+            <i class="fas fa-chart-line mr-3 text-2xl md:text-3xl"></i>
+            Business Solutions
+        </li>
+        <li class="flex items-center justify-center flex-1 px-6 py-10 border-b md:border-b-0 md:border-r border-[#ffff40]">
+            <i class="fas fa-building mr-3 text-2xl md:text-3xl"></i>
+            Enterprise
+        </li>
+        <li class="flex items-center justify-center flex-1 px-6 py-10 border-b md:border-b-0 md:border-r border-[#ffff40]">
+            <i class="fas fa-search mr-3 text-2xl md:text-3xl"></i>
+            Research Hub
+        </li>
+        <li class="flex items-center justify-center flex-1 px-6 py-10">
+            <i class="fas fa-globe-africa mr-3 text-2xl md:text-3xl"></i>
+            Global Talent
+        </li>
+    </ul>
+
+    <!-- Solutions Section -->
+    <section class="py-24 px-6 md:px-12">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-normal mb-6">
+                    Comprehensive Training and Consulting Solutions Tailored to Your Needs
+                </h2>
+                <p class="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto font-light">
+                    With a focus on individual attention, we are committed to delivering customized strategies, 
+                    empowering your workforce and guiding your business to sustainable growth and excellence
+                </p>
+            </div>
+
+            <!-- Solution Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+                <!-- Leadership Development Card -->
+                <div class="bg-white rounded-xl p-8 shadow-lg hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-3 mb-6">
+                        <i class="fas fa-users text-[#f2aa40] text-4xl"></i>
+                        <h3 class="text-xl md:text-2xl font-light text-left">
+                            Our Approach to Leadership Development
+                        </h3>
+                    </div>
+                    <div class="flex flex-col gap-3 mb-6">
+                        <div class="flex items-center gap-2 text-gray-600">
+                            <i class="fas fa-bullseye text-[#f2aa40]"></i>
+                            <span class="text-sm">Strategic Planning</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-gray-600">
+                            <i class="fas fa-chart-line text-[#f2aa40]"></i>
+                            <span class="text-sm">Growth Focus</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-gray-600">
+                            <i class="fas fa-award text-[#f2aa40]"></i>
+                            <span class="text-sm">Excellence Driven</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-8 min-h-[80px] font-light text-left">
+                        We foster transformative leadership through personalized coaching, strategic mentorship, 
+                        and hands-on experience. Our comprehensive approach ensures leaders are equipped to drive innovation.
+                    </p>
+                    <a href="#" class="inline-flex items-center gap-2 border border-[#f2aa40] text-[#f2aa40] px-5 py-2 rounded-lg transition-all hover:bg-[#f2aa40] hover:text-white group text-sm">
+                        See More
+                        <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                </div>
+
+                <!-- Digital Transformation Card -->
+                <div class="bg-white rounded-xl p-8 shadow-lg hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-3 mb-6">
+                        <i class="fas fa-desktop text-[#f2aa40] text-4xl"></i>
+                        <h3 class="text-xl md:text-2xl font-light text-left">
+                            Digital Transformation Excellence
+                        </h3>
+                    </div>
+                    <div class="flex flex-col gap-3 mb-6">
+                        <div class="flex items-center gap-2 text-gray-600">
+                            <i class="fas fa-cloud text-[#f2aa40]"></i>
+                            <span class="text-sm">Cloud Solutions</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-gray-600">
+                            <i class="fas fa-database text-[#f2aa40]"></i>
+                            <span class="text-sm">Data Analytics</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-gray-600">
+                            <i class="fas fa-shield-alt text-[#f2aa40]"></i>
+                            <span class="text-sm">Cybersecurity</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-8 min-h-[80px] font-light text-left">
+                        Navigate the digital landscape with confidence through our expert-led transformation services. 
+                        We combine cutting-edge technology with strategic insights for evolution.
+                    </p>
+                    <a href="#" class="inline-flex items-center gap-2 border border-[#f2aa40] text-[#f2aa40] px-5 py-2 rounded-lg transition-all hover:bg-[#f2aa40] hover:text-white group text-sm">
+                        Learn More
+                        <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                </div>
+
+                <!-- Technical Training Card -->
+                <div class="bg-white rounded-xl p-8 shadow-lg hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-3 mb-6">
+                        <i class="fas fa-certificate text-[#f2aa40] text-4xl"></i>
+                        <h3 class="text-xl md:text-2xl font-light text-left">
+                            Technical Training & Certification
+                        </h3>
+                    </div>
+                    <div class="flex flex-col gap-3 mb-6">
+                        <div class="flex items-center gap-2 text-gray-600">
+                            <i class="fas fa-book text-[#f2aa40]"></i>
+                            <span class="text-sm">Customized Programs</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-gray-600">
+                            <i class="fas fa-award text-[#f2aa40]"></i>
+                            <span class="text-sm">Industry Certifications</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-gray-600">
+                            <i class="fas fa-users text-[#f2aa40]"></i>
+                            <span class="text-sm">Expert Mentorship</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-8 min-h-[80px] font-light text-left">
+                        Advance your career with our comprehensive technical training programs. 
+                        Get hands-on experience and industry-recognized certifications with expert guidance.
+                    </p>
+                    <a href="#" class="inline-flex items-center gap-2 border border-[#f2aa40] text-[#f2aa40] px-5 py-2 rounded-lg transition-all hover:bg-[#f2aa40] hover:text-white group text-sm">
+                        Explore Programs
+                        <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+
+
+
+<!-- Training Programs Section -->
+<section class="py-16 px-4 bg-amber-400/80">
+    <div class="max-w-7xl mx-auto text-center mb-12">
+        <h3 class="text-3xl md:text-4xl font-normal mb-4">Training Programs</h3>
+        <p class="text-lg max-w-2xl mx-auto">
+            Transform your career with our industry-leading programs, combining hands-on experience with expert guidance.
+        </p>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <!-- Data Analytics Card -->
+        <div class="group [perspective:1000px]">
+            <div class="relative h-[180px] w-full transition-all duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+                <!-- Front -->
+                <div class="absolute inset-0 flex flex-col items-center justify-center bg-white rounded-lg shadow-lg p-4 [backface-visibility:hidden]">
+                    <i class="fa-solid fa-table text-4xl mb-3 text-[#f2aa40]"></i>
+                    <h4 class="text-base font-semibold">Data Analytics</h4>
+                </div>
+                <!-- Back -->
+                <div class="absolute inset-0 bg-white rounded-lg shadow-lg p-4 [transform:rotateY(180deg)] [backface-visibility:hidden] flex items-center justify-center">
+                    <ul class="text-xs text-amber-900 space-y-2.5 w-full px-2">
+                        <li class="flex items-center gap-2 border-b border-amber-100 pb-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
+                            <span>Data Visualization</span>
+                        </li>
+                        <li class="flex items-center gap-2 border-b border-amber-100 pb-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
+                            <span>Statistical Analysis</span>
+                        </li>
+                        <li class="flex items-center gap-2 border-b border-amber-100 pb-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
+                            <span>Power BI & Tableau</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
+                            <span>Real Projects</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Science Card -->
+        <div class="group [perspective:1000px]">
+            <div class="relative h-[180px] w-full transition-all duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+                <div class="absolute inset-0 flex flex-col items-center justify-center bg-white rounded-lg shadow-lg p-4 [backface-visibility:hidden]">
+                    <i class="fa-solid fa-brain text-4xl mb-3 text-[#f2aa40]"></i>
+                    <h4 class="text-base font-semibold">Data Science</h4>
+                </div>
+                <div class="absolute inset-0 bg-white rounded-lg shadow-lg p-4 [transform:rotateY(180deg)] [backface-visibility:hidden] flex items-center justify-center">
+                    <ul class="text-xs text-amber-900 space-y-2.5 w-full px-2">
+                        <li class="flex items-center gap-2 border-b border-amber-100 pb-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
+                            <span>Python & R</span>
+                        </li>
+                        <li class="flex items-center gap-2 border-b border-amber-100 pb-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
+                            <span>Machine Learning</span>
+                        </li>
+                        <li class="flex items-center gap-2 border-b border-amber-100 pb-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
+                            <span>Deep Learning</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
+                            <span>AI Applications</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Engineering Card -->
+        <div class="group [perspective:1000px]">
+            <div class="relative h-[180px] w-full transition-all duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+                <div class="absolute inset-0 flex flex-col items-center justify-center bg-white rounded-lg shadow-lg p-4 [backface-visibility:hidden]">
+                    <i class="fa-solid fa-gears text-4xl mb-3 text-[#f2aa40]"></i>
+                    <h4 class="text-base font-semibold">Data Engineering</h4>
+                </div>
+                <div class="absolute inset-0 bg-white rounded-lg shadow-lg p-4 [transform:rotateY(180deg)] [backface-visibility:hidden] flex items-center justify-center">
+                    <ul class="text-xs text-amber-900 space-y-2.5 w-full px-2">
+                        <li class="flex items-center gap-2 border-b border-amber-100 pb-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
+                            <span>Big Data Tech</span>
+                        </li>
+                        <li class="flex items-center gap-2 border-b border-amber-100 pb-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
+                            <span>Cloud Databases</span>
+                        </li>
+                        <li class="flex items-center gap-2 border-b border-amber-100 pb-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
+                            <span>ETL Processes</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
+                            <span>Data Pipeline</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Governance Card -->
+        <div class="group [perspective:1000px]">
+            <div class="relative h-[180px] w-full transition-all duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+                <div class="absolute inset-0 flex flex-col items-center justify-center bg-white rounded-lg shadow-lg p-4 [backface-visibility:hidden]">
+                    <i class="fa-solid fa-shield-halved text-4xl mb-3 text-[#f2aa40]"></i>
+                    <h4 class="text-base font-semibold">Data Governance</h4>
+                </div>
+                <div class="absolute inset-0 bg-white rounded-lg shadow-lg p-4 [transform:rotateY(180deg)] [backface-visibility:hidden] flex items-center justify-center">
+                    <ul class="text-xs text-amber-900 space-y-2.5 w-full px-2">
+                        <li class="flex items-center gap-2 border-b border-amber-100 pb-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
+                            <span>GDPR & HIPAA</span>
+                        </li>
+                        <li class="flex items-center gap-2 border-b border-amber-100 pb-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
+                            <span>Data Quality</span>
+                        </li>
+                        <li class="flex items-center gap-2 border-b border-amber-100 pb-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
+                            <span>Security Best Practices</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
+                            <span>Risk Assessment</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Machine Learning Card -->
+        <div class="group [perspective:1000px]">
+            <div class="relative h-[180px] w-full transition-all duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+                <div class="absolute inset-0 flex flex-col items-center justify-center bg-white rounded-lg shadow-lg p-4 [backface-visibility:hidden]">
+                    <i class="fa-solid fa-graduation-cap text-4xl mb-3 text-[#f2aa40]"></i>
+                    <h4 class="text-base font-semibold">Machine Learning</h4>
+                </div>
+                <div class="absolute inset-0 bg-white rounded-lg shadow-lg p-4 [transform:rotateY(180deg)] [backface-visibility:hidden] flex items-center justify-center">
+                    <ul class="text-xs text-amber-900 space-y-2.5 w-full px-2">
+                        <li class="flex items-center gap-2 border-b border-amber-100 pb-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
+                            <span>Deep Learning</span>
+                        </li>
+                        <li class="flex items-center gap-2 border-b border-amber-100 pb-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
+                            <span>Neural Networks</span>
+                        </li>
+                        <li class="flex items-center gap-2 border-b border-amber-100 pb-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
+                            <span>NLP & Computer Vision</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
+                            <span>Model Deployment</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Business Automation Card -->
+        <div class="group [perspective:1000px]">
+            <div class="relative h-[180px] w-full transition-all duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+                <div class="absolute inset-0 flex flex-col items-center justify-center bg-white rounded-lg shadow-lg p-4 [backface-visibility:hidden]">
+                    <i class="fa-solid fa-robot text-4xl mb-3 text-[#f2aa40]"></i>
+                    <h4 class="text-base font-semibold">Business Automation</h4>
+                </div>
+                <div class="absolute inset-0 bg-white rounded-lg shadow-lg p-4 [transform:rotateY(180deg)] [backface-visibility:hidden] flex items-center justify-center">
+                    <ul class="text-xs text-amber-900 space-y-2.5 w-full px-2">
+                        <li class="flex items-center gap-2 border-b border-amber-100 pb-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
+                            <span>Process Mapping</span>
+                        </li>
+                        <li class="flex items-center gap-2 border-b border-amber-100 pb-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
+                            <span>RPA Implementation</span>
+                        </li>
+                        <li class="flex items-center gap-2 border-b border-amber-100 pb-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
+                            <span>Workflow Design</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
+                            <span>System Integration</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-12 text-center">
+        <a href="{% url 'accounts:register' %}" class="inline-flex items-center gap-2 px-8 py-3 bg-amber-500 hover:bg-amber-600 text-white font-normal rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+            <span>Begin Your Learning Journey</span>
+            <i class="fa-solid fa-circle-arrow-right text-lg"></i>
+        </a>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="py-16 px-4 bg-white">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+            <h3 class="text-3xl md:text-4xl font-normal mb-4">Our Services</h3>
+            <p class="text-lg max-w-2xl mx-auto text-gray-600">
+                Comprehensive solutions tailored to drive your digital transformation journey
+            </p>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Service Selection -->
+            <div class="lg:w-1/3">
+                <div class="flex flex-col gap-2">
+                    <button onclick="setActiveService(1)" class="flex items-center gap-4 p-4 rounded-lg transition-all duration-300 service-btn active" data-service="1">
+                        <i class="fa-solid fa-terminal text-3xl text-amber-500"></i>
+                        <span class="text-left">
+                            <h4 class="font-medium">Digital Transformation</h4>
+                            <p class="text-sm text-gray-500 mt-1 service-description">Guide businesses through digital technology integration</p>
+                        </span>
+                        <i class="fa-solid fa-arrow-right ml-auto text-amber-500 service-arrow"></i>
+                    </button>
+
+                    <button onclick="setActiveService(2)" class="flex items-center gap-4 p-4 rounded-lg transition-all duration-300 service-btn" data-service="2">
+                        <i class="fa-solid fa-table-cells-large text-3xl text-amber-500"></i>
+                        <span class="text-left">
+                            <h4 class="font-medium">Automation Solutions</h4>
+                            <p class="text-sm text-gray-500 mt-1 service-description hidden">Streamline operations with intelligent automation</p>
+                        </span>
+                    </button>
+
+                    <button onclick="setActiveService(3)" class="flex items-center gap-4 p-4 rounded-lg transition-all duration-300 service-btn" data-service="3">
+                        <i class="fa-solid fa-magnifying-glass text-3xl text-amber-500"></i>
+                        <span class="text-left">
+                            <h4 class="font-medium">Research & Development</h4>
+                            <p class="text-sm text-gray-500 mt-1 service-description hidden">Innovation through cutting-edge research</p>
+                        </span>
+                    </button>
+
+                    <button onclick="setActiveService(4)" class="flex items-center gap-4 p-4 rounded-lg transition-all duration-300 service-btn" data-service="4">
+                        <i class="fa-solid fa-bullseye text-3xl text-amber-500"></i>
+                        <span class="text-left">
+                            <h4 class="font-medium">Career Development</h4>
+                            <p class="text-sm text-gray-500 mt-1 service-description hidden">Personalized career growth support</p>
+                        </span>
+                    </button>
+
+                    <button onclick="setActiveService(5)" class="flex items-center gap-4 p-4 rounded-lg transition-all duration-300 service-btn" data-service="5">
+                        <i class="fa-solid fa-globe text-3xl text-amber-500"></i>
+                        <span class="text-left">
+                            <h4 class="font-medium">Global Talent Solutions</h4>
+                            <p class="text-sm text-gray-500 mt-1 service-description hidden">Navigate international opportunities</p>
+                        </span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Service Content -->
+            <div class="lg:w-2/3 bg-white rounded-xl shadow-lg overflow-hidden">
+                <div id="serviceContent" class="h-full">
+                    <!-- Content will be dynamically loaded -->
+                    <div class="service-panel active" data-service="1">
+                        <div class="h-64 relative">
+                            <img src="{% static 'images/digital-transform.jpg' %}" alt="Digital Transformation" class="absolute inset-0 w-full h-full object-cover object-center">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
+                                <h4 class="text-white text-2xl font-semibold p-6">Digital Transformation</h4>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-gray-600 mb-6">
+                                We guide businesses through the process of integrating digital technology into all areas of operation, fundamentally changing how they operate and deliver value to customers.
+                            </p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-check text-amber-500"></i>
+                                    <span class="text-gray-700">Strategic Digital Planning</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-check text-amber-500"></i>
+                                    <span class="text-gray-700">Technology Implementation</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-check text-amber-500"></i>
+                                    <span class="text-gray-700">Data Analytics & BI</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-check text-amber-500"></i>
+                                    <span class="text-gray-700">Cybersecurity Solutions</span>
+                                </div>
+                            </div>
+                            <a href="{% url 'services:digital_transformation' %}" class="mt-8 inline-flex items-center gap-2 px-6 py-3 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors">
+                                Learn More
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Additional service panels will be similar but hidden initially -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Global Impact Section -->
+<section class="py-16 bg-gray-50/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h3 class="text-3xl md:text-4xl font-normal mb-4">Our Global Impact</h3>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                Transforming businesses and careers across the globe through digital innovation and excellence
+            </p>
+        </div>
+
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all">
+                <div class="flex items-center justify-center mb-4">
+                    <i class="fa-solid fa-earth-americas text-4xl text-amber-500"></i>
+                </div>
+                <div class="text-3xl md:text-4xl font-bold text-gray-900 mb-2 text-center">
+                    <span class="counter" data-target="8">0</span>+
+                </div>
+                <p class="text-gray-600 text-center">Countries Served</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all">
+                <div class="flex items-center justify-center mb-4">
+                    <i class="fa-solid fa-book text-4xl text-amber-500"></i>
+                </div>
+                <div class="text-3xl md:text-4xl font-bold text-gray-900 mb-2 text-center">
+                    <span class="counter" data-target="7">0</span>+
+                </div>
+                <p class="text-gray-600 text-center">Training Programs</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all">
+                <div class="flex items-center justify-center mb-4">
+                    <i class="fa-solid fa-building text-4xl text-amber-500"></i>
+                </div>
+                <div class="text-3xl md:text-4xl font-bold text-gray-900 mb-2 text-center">
+                    <span class="counter" data-target="50">0</span>+
+                </div>
+                <p class="text-gray-600 text-center">Industry Partners</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all">
+                <div class="flex items-center justify-center mb-4">
+                    <i class="fa-solid fa-users text-4xl text-amber-500"></i>
+                </div>
+                <div class="text-3xl md:text-4xl font-bold text-gray-900 mb-2 text-center">
+                    <span class="counter" data-target="25">0</span>+
+                </div>
+                <p class="text-gray-600 text-center">Expert Instructors</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Testimonials Section -->
+<section class="py-16 bg-gradient-to-b from-amber-400 to-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h3 class="text-3xl md:text-4xl font-normal mb-4">What Our Clients Say</h3>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                Success stories from professionals and businesses we've helped transform
+            </p>
+        </div>
+
+        <div class="testimonial-carousel relative">
+            <!-- Testimonial 1 -->
+            <div class="testimonial-slide">
+                <div class="bg-white rounded-xl p-8 shadow-lg max-w-3xl mx-auto">
+                    <div class="flex items-center mb-6">
+                        <img src="{% static 'images/testimonials/testimonial1.jpg' %}" alt="Sarah Johnson" class="w-16 h-16 rounded-full object-cover">
+                        <div class="ml-4">
+                            <h4 class="text-xl font-semibold text-gray-900">Sarah Johnson</h4>
+                            <p class="text-amber-600">Data Scientist at TechCorp</p>
+                        </div>
+                        <i class="fa-solid fa-terminal text-amber-500/20 text-4xl ml-auto"></i>
+                    </div>
+                    <p class="text-gray-700 text-lg italic mb-6">
+                        The training program at DigiEvolve transformed my career. The hands-on projects and expert mentorship gave me the confidence to transition into data science successfully. Their comprehensive approach to learning made complex concepts accessible and practical.
+                    </p>
+                    <div class="flex items-center text-amber-500">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonial 2 -->
+            <div class="testimonial-slide hidden">
+                <div class="bg-white rounded-xl p-8 shadow-lg max-w-3xl mx-auto">
+                    <div class="flex items-center mb-6">
+                        <img src="{% static 'images/testimonials/testimonial2.jpg' %}" alt="Michael Chen" class="w-16 h-16 rounded-full object-cover">
+                        <div class="ml-4">
+                            <h4 class="text-xl font-semibold text-gray-900">Michael Chen</h4>
+                            <p class="text-amber-600">CTO at InnovateNow</p>
+                        </div>
+                        <i class="fa-solid fa-database text-amber-500/20 text-4xl ml-auto"></i>
+                    </div>
+                    <p class="text-gray-700 text-lg italic mb-6">
+                        DigiEvolve's digital transformation consulting helped us modernize our entire operation. Their expertise in automation and AI implementation was invaluable. The team's understanding of our business needs made the transition seamless.
+                    </p>
+                    <div class="flex items-center text-amber-500">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonial 3 -->
+            <div class="testimonial-slide hidden">
+                <div class="bg-white rounded-xl p-8 shadow-lg max-w-3xl mx-auto">
+                    <div class="flex items-center mb-6">
+                        <img src="{% static 'images/testimonials/testimonial3.jpg' %}" alt="Emma Thompson" class="w-16 h-16 rounded-full object-cover">
+                        <div class="ml-4">
+                            <h4 class="text-xl font-semibold text-gray-900">Emma Thompson</h4>
+                            <p class="text-amber-600">HR Director at GlobalTech</p>
+                        </div>
+                        <i class="fa-solid fa-table-cells text-amber-500/20 text-4xl ml-auto"></i>
+                    </div>
+                    <p class="text-gray-700 text-lg italic mb-6">
+                        The career development services provided by DigiEvolve were exceptional. Their guidance helped our team acquire crucial digital skills and advance their careers. The personalized approach to professional development made all the difference.
+                    </p>
+                    <div class="flex items-center text-amber-500">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonial 4 -->
+            <div class="testimonial-slide hidden">
+                <div class="bg-white rounded-xl p-8 shadow-lg max-w-3xl mx-auto">
+                    <div class="flex items-center mb-6">
+                        <img src="{% static 'images/testimonials/testimonial4.jpg' %}" alt="David Kumar" class="w-16 h-16 rounded-full object-cover">
+                        <div class="ml-4">
+                            <h4 class="text-xl font-semibold text-gray-900">David Kumar</h4>
+                            <p class="text-amber-600">Research Lead at DataCorp</p>
+                        </div>
+                        <i class="fa-solid fa-magnifying-glass text-amber-500/20 text-4xl ml-auto"></i>
+                    </div>
+                    <p class="text-gray-700 text-lg italic mb-6">
+                        The research support and mentorship from DigiEvolve were instrumental in our AI project success. Their expertise in cutting-edge technologies and practical approach to implementation helped us achieve our goals faster.
+                    </p>
+                    <div class="flex items-center text-amber-500">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonial 5 -->
+            <div class="testimonial-slide hidden">
+                <div class="bg-white rounded-xl p-8 shadow-lg max-w-3xl mx-auto">
+                    <div class="flex items-center mb-6">
+                        <img src="{% static 'images/testimonials/testimonial5.jpg' %}" alt="Sofia Rodriguez" class="w-16 h-16 rounded-full object-cover">
+                        <div class="ml-4">
+                            <h4 class="text-xl font-semibold text-gray-900">Sofia Rodriguez</h4>
+                            <p class="text-amber-600">Global Talent Manager</p>
+                        </div>
+                        <i class="fa-solid fa-globe text-amber-500/20 text-4xl ml-auto"></i>
+                    </div>
+                    <p class="text-gray-700 text-lg italic mb-6">
+                        DigiEvolve's global talent solutions made our international expansion seamless. Their understanding of different markets and cultures was crucial to our success. The comprehensive support in talent development and placement was outstanding.
+                    </p>
+                    <div class="flex items-center text-amber-500">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <button class="absolute left-0 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-amber-500 p-2 rounded-full shadow-lg -ml-4 transition-all" id="prevTestimonial">
+                <i class="fa-solid fa-chevron-left text-xl"></i>
+            </button>
+            <button class="absolute right-0 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-amber-500 p-2 rounded-full shadow-lg -mr-4 transition-all" id="nextTestimonial">
+                <i class="fa-solid fa-chevron-right text-xl"></i>
+            </button>
+
+            <!-- Dots Navigation -->
+            <div class="flex justify-center mt-6 space-x-2">
+                <button class="w-2 h-2 rounded-full bg-amber-500 testimonial-dot active" data-slide="0"></button>
+                <button class="w-2 h-2 rounded-full bg-amber-300 testimonial-dot" data-slide="1"></button>
+                <button class="w-2 h-2 rounded-full bg-amber-300 testimonial-dot" data-slide="2"></button>
+                <button class="w-2 h-2 rounded-full bg-amber-300 testimonial-dot" data-slide="3"></button>
+                <button class="w-2 h-2 rounded-full bg-amber-300 testimonial-dot" data-slide="4"></button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h3 class="text-3xl md:text-4xl font-normal mb-4">
+                Ready to Transform Your Future?
+            </h3>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                Take the next step in your digital evolution journey with our expert-led programs
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Training Programs Card -->
+            <div class="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow">
+                <div class="flex items-center mb-6">
+                    <div class="p-3 bg-amber-100 rounded-lg">
+                        <i class="fa-solid fa-book-open text-amber-600 text-3xl"></i>
+                    </div>
+                    <h4 class="text-xl font-semibold ml-4">Training Programs</h4>
+                </div>
+                <p class="text-gray-600 mb-6">
+                    Transform your career with our comprehensive training programs in Data Analytics, Data Science, Machine Learning, and more. Get hands-on experience and industry-recognized certification.
+                </p>
+                <div class="space-y-3">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-check text-amber-600 mr-2"></i>
+                        <span>Expert-led instruction</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-check text-amber-600 mr-2"></i>
+                        <span>Hands-on projects</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-check text-amber-600 mr-2"></i>
+                        <span>Career support</span>
+                    </div>
+                </div>
+                <a href="{% url 'courses:list' %}" class="mt-8 w-full bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center">
+                    <span>Explore Programs</span>
+                    <i class="fa-solid fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+
+            <!-- Business Solutions Card -->
+            <div class="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow">
+                <div class="flex items-center mb-6">
+                    <div class="p-3 bg-amber-100 rounded-lg">
+                        <i class="fa-solid fa-table-cells text-amber-600 text-3xl"></i>
+                    </div>
+                    <h4 class="text-xl font-semibold ml-4">Business Solutions</h4>
+                </div>
+                <p class="text-gray-600 mb-6">
+                    Accelerate your business transformation with our digital consulting, automation solutions, and R&D support. Stay ahead in the rapidly evolving digital landscape.
+                </p>
+                <div class="space-y-3">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-check text-amber-600 mr-2"></i>
+                        <span>Digital transformation</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-check text-amber-600 mr-2"></i>
+                        <span>Process automation</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-check text-amber-600 mr-2"></i>
+                        <span>Innovation support</span>
+                    </div>
+                </div>
+                <!-- Replace the problematic link with: -->
+<a href="{% url 'services:list' %}" class="mt-8 w-full bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center">
+    <span>Explore Services</span>
+    <i class="fa-solid fa-arrow-right ml-2"></i>
+</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Add this JavaScript before the closing body tag -->
+<script>
+    // Counter Animation
+    const counters = document.querySelectorAll('.counter');
+    const speed = 200; // The lower the faster
+
+    function animateCounter(counter) {
+        const target = +counter.getAttribute('data-target');
+        let count = 0;
+        
+        const updateCount = () => {
+            const increment = target / speed;
+            if (count < target) {
+                count += increment;
+                counter.innerText = Math.ceil(count);
+                setTimeout(updateCount, 1);
+            } else {
+                counter.innerText = target;
+            }
+        };
+
+        updateCount();
+    }
+
+    // Intersection Observer for counters
+    const observerOptions = {
+        threshold: 0.5
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const counter = entry.target;
+                animateCounter(counter);
+                observer.unobserve(counter);
+            }
+        });
+    }, observerOptions);
+
+    counters.forEach(counter => {
+        observer.observe(counter);
+    });
+
+    // Services Section Interaction
+    let activeService = 1;
+    const serviceBtns = document.querySelectorAll('.service-btn');
+    const serviceContents = document.querySelectorAll('.service-panel');
+
+    function setActiveService(serviceNum) {
+        // Remove active class from all buttons and contents
+        serviceBtns.forEach(btn => {
+            btn.classList.remove('active', 'bg-white', 'shadow-lg', 'transform', 'translate-x-2');
+            btn.querySelector('.service-description')?.classList.add('hidden');
+            btn.querySelector('.service-arrow')?.classList.add('hidden');
+        });
+
+        serviceContents.forEach(content => {
+            content.classList.remove('active');
+            content.classList.add('hidden');
+        });
+
+        // Add active class to selected button and content
+        const activeBtn = document.querySelector(`[data-service="${serviceNum}"]`);
+        const activeContent = document.querySelector(`.service-panel[data-service="${serviceNum}"]`);
+
+        activeBtn.classList.add('active', 'bg-white', 'shadow-lg', 'transform', 'translate-x-2');
+        activeBtn.querySelector('.service-description')?.classList.remove('hidden');
+        activeBtn.querySelector('.service-arrow')?.classList.remove('hidden');
+
+        activeContent.classList.remove('hidden');
+        activeContent.classList.add('active');
+
+        activeService = serviceNum;
+    }
+
+    // Initialize service buttons
+    serviceBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            setActiveService(btn.getAttribute('data-service'));
+        });
+    });
+
+    // Add smooth scroll behavior for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+</script>
+
+
+<!-- Add this JavaScript at the end of your body tag -->
+<script>
+    // Testimonial Carousel
+    const testimonialSlides = document.querySelectorAll('.testimonial-slide');
+    const dots = document.querySelectorAll('.testimonial-dot');
+    let currentSlide = 0;
+
+    function showSlide(index) {
+        testimonialSlides.forEach(slide => slide.classList.add('hidden'));
+        dots.forEach(dot => dot.classList.replace('bg-amber-500', 'bg-amber-300'));
+        
+        testimonialSlides[index].classList.remove('hidden');
+        dots[index].classList.replace('bg-amber-300', 'bg-amber-500');
+        currentSlide = index;
+    }
+
+    document.getElementById('nextTestimonial').addEventListener('click', () => {
+        let nextSlide = currentSlide + 1;
+        if (nextSlide >= testimonialSlides.length) nextSlide = 0;
+        showSlide(nextSlide);
+    });
+
+    document.getElementById('prevTestimonial').addEventListener('click', () => {
+        let prevSlide = currentSlide - 1;
+        if (prevSlide < 0) prevSlide = testimonialSlides.length - 1;
+        showSlide(prevSlide);
+    });
+
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => showSlide(index));
+    });
+
+    // Auto-advance slides every 5 seconds
+    setInterval(() => {
+        let nextSlide = currentSlide + 1;
+        if (nextSlide >= testimonialSlides.length) nextSlide = 0;
+        showSlide(nextSlide);
+    }, 5000);
+</script>
+{% endblock %}

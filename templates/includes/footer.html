@@ -1,0 +1,71 @@
+<!-- templates/includes/footer.html -->
+<footer class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <!-- Company Info -->
+            <div>
+                <h3 class="text-xl font-semibold mb-4">DigiEvolve</h3>
+                <p class="text-gray-400 mb-4">
+                    Transforming businesses and careers through digital innovation and excellence.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-[#f2aa40]">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-[#f2aa40]">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-[#f2aa40]">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div>
+                <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                <ul class="space-y-2">
+                    <li><a href="{% url 'core:about' %}" class="text-gray-400 hover:text-[#f2aa40]">About Us</a></li>
+                    <li><a href="{% url 'services:list' %}" class="text-gray-400 hover:text-[#f2aa40]">Services</a></li>
+                    <li><a href="{% url 'courses:list' %}" class="text-gray-400 hover:text-[#f2aa40]">Courses</a></li>
+                    <li><a href="{% url 'core:contact' %}" class="text-gray-400 hover:text-[#f2aa40]">Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- Services -->
+            <div>
+                <h3 class="text-lg font-semibold mb-4">Services</h3>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-gray-400 hover:text-[#f2aa40]">Digital Transformation</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-[#f2aa40]">Business Automation</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-[#f2aa40]">Career Development</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-[#f2aa40]">Global Talent Solutions</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Info -->
+            <div>
+                <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
+                <ul class="space-y-2">
+                    <li class="flex items-center text-gray-400">
+                        <i class="fas fa-map-marker-alt mr-2"></i>
+                        123 Business Street, Tech City
+                    </li>
+                    <li class="flex items-center text-gray-400">
+                        <i class="fas fa-phone mr-2"></i>
+                        +1 234 567 8900
+                    </li>
+                    <li class="flex items-center text-gray-400">
+                        <i class="fas fa-envelope mr-2"></i>
+                        info@digievolve.com
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+            <p>&copy; {% now "Y" %} DigiEvolve. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
