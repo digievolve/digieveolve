@@ -23,13 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-_i$$c-5@f8swp^b7tn+x!!l8d*77r5rz8tn#!xznv=7yzni@6@'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
 
-ALLOWED_HOSTS = ['digieveolve.onrender.com', 'localhost', '127.0.0.1']
-CSRF_TRUSTED_ORIGINS = [
-    'https://digieveolve.onrender.com',
-]
+
+
 
 # Application definition
 
@@ -137,7 +133,22 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+DEBUG = 'RENDER' not in os.environ
+
+if DEBUG:
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+else:
+    ALLOWED_HOSTS = ['digieveolve.onrender.com']
+    # Security settings for production
+    SECURE_SSL_REDIRECT = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_BROWSER_XSS_FILTER = True
+    CSRF_TRUSTED_ORIGINS = ['https://digieveolve.onrender.com']
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Media files settings
 MEDIA_URL = 'media/'
