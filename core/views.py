@@ -2,6 +2,7 @@ from django.shortcuts import redirect, render
 from .forms import ContactForm
 from django.contrib import messages  # Add this import
 from .services_data import services_data
+from .training_programs_data import training_programs_data
 
 def home(request):
     return render(request, 'pages/home.html')
@@ -55,6 +56,22 @@ def service_detail(request, slug):
     }
     return render(request, 'pages/service_detail.html', context)
 
+def training_programs(request):
+    context = {
+        'training_programs': training_programs_data
+    }
+    return render(request, 'pages/training_programs.html', context)
+
+def training_detail(request, slug):
+    program = training_programs_data.get(slug)
+    if not program:
+        return render(request, 'pages/404.html')
+
+    context = {
+        'program': program,
+        'slug': slug
+    }
+    return render(request, 'pages/training_detail.html', context)
 
 # core/views.py
 def resources(request):

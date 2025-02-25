@@ -11,9 +11,9 @@
     </div>
     <div class="container mx-auto px-4 relative z-10">
         <div class="max-w-3xl mx-auto text-center">
-            <div class="flex justify-center mb-6">
-                <div class="bg-white p-4 rounded-full">
-                    <i class="{{ program.icon }} w-12 h-12 text-[#f2aa40]"></i>
+            <div class="flex justify-center mb-8">
+                <div class="bg-white p-6 rounded-full w-24 h-24 flex items-center justify-center shadow-lg">
+                    <i class="{{ program.icon }} text-[#f2aa40] text-4xl"></i>
                 </div>
             </div>
             <h1 class="text-4xl md:text-5xl font-normal mb-6">{{ program.title }}</h1>
@@ -133,42 +133,97 @@
     </div>
 </section>
 
-<!-- FAQ Section -->
 <section class="py-16 bg-white">
     <div class="container mx-auto px-4">
         <h2 class="text-3xl font-semibold mb-12 text-center">Frequently Asked Questions</h2>
         <div class="max-w-3xl mx-auto space-y-6">
-            <div class="bg-white rounded-lg shadow-md border border-gray-100">
-                <button class="w-full text-left px-6 py-4 focus:outline-none">
+            <!-- FAQ Item 1 -->
+            <div class="bg-white rounded-lg shadow-md border border-gray-100" x-data="{ open: true }">
+                <button @click="open = !open" class="w-full text-left px-6 py-4 focus:outline-none">
                     <div class="flex items-center justify-between">
-                        <span class="font-semibold">What is the class schedule?</span>
-                        <i class="fa-solid fa-chevron-down text-[#f2aa40]"></i>
+                        <span class="font-semibold text-lg">What is the class schedule?</span>
+                        <i class="fa-solid fa-chevron-down text-[#f2aa40] text-2xl transition-transform" :class="{ 'rotate-180': open }"></i>
                     </div>
                 </button>
-                <div class="px-6 pb-4">
-                    <p class="text-gray-600">Classes are held twice a week, with flexible timing options available for working professionals.</p>
+                <div x-show="open" class="px-6 pb-4">
+                    <p class="text-gray-600">Classes are held twice a week, with flexible timing options available for working professionals. Morning sessions run from 9 AM to 12 PM, while evening sessions are scheduled from 6 PM to 9 PM. Weekend batches are also available on Saturdays and Sundays.</p>
                 </div>
             </div>
-            <div class="bg-white rounded-lg shadow-md border border-gray-100">
-                <button class="w-full text-left px-6 py-4 focus:outline-none">
+
+            <!-- FAQ Item 2 -->
+            <div class="bg-white rounded-lg shadow-md border border-gray-100" x-data="{ open: false }">
+                <button @click="open = !open" class="w-full text-left px-6 py-4 focus:outline-none">
                     <div class="flex items-center justify-between">
-                        <span class="font-semibold">Is there a certification provided?</span>
-                        <i class="fa-solid fa-chevron-down text-[#f2aa40]"></i>
+                        <span class="font-semibold text-lg">Is there a certification provided?</span>
+                        <i class="fa-solid fa-chevron-down text-[#f2aa40] text-2xl transition-transform" :class="{ 'rotate-180': open }"></i>
                     </div>
                 </button>
-                <div class="px-6 pb-4">
-                    <p class="text-gray-600">Yes, upon successful completion of the program, you will receive an industry-recognized certification.</p>
+                <div x-show="open" class="px-6 pb-4">
+                    <p class="text-gray-600">Yes, upon successful completion of the program, you will receive:</p>
+                    <ul class="list-disc ml-6 mt-3 space-y-2 text-gray-600">
+                        <li>Industry-recognized DigiEvolve certification</li>
+                        <li>Digital badge for your LinkedIn profile</li>
+                        <li>Detailed course completion certificate</li>
+                        <li>Access to alumni network and resources</li>
+                    </ul>
                 </div>
             </div>
-            <div class="bg-white rounded-lg shadow-md border border-gray-100">
-                <button class="w-full text-left px-6 py-4 focus:outline-none">
+
+            <!-- FAQ Item 3 -->
+            <div class="bg-white rounded-lg shadow-md border border-gray-100" x-data="{ open: false }">
+                <button @click="open = !open" class="w-full text-left px-6 py-4 focus:outline-none">
                     <div class="flex items-center justify-between">
-                        <span class="font-semibold">What kind of support is provided?</span>
-                        <i class="fa-solid fa-chevron-down text-[#f2aa40]"></i>
+                        <span class="font-semibold text-lg">What kind of support is provided?</span>
+                        <i class="fa-solid fa-chevron-down text-[#f2aa40] text-2xl transition-transform" :class="{ 'rotate-180': open }"></i>
                     </div>
                 </button>
-                <div class="px-6 pb-4">
-                    <p class="text-gray-600">You'll receive ongoing support from instructors, access to learning materials, and career guidance throughout the program.</p>
+                <div x-show="open" class="px-6 pb-4">
+                    <p class="text-gray-600 mb-4">Our comprehensive support system includes:</p>
+                    <ul class="list-disc ml-6 space-y-2 text-gray-600">
+                        <li>24/7 access to learning materials and resources</li>
+                        <li>One-on-one mentoring sessions with industry experts</li>
+                        <li>Regular progress tracking and feedback</li>
+                        <li>Career counseling and job placement assistance</li>
+                        <li>Access to our online community and discussion forums</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- FAQ Item 4 -->
+            <div class="bg-white rounded-lg shadow-md border border-gray-100" x-data="{ open: false }">
+                <button @click="open = !open" class="w-full text-left px-6 py-4 focus:outline-none">
+                    <div class="flex items-center justify-between">
+                        <span class="font-semibold text-lg">What are the payment options?</span>
+                        <i class="fa-solid fa-chevron-down text-[#f2aa40] text-2xl transition-transform" :class="{ 'rotate-180': open }"></i>
+                    </div>
+                </button>
+                <div x-show="open" class="px-6 pb-4">
+                    <p class="text-gray-600 mb-4">We offer flexible payment options to suit your needs:</p>
+                    <ul class="list-disc ml-6 space-y-2 text-gray-600">
+                        <li>Full payment with early bird discount</li>
+                        <li>Monthly installment plans</li>
+                        <li>Corporate sponsorship programs</li>
+                        <li>Student financing options</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- FAQ Item 5 -->
+            <div class="bg-white rounded-lg shadow-md border border-gray-100" x-data="{ open: false }">
+                <button @click="open = !open" class="w-full text-left px-6 py-4 focus:outline-none">
+                    <div class="flex items-center justify-between">
+                        <span class="font-semibold text-lg">What happens if I miss a class?</span>
+                        <i class="fa-solid fa-chevron-down text-[#f2aa40] text-2xl transition-transform" :class="{ 'rotate-180': open }"></i>
+                    </div>
+                </button>
+                <div x-show="open" class="px-6 pb-4">
+                    <p class="text-gray-600 mb-4">We understand that life can be unpredictable. Our flexible learning options include:</p>
+                    <ul class="list-disc ml-6 space-y-2 text-gray-600">
+                        <li>Access to recorded sessions</li>
+                        <li>Make-up classes with other batches</li>
+                        <li>One-on-one catch-up sessions</li>
+                        <li>Extended access to course materials</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -178,15 +233,20 @@
 
 {% block extra_js %}
 <script>
-    // FAQ Accordion functionality
-    document.querySelectorAll('button').forEach(button => {
-        button.addEventListener('click', () => {
-            const content = button.nextElementSibling;
-            const icon = button.querySelector('i');
-            
-            content.classList.toggle('hidden');
-            icon.classList.toggle('fa-chevron-down');
-            icon.classList.toggle('fa-chevron-up');
+    // FAQ Accordion functionality with exclusive opening
+    document.addEventListener('alpine:init', () => {
+        let lastOpenedButton = null;
+        
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', () => {
+                if (lastOpenedButton && lastOpenedButton !== button) {
+                    const parentDiv = lastOpenedButton.closest('[x-data]');
+                    if (parentDiv) {
+                        parentDiv.__x.$data.open = false;
+                    }
+                }
+                lastOpenedButton = button;
+            });
         });
     });
 </script>
