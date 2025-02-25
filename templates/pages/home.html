@@ -3,6 +3,71 @@
 
 {% block title %}DigiEvolve Hub - Digital Transformation & Training{% endblock %}
 
+{% block extra_css %}
+<style>
+    @keyframes pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0.5; }
+        100% { opacity: 1; }
+    }
+
+    .animate-pulse {
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    .skeleton {
+        background: linear-gradient(
+            90deg,
+            rgba(226, 232, 240, 0.6) 25%,
+            rgba(226, 232, 240, 0.9) 37%,
+            rgba(226, 232, 240, 0.6) 63%
+        );
+        background-size: 400% 100%;
+        animation: skeleton-loading 1.4s ease infinite;
+    }
+
+    @keyframes skeleton-loading {
+        0% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0 50%;
+        }
+    }
+
+    /* Service Section Styles */
+    .service-btn.active {
+        background-color: rgb(254 243 199);
+        border-left: 4px solid rgb(245 158 11);
+    }
+
+    .service-panel {
+        opacity: 1;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .service-panel.hidden {
+        opacity: 0;
+        display: none;
+    }
+
+    .service-btn:hover:not(.active) {
+        background-color: rgb(254 243 199 / 0.5);
+        transform: translateX(4px);
+    }
+
+    .service-btn {
+        transition: all 0.3s ease-in-out;
+    }
+
+    @media (max-width: 1024px) {
+        .service-btn.active {
+            border-left-width: 2px;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <!-- Hero Section -->
 <section class="relative min-h-screen">
@@ -30,29 +95,45 @@
                 </div>
             </div>
 
-            <!-- Right section with images -->
-            <div class="grid grid-cols-3 gap-4 h-[400px] md:h-[500px] lg:h-[600px] order-1 lg:order-2">
-                <div class="col-span-2 rounded-lg overflow-hidden">
-                    <img src="{% static 'images/consulting-meeting.jpg' %}" 
-                         alt="Digital Transformation Consulting"
-                         class="w-full h-full object-cover">
-                </div>
-                <div class="rounded-lg overflow-hidden">
-                    <img src="{% static 'images/ai-visualization.jpg' %}" 
-                         alt="AI and Machine Learning"
-                         class="w-full h-full object-cover">
-                </div>
-                <div class="rounded-lg overflow-hidden">
-                    <img src="{% static 'images/digital-success.jpg' %}" 
-                         alt="Global Training Solutions"
-                         class="w-full h-full object-cover">
-                </div>
-                <div class="col-span-2 rounded-lg overflow-hidden">
-                    <img src="{% static 'images/virtual-training.jpg' %}" 
-                         alt="Business Innovation"
-                         class="w-full h-full object-cover">
-                </div>
-            </div>
+<!-- Right section with images -->
+<div class="grid grid-cols-3 gap-4 h-[400px] md:h-[500px] lg:h-[600px] order-1 lg:order-2">
+    <!-- Large image 1 -->
+    <div class="col-span-2 rounded-lg overflow-hidden relative">
+        <!-- Skeleton loader -->
+        <div class="absolute inset-0 animate-pulse bg-gray-200 rounded-lg" id="skeleton-1"></div>
+        <img src="{% static 'images/consulting-meeting.jpg' %}" 
+             alt="Digital Transformation Consulting"
+             class="w-full h-full object-cover opacity-0 transition-opacity duration-300"
+             onload="this.classList.remove('opacity-0'); document.getElementById('skeleton-1').style.display='none';">
+    </div>
+
+    <!-- Small image 1 -->
+    <div class="rounded-lg overflow-hidden relative">
+        <div class="absolute inset-0 animate-pulse bg-gray-200 rounded-lg" id="skeleton-2"></div>
+        <img src="{% static 'images/ai-visualization.jpg' %}" 
+             alt="AI and Machine Learning"
+             class="w-full h-full object-cover opacity-0 transition-opacity duration-300"
+             onload="this.classList.remove('opacity-0'); document.getElementById('skeleton-2').style.display='none';">
+    </div>
+
+    <!-- Small image 2 -->
+    <div class="rounded-lg overflow-hidden relative">
+        <div class="absolute inset-0 animate-pulse bg-gray-200 rounded-lg" id="skeleton-3"></div>
+        <img src="{% static 'images/digital-success.jpg' %}" 
+             alt="Global Training Solutions"
+             class="w-full h-full object-cover opacity-0 transition-opacity duration-300"
+             onload="this.classList.remove('opacity-0'); document.getElementById('skeleton-3').style.display='none';">
+    </div>
+
+    <!-- Large image 2 -->
+    <div class="col-span-2 rounded-lg overflow-hidden relative">
+        <div class="absolute inset-0 animate-pulse bg-gray-200 rounded-lg" id="skeleton-4"></div>
+        <img src="{% static 'images/virtual-training.jpg' %}" 
+             alt="Business Innovation"
+             class="w-full h-full object-cover opacity-0 transition-opacity duration-300"
+             onload="this.classList.remove('opacity-0'); document.getElementById('skeleton-4').style.display='none';">
+    </div>
+</div>
         </div>
     </div>
 
@@ -401,54 +482,63 @@
     <div class="max-w-7xl mx-auto">
         <div class="text-center mb-12">
             <h3 class="text-3xl md:text-4xl font-normal mb-4">Our Services</h3>
-            <p class="text-lg max-w-2xl mx-auto text-gray-600">
-                Comprehensive solutions tailored to drive your digital transformation journey
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                Comprehensive solutions to drive your digital success
             </p>
         </div>
 
         <div class="flex flex-col lg:flex-row gap-8">
-            <!-- Service Selection -->
+            <!-- Service List -->
             <div class="lg:w-1/3">
-                <div class="flex flex-col gap-2">
-                    <button onclick="setActiveService(1)" class="flex items-center gap-4 p-4 rounded-lg transition-all duration-300 service-btn active" data-service="1">
-                        <i class="fa-solid fa-terminal text-3xl text-amber-500"></i>
-                        <span class="text-left">
-                            <h4 class="font-medium">Digital Transformation</h4>
-                            <p class="text-sm text-gray-500 mt-1 service-description">Guide businesses through digital technology integration</p>
-                        </span>
-                        <i class="fa-solid fa-arrow-right ml-auto text-amber-500 service-arrow"></i>
+                <div class="space-y-2">
+                    <button class="service-btn active w-full text-left p-4 rounded-lg transition-all hover:bg-amber-50" data-service="1">
+                        <div class="flex items-center gap-4">
+                            <i class="fa-solid fa-laptop-code text-2xl text-amber-500"></i>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Digital Transformation</h4>
+                                <p class="text-sm text-gray-600">Modernize your business with digital solutions</p>
+                            </div>
+                        </div>
                     </button>
 
-                    <button onclick="setActiveService(2)" class="flex items-center gap-4 p-4 rounded-lg transition-all duration-300 service-btn" data-service="2">
-                        <i class="fa-solid fa-table-cells-large text-3xl text-amber-500"></i>
-                        <span class="text-left">
-                            <h4 class="font-medium">Automation Solutions</h4>
-                            <p class="text-sm text-gray-500 mt-1 service-description hidden">Streamline operations with intelligent automation</p>
-                        </span>
+                    <button class="service-btn w-full text-left p-4 rounded-lg transition-all hover:bg-amber-50" data-service="2">
+                        <div class="flex items-center gap-4">
+                            <i class="fa-solid fa-robot text-2xl text-amber-500"></i>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Automation Solutions</h4>
+                                <p class="text-sm text-gray-600">Streamline operations with smart automation</p>
+                            </div>
+                        </div>
                     </button>
 
-                    <button onclick="setActiveService(3)" class="flex items-center gap-4 p-4 rounded-lg transition-all duration-300 service-btn" data-service="3">
-                        <i class="fa-solid fa-magnifying-glass text-3xl text-amber-500"></i>
-                        <span class="text-left">
-                            <h4 class="font-medium">Research & Development</h4>
-                            <p class="text-sm text-gray-500 mt-1 service-description hidden">Innovation through cutting-edge research</p>
-                        </span>
+                    <button class="service-btn w-full text-left p-4 rounded-lg transition-all hover:bg-amber-50" data-service="3">
+                        <div class="flex items-center gap-4">
+                            <i class="fa-solid fa-flask text-2xl text-amber-500"></i>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Research & Development</h4>
+                                <p class="text-sm text-gray-600">Innovate with cutting-edge technology</p>
+                            </div>
+                        </div>
                     </button>
 
-                    <button onclick="setActiveService(4)" class="flex items-center gap-4 p-4 rounded-lg transition-all duration-300 service-btn" data-service="4">
-                        <i class="fa-solid fa-bullseye text-3xl text-amber-500"></i>
-                        <span class="text-left">
-                            <h4 class="font-medium">Career Development</h4>
-                            <p class="text-sm text-gray-500 mt-1 service-description hidden">Personalized career growth support</p>
-                        </span>
+                    <button class="service-btn w-full text-left p-4 rounded-lg transition-all hover:bg-amber-50" data-service="4">
+                        <div class="flex items-center gap-4">
+                            <i class="fa-solid fa-chart-line text-2xl text-amber-500"></i>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Career Development</h4>
+                                <p class="text-sm text-gray-600">Advance your professional journey</p>
+                            </div>
+                        </div>
                     </button>
 
-                    <button onclick="setActiveService(5)" class="flex items-center gap-4 p-4 rounded-lg transition-all duration-300 service-btn" data-service="5">
-                        <i class="fa-solid fa-globe text-3xl text-amber-500"></i>
-                        <span class="text-left">
-                            <h4 class="font-medium">Global Talent Solutions</h4>
-                            <p class="text-sm text-gray-500 mt-1 service-description hidden">Navigate international opportunities</p>
-                        </span>
+                    <button class="service-btn w-full text-left p-4 rounded-lg transition-all hover:bg-amber-50" data-service="5">
+                        <div class="flex items-center gap-4">
+                            <i class="fa-solid fa-globe text-2xl text-amber-500"></i>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Global Talent Solutions</h4>
+                                <p class="text-sm text-gray-600">Access worldwide opportunities</p>
+                            </div>
+                        </div>
                     </button>
                 </div>
             </div>
@@ -456,12 +546,22 @@
             <!-- Service Content -->
             <div class="lg:w-2/3 bg-white rounded-xl shadow-lg overflow-hidden">
                 <div id="serviceContent" class="h-full">
-                    <!-- Content will be dynamically loaded -->
+                    <!-- Service Panel 1 - Digital Transformation -->
                     <div class="service-panel active" data-service="1">
                         <div class="h-64 relative">
-                            <img src="{% static 'images/digital-transform.jpg' %}" alt="Digital Transformation" class="absolute inset-0 w-full h-full object-cover object-center">
+                            <div role="status" 
+                                 class="absolute inset-0 animate-pulse bg-gray-200 rounded-lg flex items-center justify-center"
+                                 id="service-skeleton-1">
+                                 <i class="fas fa-image text-gray-300 text-5xl"></i>
+                            </div>
+                            <img src="{% static 'images/services/digital-transform.jpg' %}" 
+                                 alt="Digital Transformation"
+                                 class="absolute inset-0 w-full h-full object-cover object-center opacity-0 transition-opacity duration-300"
+                                 onload="this.classList.remove('opacity-0'); document.getElementById('service-skeleton-1').style.display='none';">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
-                                <h4 class="text-white text-2xl font-semibold p-6">Digital Transformation</h4>
+                                <h4 class="text-white text-2xl font-semibold p-6">
+                                    <i class="fa-solid fa-laptop-code mr-3"></i>
+                                    Digital Transformation</h4>
                             </div>
                         </div>
                         <div class="p-6">
@@ -492,12 +592,199 @@
                             </a>
                         </div>
                     </div>
-                    <!-- Additional service panels will be similar but hidden initially -->
-                </div>
-            </div>
+
+
+                    <!-- Service Panel 2 - Automation Solutions -->
+<div class="service-panel hidden" data-service="2">
+    <div class="h-64 relative">
+        <div role="status" 
+             class="absolute inset-0 animate-pulse bg-gray-200 rounded-lg flex items-center justify-center"
+             id="service-skeleton-2">
+            <i class="fas fa-image text-gray-300 text-5xl"></i>
+        </div>
+        <img src="{% static 'images/services/automation.jpg' %}" 
+             alt="Automation Solutions"
+             class="absolute inset-0 w-full h-full object-cover object-center opacity-0 transition-opacity duration-300"
+             onload="this.classList.remove('opacity-0'); document.getElementById('service-skeleton-2').style.display='none';">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
+            <h4 class="text-white text-2xl font-semibold p-6">
+                <i class="fa-solid fa-robot mr-3"></i>
+                Automation Solutions
+            </h4>
         </div>
     </div>
-</section>
+    <div class="p-6">
+        <p class="text-gray-600 mb-6">
+            <i class="fa-solid fa-gears mr-2 text-amber-500"></i>
+            Streamline your business operations with intelligent automation solutions that enhance efficiency and reduce manual workload.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-check-circle text-amber-500"></i>
+                <span class="text-gray-700">Process Automation</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-check-circle text-amber-500"></i>
+                <span class="text-gray-700">Workflow Optimization</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-check-circle text-amber-500"></i>
+                <span class="text-gray-700">RPA Implementation</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-check-circle text-amber-500"></i>
+                <span class="text-gray-700">AI Integration</span>
+            </div>
+        </div>
+        <div class="mt-8 flex items-center gap-4">
+            <a href="{% url 'services:automation' %}" 
+               class="inline-flex items-center gap-2 px-6 py-3 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors">
+                <i class="fa-solid fa-arrow-right-long"></i>
+                Learn More
+            </a>
+            <a href="#" 
+               class="inline-flex items-center gap-2 px-6 py-3 border border-amber-500 text-amber-500 rounded-lg hover:bg-amber-50 transition-colors">
+                <i class="fa-solid fa-play"></i>
+                Watch Demo
+            </a>
+        </div>
+    </div>
+</div>
+
+
+                    <!-- Service Panel 3 - Research & Development -->
+                    <div class="service-panel hidden" data-service="3">
+                        <div class="h-64 relative">
+                            <div role="status" 
+                                 class="absolute inset-0 animate-pulse bg-gray-200 rounded-lg flex items-center justify-center"
+                                 id="service-skeleton-3">
+                                 <i class="fas fa-image text-gray-300 text-5xl"></i>
+                            </div>
+                            <img src="{% static 'images/services/research.jpg' %}" 
+                                 alt="Research & Development"
+                                 class="absolute inset-0 w-full h-full object-cover object-center opacity-0 transition-opacity duration-300"
+                                 onload="this.classList.remove('opacity-0'); document.getElementById('service-skeleton-3').style.display='none';">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
+                                <h4 class="text-white text-2xl font-semibold p-6"><i class="fa-solid fa-flask mr-3"></i>Research & Development</h4>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-gray-600 mb-6">
+                                Drive innovation through cutting-edge research and development, staying ahead of industry trends and technological advancements.
+                            </p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-check text-amber-500"></i>
+                                    <span class="text-gray-700">Innovation Labs</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-check text-amber-500"></i>
+                                    <span class="text-gray-700">Emerging Technologies</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-check text-amber-500"></i>
+                                    <span class="text-gray-700">Proof of Concepts</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-check text-amber-500"></i>
+                                    <span class="text-gray-700">Market Research</span>
+                                </div>
+                            </div>
+                            <a href="{% url 'services:research' %}" class="mt-8 inline-flex items-center gap-2 px-6 py-3 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors">
+                                Learn More
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Service Panel 4 - Career Development -->
+                    <div class="service-panel hidden" data-service="4">
+                        <div class="h-64 relative">
+                            <div role="status" 
+                                 class="absolute inset-0 animate-pulse bg-gray-200 rounded-lg flex items-center justify-center"
+                                 id="service-skeleton-4"><i class="fas fa-image text-gray-300 text-5xl"></i>
+                            </div>
+                            <img src="{% static 'images/services/career.jpg' %}" 
+                                 alt="Career Development"
+                                 class="absolute inset-0 w-full h-full object-cover object-center opacity-0 transition-opacity duration-300"
+                                 onload="this.classList.remove('opacity-0'); document.getElementById('service-skeleton-4').style.display='none';">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
+                                <h4 class="text-white text-2xl font-semibold p-6"><i class="fa-solid fa-chart-line mr-3"></i>Career Development</h4>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-gray-600 mb-6">
+                                Accelerate your professional growth with personalized career development programs and expert guidance.
+                            </p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-check text-amber-500"></i>
+                                    <span class="text-gray-700">Career Coaching</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-check text-amber-500"></i>
+                                    <span class="text-gray-700">Skill Assessment</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-check text-amber-500"></i>
+                                    <span class="text-gray-700">Professional Training</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-check text-amber-500"></i>
+                                    <span class="text-gray-700">Industry Networking</span>
+                                </div>
+                            </div>
+                            <a href="{% url 'services:career' %}" class="mt-8 inline-flex items-center gap-2 px-6 py-3 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors">
+                                Learn More
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Service Panel 5 - Global Talent Solutions -->
+                    <div class="service-panel hidden" data-service="5">
+                        <div class="h-64 relative">
+                            <div role="status" 
+                                 class="absolute inset-0 animate-pulse bg-gray-200 rounded-lg flex items-center justify-center"
+                                 id="service-skeleton-5"><i class="fas fa-image text-gray-300 text-5xl"></i>
+                            </div>
+                            <img src="{% static 'images/services/global-talent.jpg' %}" 
+                                 alt="Global Talent Solutions"
+                                 class="absolute inset-0 w-full h-full object-cover object-center opacity-0 transition-opacity duration-300"
+                                 onload="this.classList.remove('opacity-0'); document.getElementById('service-skeleton-5').style.display='none';">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
+                                <h4 class="text-white text-2xl font-semibold p-6"><i class="fa-solid fa-globe mr-3"></i>Global Talent Solutions</h4>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-gray-600 mb-6">
+                                Access global opportunities and talent pools with our comprehensive international solutions and support.
+                            </p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-check text-amber-500"></i>
+                                    <span class="text-gray-700">Global Recruitment</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-check text-amber-500"></i>
+                                    <span class="text-gray-700">Cultural Integration</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-check text-amber-500"></i>
+                                    <span class="text-gray-700">International Training</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-check text-amber-500"></i>
+                                    <span class="text-gray-700">Global Compliance</span>
+                                </div>
+                            </div>
+                            <a href="{% url 'services:global_talent' %}" class="mt-8 inline-flex items-center gap-2 px-6 py-3 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors">
+                                Learn More
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </section>
 
 <!-- Global Impact Section -->
 <section class="py-16 bg-gray-50/80">
@@ -569,7 +856,15 @@
             <div class="testimonial-slide">
                 <div class="bg-white rounded-xl p-8 shadow-lg max-w-3xl mx-auto">
                     <div class="flex items-center mb-6">
-                        <img src="{% static 'images/testimonials/testimonial1.jpg' %}" alt="Sarah Johnson" class="w-16 h-16 rounded-full object-cover">
+                        <!-- Image with skeleton -->
+                        <div class="relative w-16 h-16">
+                            <div class="absolute inset-0 animate-pulse bg-gray-200 rounded-full" 
+                                 id="testimonial-skeleton-1"></div>
+                            <img src="{% static 'images/testimonials/testimonial1.jpg' %}" 
+                                 alt="Sarah Johnson" 
+                                 class="w-16 h-16 rounded-full object-cover opacity-0 transition-opacity duration-300"
+                                 onload="this.classList.remove('opacity-0'); document.getElementById('testimonial-skeleton-1').style.display='none';">
+                        </div>
                         <div class="ml-4">
                             <h4 class="text-xl font-semibold text-gray-900">Sarah Johnson</h4>
                             <p class="text-amber-600">Data Scientist at TechCorp</p>
@@ -593,7 +888,14 @@
             <div class="testimonial-slide hidden">
                 <div class="bg-white rounded-xl p-8 shadow-lg max-w-3xl mx-auto">
                     <div class="flex items-center mb-6">
-                        <img src="{% static 'images/testimonials/testimonial2.jpg' %}" alt="Michael Chen" class="w-16 h-16 rounded-full object-cover">
+                        <div class="relative w-16 h-16">
+                            <div class="absolute inset-0 animate-pulse bg-gray-200 rounded-full" 
+                                 id="testimonial-skeleton-2"></div>
+                            <img src="{% static 'images/testimonials/testimonial2.jpg' %}" 
+                                 alt="Michael Chen" 
+                                 class="w-16 h-16 rounded-full object-cover opacity-0 transition-opacity duration-300"
+                                 onload="this.classList.remove('opacity-0'); document.getElementById('testimonial-skeleton-2').style.display='none';">
+                        </div>
                         <div class="ml-4">
                             <h4 class="text-xl font-semibold text-gray-900">Michael Chen</h4>
                             <p class="text-amber-600">CTO at InnovateNow</p>
@@ -617,7 +919,14 @@
             <div class="testimonial-slide hidden">
                 <div class="bg-white rounded-xl p-8 shadow-lg max-w-3xl mx-auto">
                     <div class="flex items-center mb-6">
-                        <img src="{% static 'images/testimonials/testimonial3.jpg' %}" alt="Emma Thompson" class="w-16 h-16 rounded-full object-cover">
+                        <div class="relative w-16 h-16">
+                            <div class="absolute inset-0 animate-pulse bg-gray-200 rounded-full" 
+                                 id="testimonial-skeleton-3"></div>
+                            <img src="{% static 'images/testimonials/testimonial3.jpg' %}" 
+                                 alt="Emma Thompson" 
+                                 class="w-16 h-16 rounded-full object-cover opacity-0 transition-opacity duration-300"
+                                 onload="this.classList.remove('opacity-0'); document.getElementById('testimonial-skeleton-3').style.display='none';">
+                        </div>
                         <div class="ml-4">
                             <h4 class="text-xl font-semibold text-gray-900">Emma Thompson</h4>
                             <p class="text-amber-600">HR Director at GlobalTech</p>
@@ -641,7 +950,14 @@
             <div class="testimonial-slide hidden">
                 <div class="bg-white rounded-xl p-8 shadow-lg max-w-3xl mx-auto">
                     <div class="flex items-center mb-6">
-                        <img src="{% static 'images/testimonials/testimonial4.jpg' %}" alt="David Kumar" class="w-16 h-16 rounded-full object-cover">
+                        <div class="relative w-16 h-16">
+                            <div class="absolute inset-0 animate-pulse bg-gray-200 rounded-full" 
+                                 id="testimonial-skeleton-4"></div>
+                            <img src="{% static 'images/testimonials/testimonial4.jpg' %}" 
+                                 alt="David Kumar" 
+                                 class="w-16 h-16 rounded-full object-cover opacity-0 transition-opacity duration-300"
+                                 onload="this.classList.remove('opacity-0'); document.getElementById('testimonial-skeleton-4').style.display='none';">
+                        </div>
                         <div class="ml-4">
                             <h4 class="text-xl font-semibold text-gray-900">David Kumar</h4>
                             <p class="text-amber-600">Research Lead at DataCorp</p>
@@ -665,7 +981,14 @@
             <div class="testimonial-slide hidden">
                 <div class="bg-white rounded-xl p-8 shadow-lg max-w-3xl mx-auto">
                     <div class="flex items-center mb-6">
-                        <img src="{% static 'images/testimonials/testimonial5.jpg' %}" alt="Sofia Rodriguez" class="w-16 h-16 rounded-full object-cover">
+                        <div class="relative w-16 h-16">
+                            <div class="absolute inset-0 animate-pulse bg-gray-200 rounded-full" 
+                                 id="testimonial-skeleton-5"></div>
+                            <img src="{% static 'images/testimonials/testimonial5.jpg' %}" 
+                                 alt="Sofia Rodriguez" 
+                                 class="w-16 h-16 rounded-full object-cover opacity-0 transition-opacity duration-300"
+                                 onload="this.classList.remove('opacity-0'); document.getElementById('testimonial-skeleton-5').style.display='none';">
+                        </div>
                         <div class="ml-4">
                             <h4 class="text-xl font-semibold text-gray-900">Sofia Rodriguez</h4>
                             <p class="text-amber-600">Global Talent Manager</p>
@@ -877,44 +1200,188 @@
     });
 </script>
 
-
-<!-- Add this JavaScript at the end of your body tag -->
 <script>
-    // Testimonial Carousel
-    const testimonialSlides = document.querySelectorAll('.testimonial-slide');
-    const dots = document.querySelectorAll('.testimonial-dot');
-    let currentSlide = 0;
-
-    function showSlide(index) {
-        testimonialSlides.forEach(slide => slide.classList.add('hidden'));
-        dots.forEach(dot => dot.classList.replace('bg-amber-500', 'bg-amber-300'));
-        
-        testimonialSlides[index].classList.remove('hidden');
-        dots[index].classList.replace('bg-amber-300', 'bg-amber-500');
-        currentSlide = index;
-    }
-
-    document.getElementById('nextTestimonial').addEventListener('click', () => {
-        let nextSlide = currentSlide + 1;
-        if (nextSlide >= testimonialSlides.length) nextSlide = 0;
-        showSlide(nextSlide);
+    document.addEventListener('DOMContentLoaded', function() {
+        // Image loading optimization
+        function handleImageLoad(img, skeletonId) {
+            const skeleton = document.getElementById(skeletonId);
+            if (skeleton) {
+                skeleton.style.display = 'none';
+            }
+            img.classList.remove('opacity-0');
+        }
+    
+        // Preload critical images
+        const criticalImages = [
+            'consulting-meeting.jpg',
+            'ai-visualization.jpg',
+            'digital-success.jpg',
+            'virtual-training.jpg'
+        ];
+    
+        criticalImages.forEach(imageName => {
+            const img = new Image();
+            img.src = `{% static 'images/' %}${imageName}`;
+        });
+    
+        // Initialize Intersection Observer for lazy loading
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    const skeletonId = img.dataset.skeleton;
+                    
+                    if (img.dataset.src) {
+                        img.src = img.dataset.src;
+                        img.onload = () => handleImageLoad(img, skeletonId);
+                    }
+                    
+                    observer.unobserve(img);
+                }
+            });
+        }, {
+            root: null,
+            rootMargin: '50px',
+            threshold: 0.1
+        });
+    
+        // Observe all images with data-src attribute
+        document.querySelectorAll('img[data-src]').forEach(img => {
+            imageObserver.observe(img);
+        });
     });
+    </script>
 
-    document.getElementById('prevTestimonial').addEventListener('click', () => {
-        let prevSlide = currentSlide - 1;
-        if (prevSlide < 0) prevSlide = testimonialSlides.length - 1;
-        showSlide(prevSlide);
+<!-- Testimonial Carousel JavaScript -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const slides = document.querySelectorAll('.testimonial-slide');
+        const dots = document.querySelectorAll('.testimonial-dot');
+        let currentSlide = 0;
+        const slideInterval = 5000; // Change slide every 5 seconds
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.add('hidden'));
+            dots.forEach(dot => {
+                dot.classList.remove('bg-amber-500');
+                dot.classList.add('bg-amber-300');
+            });
+            
+            slides[index].classList.remove('hidden');
+            dots[index].classList.remove('bg-amber-300');
+            dots[index].classList.add('bg-amber-500');
+            currentSlide = index;
+        }
+
+        function nextSlide() {
+            let nextIndex = currentSlide + 1;
+            if (nextIndex >= slides.length) nextIndex = 0;
+            showSlide(nextIndex);
+        }
+
+        function previousSlide() {
+            let prevIndex = currentSlide - 1;
+            if (prevIndex < 0) prevIndex = slides.length - 1;
+            showSlide(prevIndex);
+        }
+
+        // Event listeners for navigation
+        document.getElementById('nextTestimonial').addEventListener('click', nextSlide);
+        document.getElementById('prevTestimonial').addEventListener('click', previousSlide);
+
+        // Dot navigation
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => showSlide(index));
+        });
+
+        // Auto-advance slides
+        let slideTimer = setInterval(nextSlide, slideInterval);
+
+        // Pause auto-advance on hover
+        const carousel = document.querySelector('.testimonial-carousel');
+        carousel.addEventListener('mouseenter', () => clearInterval(slideTimer));
+        carousel.addEventListener('mouseleave', () => {
+            clearInterval(slideTimer);
+            slideTimer = setInterval(nextSlide, slideInterval);
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') previousSlide();
+            if (e.key === 'ArrowRight') nextSlide();
+        });
+
+        // Touch support
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        carousel.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        carousel.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            if (touchEndX < touchStartX) nextSlide(); // Swipe left
+            if (touchEndX > touchStartX) previousSlide(); // Swipe right
+        });
     });
+</script>
 
-    dots.forEach((dot, index) => {
-        dot.addEventListener('click', () => showSlide(index));
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const serviceButtons = document.querySelectorAll('.service-btn');
+        const servicePanels = document.querySelectorAll('.service-panel');
+
+        function showService(serviceId) {
+            // Hide all panels with fade out
+            servicePanels.forEach(panel => {
+                panel.style.opacity = '0';
+                setTimeout(() => {
+                    panel.classList.add('hidden');
+                }, 300);
+            });
+            
+            // Show selected panel with fade in
+            const selectedPanel = document.querySelector(`.service-panel[data-service="${serviceId}"]`);
+            if (selectedPanel) {
+                setTimeout(() => {
+                    selectedPanel.classList.remove('hidden');
+                    requestAnimationFrame(() => {
+                        selectedPanel.style.opacity = '1';
+                    });
+                }, 300);
+            }
+
+            // Update button states
+            serviceButtons.forEach(btn => {
+                if (btn.dataset.service === serviceId) {
+                    btn.classList.add('active', 'bg-amber-50');
+                } else {
+                    btn.classList.remove('active', 'bg-amber-50');
+                }
+            });
+        }
+
+        // Add click handlers to buttons
+        serviceButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                showService(button.dataset.service);
+            });
+        });
+
+        // Initialize with first service
+        showService('1');
+
+        // Optional: Add keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            const currentService = parseInt(document.querySelector('.service-btn.active').dataset.service);
+            if (e.key === 'ArrowDown' && currentService < 5) {
+                showService((currentService + 1).toString());
+            }
+            if (e.key === 'ArrowUp' && currentService > 1) {
+                showService((currentService - 1).toString());
+            }
+        });
     });
-
-    // Auto-advance slides every 5 seconds
-    setInterval(() => {
-        let nextSlide = currentSlide + 1;
-        if (nextSlide >= testimonialSlides.length) nextSlide = 0;
-        showSlide(nextSlide);
-    }, 5000);
 </script>
 {% endblock %}

@@ -1,3 +1,6 @@
+
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,14 +11,39 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     
+    <!-- Tailwind Config for Skeleton Loading -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'skeleton': 'skeleton 1.5s ease-in-out infinite',
+                    }
+                },
+                keyframes: {
+                    skeleton: {
+                        '0%, 100%': { backgroundColor: 'rgb(229 231 235)' },
+                        '50%': { backgroundColor: 'rgb(209 213 219)' },
+                    }
+                }
+            }
+        }
+    </script>
+    
     <!-- Flowbite CDN -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
     
     <!-- Font Awesome for icons -->
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     {% block extra_css %}{% endblock %}
+
+    <!-- Preload Critical Images -->
+    <link rel="preload" as="image" href="{% static 'images/consulting-meeting.jpg' %}">
+    <link rel="preload" as="image" href="{% static 'images/ai-visualization.jpg' %}">
+    <link rel="preload" as="image" href="{% static 'logo.png' %}">
 </head>
 <body class="flex flex-col min-h-screen bg-white">
     {% include 'includes/header.html' %}
@@ -26,8 +54,54 @@
     
     {% include 'includes/footer.html' %}
     
+
+    <!-- Add to base.html head -->
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+<!-- Add to base.html before closing body -->
+<script>
+    AOS.init();
+</script>
     <!-- Flowbite JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+
+    <!-- Image Loading Optimization -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize image loading optimization
+            initializeImageLoading();
+        });
+
+        function initializeImageLoading() {
+            const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+            
+            if ('loading' in HTMLImageElement.prototype) {
+                // Browser supports native lazy loading
+                lazyImages.forEach(img => {
+                    if (img.dataset.src) {
+                        img.src = img.dataset.src;
+                    }
+                });
+            } else {
+                // Fallback for browsers that don't support lazy loading
+                const imageObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            if (img.dataset.src) {
+                                img.src = img.dataset.src;
+                            }
+                            observer.unobserve(img);
+                        }
+                    });
+                });
+
+                lazyImages.forEach(img => imageObserver.observe(img));
+            }
+        }
+    </script>
+
     {% block extra_js %}{% endblock %}
 </body>
 </html>

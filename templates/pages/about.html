@@ -1,0 +1,377 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative bg-gradient-to-b from-gray-900 to-gray-800 text-white py-24">
+    <div class="absolute inset-0 overflow-hidden">
+        <div class="absolute inset-0 bg-black opacity-50"></div>
+        <div role="status" 
+             class="absolute inset-0 animate-pulse bg-gray-200 flex items-center justify-center"
+             id="hero-skeleton">
+            <i class="fas fa-image text-gray-300 text-5xl"></i>
+        </div>
+        <img src="{% static 'images/about-us.jpg' %}"
+             alt="About Us"
+             class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300"
+             style="object-position: 50% 30%"
+             onload="this.classList.remove('opacity-0'); document.getElementById('hero-skeleton').style.display='none';">
+    </div>
+    <div class="container mx-auto px-4 relative z-10">
+        <div class="max-w-3xl mx-auto text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">About DigiEvolve Hub</h1>
+            <p class="text-xl text-gray-300">
+                Pioneering solutions in digital transformation, data analytics, and artificial intelligence
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Overview Section -->
+<section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="max-w-3xl mx-auto">
+            <h2 class="text-3xl font-semibold mb-8 text-center">Who We Are</h2>
+            <p class="text-lg text-gray-700 mb-6 leading-relaxed">
+                DigiEvolve Hub Limited is a pioneering solution addressing the dynamic challenges within 
+                the realm of digital transformation, data analytics, and artificial intelligence. Our 
+                comprehensive suite of services is tailored to meet the diverse needs of aspiring data 
+                professionals, seasoned experts, academia, businesses, career transitioners, and decision-makers alike.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Value Propositions -->
+<section class="bg-amber-50 py-16">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-semibold mb-12 text-center">Our Value Propositions</h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Value Prop 1 -->
+            <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow" 
+                 data-aos="fade-up" data-aos-delay="100">
+                <div class="text-amber-500 mb-4">
+                    <i class="fa-solid fa-bullseye text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">Comprehensive Digital Transformation</h3>
+                <p class="text-gray-600">
+                    End-to-end solutions from cloud migration to AI integration, tailored specifically for your business's unique challenges.
+                </p>
+            </div>
+
+            <!-- Value Prop 2 -->
+            <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow"
+                 data-aos="fade-up" data-aos-delay="200">
+                <div class="text-amber-500 mb-4">
+                    <i class="fa-solid fa-book text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">Project-Based Learning</h3>
+                <p class="text-gray-600">
+                    Transform your career with hands-on, project-based learning and comprehensive career support tailored to your industry.
+                </p>
+            </div>
+
+            <!-- Value Prop 3 -->
+            <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow"
+                 data-aos="fade-up" data-aos-delay="300">
+                <div class="text-amber-500 mb-4">
+                    <i class="fa-solid fa-award text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">Expert-Led Training</h3>
+                <p class="text-gray-600">
+                    Unlock your potential with expert-led, customisable training programmes across all facets of digital technology.
+                </p>
+            </div>
+
+            <!-- Value Prop 4 -->
+            <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow"
+                 data-aos="fade-up" data-aos-delay="400">
+                <div class="text-amber-500 mb-4">
+                    <i class="fa-solid fa-users text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">Innovation and Adaptability</h3>
+                <p class="text-gray-600">
+                    Stay at the cutting edge with our continuous innovation and adaptable solutions in a tech-driven market.
+                </p>
+            </div>
+
+            <!-- Value Prop 5 -->
+            <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow"
+                 data-aos="fade-up" data-aos-delay="500">
+                <div class="text-amber-500 mb-4">
+                    <i class="fa-solid fa-globe text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">Global Reach with Local Expertise</h3>
+                <p class="text-gray-600">
+                    Leverage our global expertise and local insights to efficiently navigate your digital transformation journey.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Overview -->
+<section class="py-16">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-semibold mb-12 text-center">Our Core Services</h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Digital Transformation -->
+            <div class="border border-gray-200 rounded-lg p-6 hover:border-amber-500 transition-colors"
+                 data-aos="fade-up" data-aos-delay="100">
+                <h3 class="text-xl font-semibold mb-4">
+                    <i class="fa-solid fa-laptop-code text-amber-500 mr-2"></i>
+                    Digital Transformation
+                </h3>
+                <ul class="space-y-2">
+                    <li class="flex items-start">
+                        <i class="fa-solid fa-check text-amber-500 mt-1 mr-2"></i>
+                        <span class="text-gray-600">Strategic Digital Planning</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa-solid fa-check text-amber-500 mt-1 mr-2"></i>
+                        <span class="text-gray-600">Technology Implementation</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa-solid fa-check text-amber-500 mt-1 mr-2"></i>
+                        <span class="text-gray-600">Data Analytics Solutions</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa-solid fa-check text-amber-500 mt-1 mr-2"></i>
+                        <span class="text-gray-600">Customer Experience Design</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Automation Solutions -->
+            <div class="border border-gray-200 rounded-lg p-6 hover:border-amber-500 transition-colors"
+                 data-aos="fade-up" data-aos-delay="200">
+                <h3 class="text-xl font-semibold mb-4">
+                    <i class="fa-solid fa-robot text-amber-500 mr-2"></i>
+                    Automation Solutions
+                </h3>
+                <ul class="space-y-2">
+                    <li class="flex items-start">
+                        <i class="fa-solid fa-check text-amber-500 mt-1 mr-2"></i>
+                        <span class="text-gray-600">Robotic Process Automation</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa-solid fa-check text-amber-500 mt-1 mr-2"></i>
+                        <span class="text-gray-600">Intelligent Automation</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa-solid fa-check text-amber-500 mt-1 mr-2"></i>
+                        <span class="text-gray-600">Workflow Optimization</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa-solid fa-check text-amber-500 mt-1 mr-2"></i>
+                        <span class="text-gray-600">Business Process Automation</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Technical Training -->
+            <div class="border border-gray-200 rounded-lg p-6 hover:border-amber-500 transition-colors"
+                 data-aos="fade-up" data-aos-delay="300">
+                <h3 class="text-xl font-semibold mb-4">
+                    <i class="fa-solid fa-graduation-cap text-amber-500 mr-2"></i>
+                    Technical Training
+                </h3>
+                <ul class="space-y-2">
+                    <li class="flex items-start">
+                        <i class="fa-solid fa-check text-amber-500 mt-1 mr-2"></i>
+                        <span class="text-gray-600">Data Analytics & Science</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa-solid fa-check text-amber-500 mt-1 mr-2"></i>
+                        <span class="text-gray-600">Machine Learning & AI</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa-solid fa-check text-amber-500 mt-1 mr-2"></i>
+                        <span class="text-gray-600">Business Automation</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa-solid fa-check text-amber-500 mt-1 mr-2"></i>
+                        <span class="text-gray-600">Hands-on Projects</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Research Support -->
+            <div class="border border-gray-200 rounded-lg p-6 hover:border-amber-500 transition-colors"
+                 data-aos="fade-up" data-aos-delay="400">
+                <h3 class="text-xl font-semibold mb-4">
+                    <i class="fa-solid fa-microscope text-amber-500 mr-2"></i>
+                    Research Support
+                </h3>
+                <ul class="space-y-2">
+                    <li class="flex items-start">
+                        <i class="fa-solid fa-check text-amber-500 mt-1 mr-2"></i>
+                        <span class="text-gray-600">AI & ML Research</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa-solid fa-check text-amber-500 mt-1 mr-2"></i>
+                        <span class="text-gray-600">NLP Development</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa-solid fa-check text-amber-500 mt-1 mr-2"></i>
+                        <span class="text-gray-600">Computer Vision</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa-solid fa-check text-amber-500 mt-1 mr-2"></i>
+                        <span class="text-gray-600">Quantum Computing</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Career Development -->
+            <div class="border border-gray-200 rounded-lg p-6 hover:border-amber-500 transition-colors"
+                 data-aos="fade-up" data-aos-delay="500">
+                <h3 class="text-xl font-semibold mb-4">
+                    <i class="fa-solid fa-chart-line text-amber-500 mr-2"></i>
+                    Career Development
+                </h3>
+                <ul class="space-y-2">
+                    <li class="flex items-start">
+                        <i class="fa-solid fa-check text-amber-500 mt-1 mr-2"></i>
+                        <span class="text-gray-600">Professional Mentorship</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa-solid fa-check text-amber-500 mt-1 mr-2"></i>
+                        <span class="text-gray-600">Career Coaching</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa-solid fa-check text-amber-500 mt-1 mr-2"></i>
+                        <span class="text-gray-600">Global Talent Solutions</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa-solid fa-check text-amber-500 mt-1 mr-2"></i>
+                        <span class="text-gray-600">Interview Preparation</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Tools & Technologies -->
+            <div class="border border-gray-200 rounded-lg p-6 hover:border-amber-500 transition-colors"
+                 data-aos="fade-up" data-aos-delay="600">
+                <h3 class="text-xl font-semibold mb-4">
+                    <i class="fa-solid fa-tools text-amber-500 mr-2"></i>
+                    Tools & Technologies
+                </h3>
+                <ul class="space-y-2">
+                    <li class="flex items-start">
+                        <i class="fa-solid fa-check text-amber-500 mt-1 mr-2"></i>
+                        <span class="text-gray-600">Python & SQL</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa-solid fa-check text-amber-500 mt-1 mr-2"></i>
+                        <span class="text-gray-600">Power BI & Tableau</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa-solid fa-check text-amber-500 mt-1 mr-2"></i>
+                        <span class="text-gray-600">Cloud Platforms</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa-solid fa-check text-amber-500 mt-1 mr-2"></i>
+                        <span class="text-gray-600">Advanced Analytics Tools</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Global Presence -->
+<section class="bg-gray-900 text-white py-16">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-semibold mb-12 text-center">Global Presence</h2>
+        <div class="grid md:grid-cols-4 gap-6 text-center">
+            <!-- United Kingdom -->
+            <div class="p-4 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors"
+                 data-aos="fade-up" data-aos-delay="100">
+                <i class="fa-solid fa-globe text-amber-500 text-2xl mb-3"></i>
+                <p class="font-medium">United Kingdom</p>
+            </div>
+
+            <!-- United States -->
+            <div class="p-4 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors"
+                 data-aos="fade-up" data-aos-delay="200">
+                <i class="fa-solid fa-globe text-amber-500 text-2xl mb-3"></i>
+                <p class="font-medium">United States</p>
+            </div>
+
+            <!-- Australia -->
+            <div class="p-4 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors"
+                 data-aos="fade-up" data-aos-delay="300">
+                <i class="fa-solid fa-globe text-amber-500 text-2xl mb-3"></i>
+                <p class="font-medium">Australia</p>
+            </div>
+
+            <!-- Canada -->
+            <div class="p-4 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors"
+                 data-aos="fade-up" data-aos-delay="400">
+                <i class="fa-solid fa-globe text-amber-500 text-2xl mb-3"></i>
+                <p class="font-medium">Canada</p>
+            </div>
+
+            <!-- Sweden -->
+            <div class="p-4 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors"
+                 data-aos="fade-up" data-aos-delay="500">
+                <i class="fa-solid fa-globe text-amber-500 text-2xl mb-3"></i>
+                <p class="font-medium">Sweden</p>
+            </div>
+
+            <!-- Finland -->
+            <div class="p-4 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors"
+                 data-aos="fade-up" data-aos-delay="600">
+                <i class="fa-solid fa-globe text-amber-500 text-2xl mb-3"></i>
+                <p class="font-medium">Finland</p>
+            </div>
+
+            <!-- Portugal -->
+            <div class="p-4 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors"
+                 data-aos="fade-up" data-aos-delay="700">
+                <i class="fa-solid fa-globe text-amber-500 text-2xl mb-3"></i>
+                <p class="font-medium">Portugal</p>
+            </div>
+
+            <!-- Croatia -->
+            <div class="p-4 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors"
+                 data-aos="fade-up" data-aos-delay="800">
+                <i class="fa-solid fa-globe text-amber-500 text-2xl mb-3"></i>
+                <p class="font-medium">Croatia</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Tools & Technologies -->
+<section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-semibold mb-12 text-center">Tools & Technologies</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+            {% for tool in tools %}
+            <div class="p-4 text-center rounded-lg border border-gray-200 hover:border-amber-500 transition-colors"
+                 data-aos="fade-up" data-aos-delay="50">
+                <i class="fa-solid fa-code text-amber-500 mb-2"></i>
+                <p class="font-medium text-gray-700">{{ tool }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-16 bg-amber-50">
+    <div class="container mx-auto px-4 text-center">
+        <h2 class="text-3xl font-semibold mb-6">Ready to Transform Your Future?</h2>
+        <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+            Join us on our mission to empower individuals and businesses with the skills and knowledge needed to thrive in the digital age.
+        </p>
+        <a href="{% url 'core:contact' %}" 
+           class="inline-flex items-center gap-2 px-8 py-3 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-lg transition-colors">
+            <i class="fa-solid fa-arrow-right"></i>
+            Get Started Today
+        </a>
+    </div>
+</section>
+{% endblock %}

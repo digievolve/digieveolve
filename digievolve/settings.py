@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'tailwind',
     'compressor',
     'django_browser_reload',
-
+    'widget_tweaks',
+    
     # Local apps
     'core.apps.CoreConfig',
     'accounts.apps.AccountsConfig',
@@ -60,6 +61,17 @@ MIDDLEWARE = [
     'django_browser_reload.middleware.BrowserReloadMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # Add this
 ]
+
+
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {
+    messages.DEBUG: 'bg-gray-100 text-gray-700',
+    messages.INFO: 'bg-blue-100 text-blue-700',
+    messages.SUCCESS: 'bg-green-100 text-green-700',
+    messages.WARNING: 'bg-yellow-100 text-yellow-700',
+    messages.ERROR: 'bg-red-100 text-red-700',
+}
+
 
 ROOT_URLCONF = 'digievolve.urls'
 

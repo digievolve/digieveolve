@@ -1,0 +1,108 @@
+<!-- templates/pages/services.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative bg-gradient-to-b from-gray-900 to-gray-800 text-white py-24">
+    <div class="absolute inset-0 overflow-hidden">
+        <div class="absolute inset-0 bg-black opacity-50"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-75"></div>
+    </div>
+    <div class="container mx-auto px-4 relative z-10">
+        <div class="max-w-3xl mx-auto text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">Our Services</h1>
+            <p class="text-xl text-gray-300">
+                Comprehensive solutions for digital transformation, automation, and professional growth
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Services Grid -->
+<section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for slug, service in services.items %}
+            <div class="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow overflow-hidden">
+                <div class="p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-amber-50 p-3 rounded-full">
+                            <i class="{{ service.icon }} w-8 h-8 text-[#f2aa40]"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">{{ service.title }}</h3>
+                    <p class="text-gray-600 mb-6">{{ service.description }}</p>
+                    <div class="space-y-3">
+                        {% for feature in service.features %}
+                        <div class="flex items-start">
+                            <i class="{{ feature.icon }} w-5 h-5 text-[#f2aa40] mt-1 mr-2 flex-shrink-0"></i>
+                            <p class="text-sm text-gray-600">{{ feature.title }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <a href="{% url 'core:service_detail' slug %}" 
+                       class="mt-6 inline-flex items-center text-[#f2aa40] hover:text-amber-600">
+                        Learn More
+                        <i class="fa-solid fa-chevron-right ml-2 w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us -->
+<section class="py-16 bg-amber-50">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-semibold mb-12 text-center">Why Choose DigiEvolve Hub</h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <div class="text-center">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-3">Comprehensive Solutions</h3>
+                    <p class="text-gray-600">
+                        End-to-end support for your digital transformation journey
+                    </p>
+                </div>
+            </div>
+            <div class="text-center">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-3">Expert-Led Training</h3>
+                    <p class="text-gray-600">
+                        Learn from industry professionals with current experience
+                    </p>
+                </div>
+            </div>
+            <div class="text-center">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-3">Global Reach</h3>
+                    <p class="text-gray-600">
+                        Support and solutions available across multiple countries
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-16 bg-gradient-to-b from-gray-900 to-gray-800 text-white">
+    <div class="container mx-auto px-4 text-center">
+        <h2 class="text-3xl font-semibold mb-6">Ready to Transform Your Business?</h2>
+        <p class="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
+            Let's discuss how our services can help you achieve your goals and stay ahead in today's digital landscape.
+        </p>
+        <div class="flex justify-center gap-4">
+            <a href="{% url 'core:contact' %}"
+               class="inline-block bg-[#f2aa40] hover:bg-amber-600 text-white font-semibold py-3 px-8 rounded-lg transition-colors">
+                Get Started
+            </a>
+            <a href="{% url 'core:about' %}"
+               class="inline-block bg-white/10 hover:bg-white/20 text-white font-semibold py-3 px-8 rounded-lg transition-colors">
+                Learn More
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

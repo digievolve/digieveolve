@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative bg-gradient-to-b from-gray-900 to-gray-800 text-white py-24">
+    <div class="absolute inset-0 overflow-hidden">
+        <div class="absolute inset-0 bg-black opacity-50"></div>
+        <div role="status" 
+             class="absolute inset-0 animate-pulse bg-gray-200 flex items-center justify-center"
+             id="hero-skeleton">
+            <i class="fas fa-image text-gray-300 text-5xl"></i>
+        </div>
+        <img src="{% static 'images/contact-hero.jpg' %}"
+             alt="Contact Us"
+             class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300"
+             onload="this.classList.remove('opacity-0'); document.getElementById('hero-skeleton').style.display='none';">
+    </div>
+    <div class="container mx-auto px-4 relative z-10">
+        <div class="max-w-3xl mx-auto text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">Get in Touch</h1>
+            <p class="text-xl text-gray-300">
+                Have questions about our services? We're here to help you transform your digital journey.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Main Content -->
+<section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
+<!-- Contact Form -->
+<div class="bg-white rounded-lg shadow-xl p-8" data-aos="fade-right">
+    <h2 class="text-2xl font-semibold mb-6 text-gray-800">Send us a message</h2>
+    <form method="POST" class="space-y-6">
+        {% csrf_token %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="p-4 mb-4 rounded-lg {% if message.tags == 'success' %}bg-green-100 text-green-700{% else %}bg-red-100 text-red-700{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        
+        <div class="grid md:grid-cols-2 gap-6">
+            <div>
+                <label for="{{ form.first_name.id_for_label }}" class="block text-sm font-medium text-gray-700">First Name</label>
+                {{ form.first_name|add_class:"mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500" }}
+            </div>
+            <div>
+                <label for="{{ form.last_name.id_for_label }}" class="block text-sm font-medium text-gray-700">Last Name</label>
+                {{ form.last_name|add_class:"mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500" }}
+            </div>
+        </div>
+        
+        <div>
+            <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-700">Email Address</label>
+            {{ form.email|add_class:"mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500" }}
+        </div>
+        
+        <div>
+            <label for="{{ form.subject.id_for_label }}" class="block text-sm font-medium text-gray-700">Subject</label>
+            {{ form.subject|add_class:"mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500" }}
+        </div>
+        
+        <div>
+            <label for="{{ form.message.id_for_label }}" class="block text-sm font-medium text-gray-700">Message</label>
+            {{ form.message|add_class:"mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 h-32" }}
+        </div>
+        
+        <button type="submit" class="w-full bg-amber-500 text-white px-6 py-3 rounded-lg hover:bg-amber-600 transition-colors font-semibold">
+            Send Message
+        </button>
+    </form>
+</div>
+
+            <!-- Contact Information -->
+            <div class="space-y-8" data-aos="fade-left">
+                <div class="bg-white rounded-lg shadow-xl p-8">
+                    <h2 class="text-2xl font-semibold mb-6 text-gray-800">Contact Information</h2>
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-amber-500 text-xl mt-1 mr-4"></i>
+                            <div>
+                                <h3 class="font-medium text-gray-800">Office Address</h3>
+                                <p class="text-gray-600 mt-1">123 Innovation Hub, Tech District<br>London, UK EC1A 1BB</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <i class="fas fa-envelope text-amber-500 text-xl mt-1 mr-4"></i>
+                            <div>
+                                <h3 class="font-medium text-gray-800">Email Us</h3>
+                                <a href="mailto:info@digievolve.com" class="text-gray-600 hover:text-amber-500 mt-1 block">
+                                    info@digievolve.com
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <i class="fas fa-phone text-amber-500 text-xl mt-1 mr-4"></i>
+                            <div>
+                                <h3 class="font-medium text-gray-800">Call Us</h3>
+                                <a href="tel:+442012345678" class="text-gray-600 hover:text-amber-500 mt-1 block">
+                                    +44 20 1234 5678
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <i class="fas fa-clock text-amber-500 text-xl mt-1 mr-4"></i>
+                            <div>
+                                <h3 class="font-medium text-gray-800">Business Hours</h3>
+                                <p class="text-gray-600 mt-1">Monday - Friday: 9:00 AM - 6:00 PM<br>Saturday: 10:00 AM - 2:00 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Social Media -->
+                <div class="bg-white rounded-lg shadow-xl p-8">
+                    <h2 class="text-2xl font-semibold mb-6 text-gray-800">Connect With Us</h2>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-600 hover:text-amber-500 transition-colors">
+                            <i class="fab fa-linkedin text-3xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-amber-500 transition-colors">
+                            <i class="fab fa-twitter text-3xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-amber-500 transition-colors">
+                            <i class="fab fa-instagram text-3xl"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Global Presence -->
+                <div class="bg-white rounded-lg shadow-xl p-8">
+                    <h2 class="text-2xl font-semibold mb-6 text-gray-800">Global Presence</h2>
+                    <div class="flex items-center">
+                        <i class="fas fa-globe text-amber-500 text-xl mr-4"></i>
+                        <p class="text-gray-600">
+                            Serving clients across UK, USA, Australia, Canada, Sweden, Finland, Portugal, and Croatia
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Map Section -->
+<section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden shadow-xl">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2483.2889612073466!2d-0.08777492341297075!3d51.51744097169591!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48761cab00000001%3A0x442d40a0c390750!2sLondon%20EC1A%201BB%2C%20UK!5e0!3m2!1sen!2s!4v1708633546736!5m2!1sen!2s"
+                    width="100%"
+                    height="450"
+                    class="border-0"
+                    allowfullscreen
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
