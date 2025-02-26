@@ -586,7 +586,7 @@
                                     <span class="text-gray-700">Cybersecurity Solutions</span>
                                 </div>
                             </div>
-                            <a href="{% url 'services:digital_transformation' %}" class="mt-8 inline-flex items-center gap-2 px-6 py-3 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors">
+                            <a href="{% url 'services:service_detail' 'digital_transformation' %}" class="mt-8 inline-flex items-center gap-2 px-6 py-3 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors">
                                 Learn More
                                 <i class="fa-solid fa-arrow-right"></i>
                             </a>
@@ -637,7 +637,7 @@
             </div>
         </div>
         <div class="mt-8 flex items-center gap-4">
-            <a href="{% url 'services:automation' %}" 
+            <a href="{% url 'services:service_detail' 'automation' %}" 
                class="inline-flex items-center gap-2 px-6 py-3 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors">
                 <i class="fa-solid fa-arrow-right-long"></i>
                 Learn More
@@ -690,7 +690,7 @@
                                     <span class="text-gray-700">Market Research</span>
                                 </div>
                             </div>
-                            <a href="{% url 'services:research' %}" class="mt-8 inline-flex items-center gap-2 px-6 py-3 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors">
+                            <a href="{% url 'services:service_detail' 'research' %}" class="mt-8 inline-flex items-center gap-2 px-6 py-3 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors">
                                 Learn More
                                 <i class="fa-solid fa-arrow-right"></i>
                             </a>
@@ -734,7 +734,7 @@
                                     <span class="text-gray-700">Industry Networking</span>
                                 </div>
                             </div>
-                            <a href="{% url 'services:career' %}" class="mt-8 inline-flex items-center gap-2 px-6 py-3 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors">
+                            <a href="{% url 'services:service_detail' 'career' %}" class="mt-8 inline-flex items-center gap-2 px-6 py-3 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors">
                                 Learn More
                                 <i class="fa-solid fa-arrow-right"></i>
                             </a>
@@ -748,7 +748,7 @@
                                  class="absolute inset-0 animate-pulse bg-gray-200 rounded-lg flex items-center justify-center"
                                  id="service-skeleton-5"><i class="fas fa-image text-gray-300 text-5xl"></i>
                             </div>
-                            <img src="{% static 'images/services/global-talent.jpg' %}" 
+                            <img src="{% static 'images/services/global.jpg' %}" 
                                  alt="Global Talent Solutions"
                                  class="absolute inset-0 w-full h-full object-cover object-center opacity-0 transition-opacity duration-300"
                                  onload="this.classList.remove('opacity-0'); document.getElementById('service-skeleton-5').style.display='none';">
@@ -778,7 +778,7 @@
                                     <span class="text-gray-700">Global Compliance</span>
                                 </div>
                             </div>
-                            <a href="{% url 'services:global_talent' %}" class="mt-8 inline-flex items-center gap-2 px-6 py-3 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors">
+                            <a href="{% url 'services:service_detail' 'global_talent' %}" class="mt-8 inline-flex items-center gap-2 px-6 py-3 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors">
                                 Learn More
                                 <i class="fa-solid fa-arrow-right"></i>
                             </a>
