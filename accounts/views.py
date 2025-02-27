@@ -1,12 +1,19 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib import messages
+# Python standard library imports
+from datetime import timedelta
 
-from accounts.models import StudentProfile
-from .forms import StudentRegistrationForm
-from django.urls import reverse
+# Django imports
+from django.contrib import messages
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
+from django.db.models import Sum
+from django.shortcuts import render, redirect
+from django.urls import reverse
+from django.utils import timezone
+
+# Local application imports
+from .forms import StudentRegistrationForm
+from .models import Activity, Certificate, Course, Enrollment, StudentProfile
 
 def login_view(request):
     if request.user.is_authenticated:
@@ -62,40 +69,89 @@ def register_view(request):
 
 @login_required
 def dashboard_view(request):
-    """
-    View for the student dashboard showing enrolled courses, progress, etc.
-    """
     try:
-        student_profile = request.user.studentprofile
+        # Get the student profile
+        student = StudentProfile.objects.get(user=request.user)
+
+        # Get enrolled courses
+        enrolled_courses = Enrollment.objects.filter(student=student).select_related('course')
+
+        # Get certificates
+        certificates = Certificate.objects.filter(student=student)
+
+        # Calculate overall progress
+        total_courses = enrolled_courses.count()
+        if total_courses > 0:
+            # Calculate completed modules across all courses
+            completed_modules = Enrollment.objects.filter(
+                student=student
+            ).aggregate(
+                completed=Sum('completed_modules'),
+                total=Sum('course__total_modules')
+            )
+
+            if completed_modules['total'] > 0:
+                progress_percentage = int((completed_modules['completed'] or 0) / completed_modules['total'] * 100)
+            else:
+                progress_percentage = 0
+        else:
+            progress_percentage = 0
+
+        # Get recent activities (last 30 days)
+        recent_activities = Activity.objects.filter(
+            student=student,
+            timestamp__gte=timezone.now() - timedelta(days=30)
+        ).order_by('-timestamp')[:5]
+
+        # Get recommended courses (courses not enrolled in)
+        recommended_courses = Course.objects.exclude(
+            id__in=enrolled_courses.values_list('course_id', flat=True)
+        ).order_by('?')[:3]  # Random selection of 3 courses
+
         context = {
-            'page_title': 'Student Dashboard',
-            'student': student_profile,
-            'enrolled_courses': [],  # You'll need to implement this
-            'course_progress': {},   # You'll need to implement this
-            'certificates': [],      # You'll need to implement this
+            'student': student,
+            'enrolled_courses': enrolled_courses,
+            'certificates': certificates,
+            'progress_percentage': progress_percentage,
+            'recent_activities': recent_activities,
+            'recommended_courses': recommended_courses,
         }
+
         return render(request, 'accounts/dashboard.html', context)
+
     except StudentProfile.DoesNotExist:
         messages.error(request, "Student profile not found. Please contact support.")
         return redirect('accounts:login')
-    
+     
 
 @login_required
 def profile_view(request):
     try:
-        student_profile = request.user.studentprofile
-    except StudentProfile.DoesNotExist:
-        # Create a new profile if it doesn't exist
-        student_profile = StudentProfile.objects.create(
-            user=request.user,
-            full_name=request.user.get_full_name(),
-            phone=''
-        )
+        student = StudentProfile.objects.get(user=request.user)
 
-    return render(request, 'accounts/profile.html', {
-        'page_title': 'My Profile',
-        'student': student_profile
-    })
+        # Get enrolled courses
+        enrolled_courses = Enrollment.objects.filter(student=student).select_related('course')
+
+        # Calculate completed courses count
+        completed_courses_count = enrolled_courses.filter(is_completed=True).count()
+
+        # Get certificates
+        certificates = Certificate.objects.filter(student=student)
+
+        context = {
+            'student': student,
+            'enrolled_courses': enrolled_courses,
+            'enrolled_courses_count': enrolled_courses.count(),
+            'completed_courses_count': completed_courses_count,
+            'certificates': certificates,
+            'certificates_count': certificates.count(),
+        }
+
+        return render(request, 'accounts/profile.html', context)
+
+    except StudentProfile.DoesNotExist:
+        messages.error(request, "Student profile not found. Please contact support.")
+        return redirect('accounts:login')
 
 @login_required
 def settings_view(request):
