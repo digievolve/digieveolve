@@ -1,0 +1,55 @@
+{% extends 'dashboard_base.html' %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8 ">
+    <div class="mx-auto">
+        <h1 class="text-2xl font-bold mb-6">My Enrolled Courses</h1>
+        
+        {% if enrollments %}
+            <div class="space-y-4">
+                {% for enrollment in enrollments %}
+                    <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h2 class="text-lg font-medium">{{ enrollment.course.title }}</h2>
+                                <p class="text-gray-600 mt-1">{{ enrollment.course.short_description }}</p>
+                                <div class="mt-2 flex items-center gap-2">
+                                    <span class="inline-block bg-amber-100 text-amber-800 text-sm px-2 py-1 rounded">
+                                        {{ enrollment.course.duration }} hours
+                                    </span>
+                                    {% if enrollment.course.certified %}
+                                        <span class="inline-block bg-green-100 text-green-800 text-sm px-2 py-1 rounded">
+                                            Certificate Available
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <a href="{% url 'courses:detail' enrollment.course.slug %}" 
+                               class="inline-block bg-amber-500 text-white px-4 py-2 rounded hover:bg-amber-600 transition-colors">
+                                View Course
+                            </a>
+                        </div>
+                        <div class="mt-4">
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-amber-500 h-2.5 rounded-full" 
+                                     style="width: {{ enrollment.progress }}%"></div>
+                            </div>
+                            <p class="text-sm text-gray-600 mt-1">
+                                {{ enrollment.progress }}% Complete
+                            </p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center py-8">
+                <p class="text-gray-500">You are not currently enrolled in any courses.</p>
+                <a href="{% url 'courses:list' %}" 
+                   class="mt-4 inline-block bg-amber-500 text-white px-4 py-2 rounded hover:bg-amber-600 transition-colors">
+                    Browse Available Courses
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

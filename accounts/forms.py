@@ -6,13 +6,22 @@ from django.db import transaction
 from django.core.exceptions import ValidationError
 
 class StudentRegistrationForm(UserCreationForm):
-    full_name = forms.CharField(
+    first_name = forms.CharField(
         max_length=255,
         required=True,
-        label='Full Name',
+        label='First Name',
         error_messages={
-            'required': 'Full Name is required.',
-            'max_length': 'Full Name cannot be more than 255 characters.'
+            'required': 'First Name is required.',
+            'max_length': 'First Name cannot be more than 255 characters.'
+        }
+    )
+    last_name = forms.CharField(
+        max_length=255,
+        required=True,
+        label='Last Name',
+        error_messages={
+            'required': 'Last Name is required.',
+            'max_length': 'Last Name cannot be more than 255 characters.'
         }
     )
     email = forms.EmailField(required=True)
@@ -27,7 +36,7 @@ class StudentRegistrationForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'full_name', 'phone', 'password1', 'password2')
+        fields = ('username', 'email', 'first_name', 'last_name', 'phone', 'password1', 'password2')
         error_messages = {
             'password2': {
                 'password_mismatch': 'Confirm Password does not match the Main Password.',
@@ -38,19 +47,7 @@ class StudentRegistrationForm(UserCreationForm):
         super().__init__(*args, **kwargs)
         self.fields['password1'].label = 'Main Password'
         self.fields['password2'].label = 'Confirm Password'
-
-        # Simplify password help text
         self.fields['password1'].help_text = 'Password must be at least 6 characters long and contain at least one number.'
-
-        # Remove default validators
-        self.fields['password1'].validators = []
-        self.fields['password2'].validators = []
-
-        # Update field labels in error messages
-        self.fields['password2'].error_messages = {
-            'required': 'Confirm Password is required.',
-            'password_mismatch': 'Confirm Password does not match the Main Password.'
-        }
 
     def clean_password1(self):
         password = self.cleaned_data.get('password1')
@@ -64,10 +61,7 @@ class StudentRegistrationForm(UserCreationForm):
         password1 = self.cleaned_data.get('password1')
         password2 = self.cleaned_data.get('password2')
         if password1 and password2 and password1 != password2:
-            raise ValidationError(
-                'Confirm Password does not match the Main Password.',
-                code='password_mismatch'
-            )
+            raise ValidationError('Confirm Password does not match the Main Password.')
         return password2
 
     def clean_email(self):
@@ -82,24 +76,12 @@ class StudentRegistrationForm(UserCreationForm):
             raise ValidationError("Phone number should contain only digits.")
         return phone
 
-    def clean(self):
-        cleaned_data = super().clean()
-        if 'password2' in self._errors:
-            self._errors['password2'] = self.error_class([
-                error.replace('password2', 'Confirm Password')
-                for error in self._errors['password2']
-            ])
-        return cleaned_data
-
     @transaction.atomic
     def save(self, commit=True):
         user = super().save(commit=False)
         user.email = self.cleaned_data['email']
-
-        # Split full name into first and last name
-        full_name = self.cleaned_data['full_name'].split(' ', 1)
-        user.first_name = full_name[0]
-        user.last_name = full_name[1] if len(full_name) > 1 else ''
+        user.first_name = self.cleaned_data['first_name']
+        user.last_name = self.cleaned_data['last_name']
 
         if commit:
             user.save()
@@ -107,7 +89,6 @@ class StudentRegistrationForm(UserCreationForm):
             StudentProfile.objects.update_or_create(
                 user=user,
                 defaults={
-                    'full_name': self.cleaned_data['full_name'],
                     'phone': self.cleaned_data['phone']
                 }
             )

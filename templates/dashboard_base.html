@@ -142,7 +142,7 @@
                     <!-- Logo -->
                     <a href="{% url 'core:home' %}" class="flex items-center">
                         <img src="{% static 'logo.png' %}" alt="DigiEvolve Logo" class="h-8 mr-3">
-                        <span class="self-center text-xl font-semibold whitespace-nowrap">DigiEvolve</span>
+                        <!-- <span class="self-center text-xl font-semibold whitespace-nowrap">DigiEvolve</span> -->
                     </a>
                 </div>
                 
@@ -208,117 +208,106 @@
     <!-- Dashboard Layout -->
     <div class="flex pt-16 overflow-hidden bg-gray-50">
         <!-- Sidebar -->
-        <aside id="sidebar" class="fixed hidden z-20 h-full top-0 left-0 pt-16 lg:flex flex-shrink-0 flex-col w-72 transition-width duration-300 overflow-y-auto" aria-label="Sidebar">
-            <div class="relative flex-1 flex flex-col min-h-0 border-r border-gray-200 bg-white pt-0">
-                <div class="flex-1 flex flex-col overflow-y-auto sidebar-scroll">
-                    <!-- User Profile Summary -->
-                    <div class="px-5 py-6 border-b border-gray-200">
-                        <div class="flex items-center space-x-4">
-                            <div class="w-12 h-12 rounded-full bg-amber-500 flex items-center justify-center text-white font-semibold text-lg shadow-sm">
-                                {{ request.user.first_name|first|upper }}{{ request.user.last_name|first|upper }}
-                            </div>
-                            <div>
-                                <h3 class="text-sm font-medium text-gray-900">{{ request.user.get_full_name }}</h3>
-                                <p class="text-xs text-gray-500">Student</p>
-                            </div>
-                        </div>
+<!-- Sidebar -->
+<aside id="sidebar" class="fixed hidden z-20 h-full top-0 left-0 pt-16 lg:flex flex-shrink-0 flex-col w-72 transition-width duration-300 overflow-y-auto" aria-label="Sidebar">
+    <div class="relative flex-1 flex flex-col min-h-0 border-r border-gray-200 bg-white pt-0">
+        <div class="flex-1 flex flex-col overflow-y-auto sidebar-scroll">
+            <!-- User Profile Summary -->
+            <div class="px-5 py-6 border-b border-gray-200">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-full bg-amber-500 flex items-center justify-center text-white font-semibold text-lg shadow-sm">
+                        {{ request.user.first_name|first|upper }}{{ request.user.last_name|first|upper }}
                     </div>
-                    
-                    <!-- Main Navigation -->
-                    <div class="sidebar-section">
-                        <h3 class="sidebar-heading">Main</h3>
-                        <ul class="space-y-2 px-3">
-                            <li>
-                                <a href="{% url 'accounts:dashboard' %}" class="sidebar-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
-                                    <span class="sidebar-icon">
-                                        <i class="fas fa-tachometer-alt"></i>
-                                    </span>
-                                    <span>Dashboard</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{% url 'accounts:profile' %}" class="sidebar-link {% if request.resolver_match.url_name == 'profile' %}active{% endif %}">
-                                    <span class="sidebar-icon">
-                                        <i class="fas fa-user"></i>
-                                    </span>
-                                    <span>Profile</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <!-- Learning Section -->
-                    <div class="sidebar-section border-t border-gray-200">
-                        <h3 class="sidebar-heading">Learning</h3>
-                        <ul class="space-y-2 px-3">
-                            <li>
-                                <a href="#" class="sidebar-link">
-                                    <span class="sidebar-icon">
-                                        <i class="fas fa-graduation-cap"></i>
-                                    </span>
-                                    <span>My Courses</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="sidebar-link">
-                                    <span class="sidebar-icon">
-                                        <i class="fas fa-certificate"></i>
-                                    </span>
-                                    <span>Certificates</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="sidebar-link">
-                                    <span class="sidebar-icon">
-                                        <i class="fas fa-calendar"></i>
-                                    </span>
-                                    <span>Schedule</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="sidebar-link">
-                                    <span class="sidebar-icon">
-                                        <i class="fas fa-book"></i>
-                                    </span>
-                                    <span>Resources</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <!-- Settings Section -->
-                    <div class="sidebar-section border-t border-gray-200">
-                        <h3 class="sidebar-heading">Settings</h3>
-                        <ul class="space-y-2 px-3">
-                            <li>
-                                <a href="{% url 'accounts:settings' %}" class="sidebar-link {% if request.resolver_match.url_name == 'settings' %}active{% endif %}">
-                                    <span class="sidebar-icon">
-                                        <i class="fas fa-cog"></i>
-                                    </span>
-                                    <span>Account Settings</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{% url 'core:contact' %}" class="sidebar-link">
-                                    <span class="sidebar-icon">
-                                        <i class="fas fa-question-circle"></i>
-                                    </span>
-                                    <span>Help & Support</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <!-- Logout Section -->
-                    <div class="mt-auto p-4 border-t border-gray-200">
-                        <a href="{% url 'accounts:logout' %}" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors">
-                            <i class="fas fa-sign-out-alt mr-2"></i>
-                            Logout
-                        </a>
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-900">{{ request.user.get_full_name }}</h3>
+                        <p class="text-xs text-gray-500">Student</p>
                     </div>
                 </div>
             </div>
-        </aside>
+            
+            <!-- Main Navigation -->
+            <div class="sidebar-section">
+                <h3 class="sidebar-heading">Main</h3>
+                <ul class="space-y-2 px-3">
+                    <li>
+                        <a href="{% url 'accounts:dashboard' %}" class="sidebar-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+                            <span class="sidebar-icon">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </span>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'accounts:profile' %}" class="sidebar-link {% if request.resolver_match.url_name == 'profile' %}active{% endif %}">
+                            <span class="sidebar-icon">
+                                <i class="fas fa-user"></i>
+                            </span>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'accounts:settings' %}" class="sidebar-link {% if request.resolver_match.url_name == 'settings' %}active{% endif %}">
+                            <span class="sidebar-icon">
+                                <i class="fas fa-cog"></i>
+                            </span>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'courses:list' %}" class="sidebar-link {% if request.resolver_match.url_name == 'list' %}active{% endif %}">
+                            <span class="sidebar-icon">
+                                <i class="fas fa-book"></i>
+                            </span>
+                            <span>My Courses</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'courses:certificate_list' %}" class="sidebar-link {% if request.resolver_match.url_name == 'certificates' %}active{% endif %}">
+                            <span class="sidebar-icon">
+                                <i class="fas fa-certificate"></i>
+                            </span>
+                            <span>Certificates</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Learning Section -->
+            <div class="sidebar-section border-t border-gray-200">
+                <h3 class="sidebar-heading">Learning</h3>
+                <ul class="space-y-2 px-3">
+                    <li>
+                        <a href="{% url 'core:resources' %}" class="sidebar-link">
+                            <span class="sidebar-icon">
+                                <i class="fas fa-book"></i>
+                            </span>
+                            <span>Resources</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'core:contact' %}" class="sidebar-link">
+                            <span class="sidebar-icon">
+                                <i class="fas fa-question-circle"></i>
+                            </span>
+                            <span>Help & Support</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Logout Section -->
+            <div class="mt-auto p-4 border-t border-gray-200">
+                <form method="post" action="{% url 'accounts:logout' %}" class="w-full">
+                    {% csrf_token %}
+                    <button type="submit" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors">
+                        <i class="fas fa-sign-out-alt mr-2"></i>
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</aside>
         
         <!-- Mobile Sidebar Backdrop -->
         <div class="bg-gray-900 opacity-50 hidden fixed inset-0 z-10" id="sidebarBackdrop"></div>

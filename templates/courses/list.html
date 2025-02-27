@@ -1,0 +1,41 @@
+{% extends 'dashboard_base.html' %}
+
+{% block content %}
+<div class="container mx-auto p-4">
+    <div class="mx-auto">
+        <h1 class="text-2xl font-bold mb-6">Available Courses</h1>
+        
+        {% if courses %}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {% for course in courses %}
+                    <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow">
+                        {% if course.image %}
+                            <img src="{{ course.image.url }}" alt="{{ course.title }}" class="w-full h-40 object-cover rounded-lg mb-4">
+                        {% else %}
+                            <div class="h-40 bg-gray-200 flex items-center justify-center rounded-lg mb-4">
+                                <i class="fas {% if 'data' in course.title|lower %}fa-database{% elif 'python' in course.title|lower %}fa-python{% elif 'ai' in course.title|lower or 'machine' in course.title|lower %}fa-robot{% elif 'web' in course.title|lower %}fa-globe{% else %}fa-laptop-code{% endif %} text-gray-400 text-4xl"></i>
+                            </div>
+                        {% endif %}
+                        <div class="p-4">
+                            <h3 class="font-medium">{{ course.title }}</h3>
+                            <p class="text-sm text-gray-600 mt-1">{{ course.short_description|truncatechars:60 }}</p>
+                            <div class="flex justify-between items-center mt-3">
+                                <span class="text-sm font-medium text-gray-900">{{ course.duration }} hours</span>
+                                <a href="{% url 'courses:detail' course.slug %}" 
+                                   class="inline-block bg-amber-500 text-white px-4 py-2 rounded hover:bg-amber-600">
+                                    Explore Course
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center py-8">
+                <p class="text-gray-500">No courses are currently available.</p>
+                <p class="text-sm text-gray-400 mt-2">Check back later for new course offerings.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -3,7 +3,7 @@ from datetime import timedelta
 
 # Django imports
 from django.contrib import messages
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.db.models import Sum
@@ -13,7 +13,10 @@ from django.utils import timezone
 
 # Local application imports
 from .forms import StudentRegistrationForm
-from .models import Activity, Certificate, Course, Enrollment, StudentProfile
+from .models import Activity, StudentProfile
+from courses.models import Certificate, Course, Enrollment  # Import from courses app
+from django.db import models  # Add this import for aggregation
+
 
 def login_view(request):
     if request.user.is_authenticated:
@@ -51,14 +54,13 @@ def register_view(request):
         if form.is_valid():
             user = form.save()  # This already creates the profile
             login(request, user)
-            messages.success(request, "Welcome to Digievolve! Your account has been created successfully.")
+            messages.success(request, "Welcome to DigiEvolve! Your account has been created successfully.")
             return redirect('accounts:profile')
         else:
             # Improve error display
-            if form.errors:
-                for field in form.errors:
-                    for error in form.errors[field]:
-                        messages.error(request, f"{field}: {error}")
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field.capitalize()}: {error}")
     else:
         form = StudentRegistrationForm()
 
@@ -67,62 +69,73 @@ def register_view(request):
         'page_title': 'Create Your Student Account'
     })
 
-@login_required
+
+
+@login_required(login_url='accounts:login')
 def dashboard_view(request):
-    try:
-        # Get the student profile
-        student = StudentProfile.objects.get(user=request.user)
+    # Get student profile
+    student_profile = StudentProfile.objects.get(user=request.user)
 
-        # Get enrolled courses
-        enrolled_courses = Enrollment.objects.filter(student=student).select_related('course')
+    # Get enrolled courses
+    enrolled_courses = Enrollment.objects.filter(
+        student=student_profile
+    ).select_related('course')
 
-        # Get certificates
-        certificates = Certificate.objects.filter(student=student)
+    # Get certificates
+    certificates = Certificate.objects.filter(
+        student=student_profile
+    ).select_related('course')
 
-        # Calculate overall progress
-        total_courses = enrolled_courses.count()
-        if total_courses > 0:
-            # Calculate completed modules across all courses
-            completed_modules = Enrollment.objects.filter(
-                student=student
-            ).aggregate(
-                completed=Sum('completed_modules'),
-                total=Sum('course__total_modules')
-            )
+    # Calculate progress percentage
+    total_courses = enrolled_courses.count()
+    completed_courses = enrolled_courses.filter(is_completed=True).count()
+    progress_percentage = (completed_courses / total_courses * 100) if total_courses > 0 else 0
 
-            if completed_modules['total'] > 0:
-                progress_percentage = int((completed_modules['completed'] or 0) / completed_modules['total'] * 100)
-            else:
-                progress_percentage = 0
-        else:
-            progress_percentage = 0
+    # Get recent activities
+    recent_activities = Activity.objects.filter(
+        student=student_profile
+    ).select_related('course').order_by('-timestamp')[:5]
 
-        # Get recent activities (last 30 days)
-        recent_activities = Activity.objects.filter(
-            student=student,
-            timestamp__gte=timezone.now() - timedelta(days=30)
-        ).order_by('-timestamp')[:5]
+    # Get recommended courses
+    enrolled_course_ids = enrolled_courses.values_list('course_id', flat=True)
+    recommended_courses = Course.objects.exclude(
+        id__in=enrolled_course_ids
+    ).order_by('?')[:3]  # Random selection of 3 courses
 
-        # Get recommended courses (courses not enrolled in)
-        recommended_courses = Course.objects.exclude(
-            id__in=enrolled_courses.values_list('course_id', flat=True)
-        ).order_by('?')[:3]  # Random selection of 3 courses
+    context = {
+        'student': student_profile,
+        'enrolled_courses': enrolled_courses,
+        'certificates': certificates,
+        'progress_percentage': round(progress_percentage, 1),
+        'recent_activities': recent_activities,
+        'recommended_courses': recommended_courses,
+    }
 
-        context = {
-            'student': student,
-            'enrolled_courses': enrolled_courses,
-            'certificates': certificates,
-            'progress_percentage': progress_percentage,
-            'recent_activities': recent_activities,
-            'recommended_courses': recommended_courses,
-        }
+    return render(request, 'accounts/dashboard.html', context)
 
-        return render(request, 'accounts/dashboard.html', context)
 
-    except StudentProfile.DoesNotExist:
-        messages.error(request, "Student profile not found. Please contact support.")
-        return redirect('accounts:login')
-     
+@login_required
+def courses_view(request):
+    student_profile = StudentProfile.objects.get(user=request.user)
+    enrolled_courses = Enrollment.objects.filter(student=student_profile).select_related('course')
+
+    context = {
+        'enrolled_courses': enrolled_courses,
+    }
+
+    return render(request, 'accounts/courses.html', context)
+
+@login_required
+def certificates_view(request):
+    student_profile = StudentProfile.objects.get(user=request.user)
+    certificates = Certificate.objects.filter(student=student_profile).select_related('course')
+
+    context = {
+        'certificates': certificates,
+    }
+
+    return render(request, 'accounts/certificates.html', context)
+
 
 @login_required
 def profile_view(request):
@@ -133,7 +146,7 @@ def profile_view(request):
         enrolled_courses = Enrollment.objects.filter(student=student).select_related('course')
 
         # Calculate completed courses count
-        completed_courses_count = enrolled_courses.filter(is_completed=True).count()
+        completed_courses_count = enrolled_courses.filter(is_completed=True).count()  # Change is_completed to completed
 
         # Get certificates
         certificates = Certificate.objects.filter(student=student)
@@ -153,8 +166,67 @@ def profile_view(request):
         messages.error(request, "Student profile not found. Please contact support.")
         return redirect('accounts:login')
 
+
 @login_required
 def settings_view(request):
-    return render(request, 'accounts/settings.html', {
-        'page_title': 'Account Settings'
-    })
+    try:
+        student = StudentProfile.objects.get(user=request.user)
+
+        if request.method == 'POST':
+            form_type = request.POST.get('form_type')
+
+            if form_type == 'profile_info':
+                # Handle profile information update
+                first_name = request.POST.get('first_name')
+                last_name = request.POST.get('last_name')
+                email = request.POST.get('email')
+                phone = request.POST.get('phone')
+                bio = request.POST.get('bio')
+
+                # Update user information
+                request.user.first_name = first_name
+                request.user.last_name = last_name
+                request.user.email = email
+                request.user.save()
+
+                # Update student profile information
+                student.phone = phone
+                student.bio = bio
+                student.save()
+
+                messages.success(request, "Your profile information has been updated successfully.")
+
+            elif form_type == 'password_change':
+                # Handle password change
+                password1 = request.POST.get('password1')
+                password2 = request.POST.get('password2')
+
+                if password1 and password2:
+                    if password1 == password2:
+                        request.user.set_password(password1)
+                        request.user.save()
+                        # Re-authenticate user to prevent logout after password change
+                        login(request, request.user)
+                        messages.success(request, "Your password has been changed successfully.")
+                    else:
+                        messages.error(request, "Passwords do not match.")
+                else:
+                    messages.error(request, "Please enter both password fields.")
+
+            return redirect('accounts:settings')
+
+        return render(request, 'accounts/settings.html', {
+            'student': student,
+            'page_title': 'Account Settings'
+        })
+
+    except StudentProfile.DoesNotExist:
+        messages.error(request, "Student profile not found. Please contact support.")
+        return redirect('accounts:dashboard')
+
+
+
+def logout_view(request):
+    logout(request)
+    messages.success(request, "You have been successfully logged out.")
+    return redirect('core:home')

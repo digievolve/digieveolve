@@ -1,0 +1,80 @@
+<!-- templates/accounts/courses.html -->
+{% extends 'dashboard_base.html' %}
+
+{% block title %}My Courses | DigiEvolve Hub{% endblock %}
+
+{% block content %}
+<div class="container mx-auto">
+    <!-- Page Header -->
+    <div class="mb-8">
+        <h1 class="text-2xl font-semibold text-gray-900">My Courses</h1>
+        <p class="text-gray-600">Track your progress and continue learning</p>
+    </div>
+    
+    <!-- Courses Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for enrollment in enrolled_courses %}
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                {% if enrollment.course.image %}
+                    <img src="{{ enrollment.course.image.url }}" alt="{{ enrollment.course.title }}" 
+                         class="w-full h-48 object-cover">
+                {% else %}
+                    <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
+                        <i class="fas fa-book text-gray-400 text-4xl"></i>
+                    </div>
+                {% endif %}
+                
+                <div class="p-6">
+                    <h3 class="text-lg font-medium text-gray-900">{{ enrollment.course.title }}</h3>
+                    <p class="mt-2 text-sm text-gray-600">{{ enrollment.course.short_description }}</p>
+                    
+                    <!-- Progress Bar -->
+                    <div class="mt-4">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-sm font-medium text-gray-700">Progress</span>
+                            <span class="text-sm font-medium text-amber-600">{{ enrollment.progress }}%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div class="bg-amber-500 h-2.5 rounded-full" 
+                                 style="width: {{ enrollment.progress }}%"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Course Status and Actions -->
+                    <div class="mt-6 flex justify-between items-center">
+                        <span class="px-3 py-1 text-xs font-medium rounded-full 
+                            {% if enrollment.completed %}
+                                bg-green-100 text-green-800
+                            {% else %}
+                                bg-amber-100 text-amber-800
+                            {% endif %}">
+                            {{ enrollment.completed|yesno:"Completed,In Progress" }}
+                        </span>
+                        
+                        <a href="{% url 'courses:continue' enrollment.course.slug %}" 
+                           class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-amber-600 rounded-md hover:bg-amber-700">
+                            {% if enrollment.completed %}
+                                Review Course
+                            {% else %}
+                                Continue Learning
+                            {% endif %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-span-full text-center py-12">
+                <div class="text-gray-400 mb-4">
+                    <i class="fas fa-book-open text-6xl"></i>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900">No Courses Yet</h3>
+                <p class="mt-2 text-gray-600">Start your learning journey by enrolling in a course</p>
+                <a href="{% url 'courses:list' %}" 
+                   class="mt-4 inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-amber-600 rounded-md hover:bg-amber-700">
+                    Browse Courses
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

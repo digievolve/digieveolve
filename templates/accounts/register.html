@@ -1,8 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
 
-
-
 {% block content %}
 <div class="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
@@ -27,13 +25,7 @@
                             <div class="mt-2 text-sm text-red-700">
                                 <ul class="list-disc pl-5 space-y-1">
                                     {% for message in messages %}
-                                        {% with message_text=message|stringformat:"s" %}
-                                            {% if "full_name" in message_text %}
-                                                <li>{{ message_text|cut:"full_name: "|cut:"Full Name: " }}</li>
-                                            {% else %}
-                                                <li>{{ message_text|cut:"username: "|cut:"email: "|cut:"phone: "|cut:"password1: "|cut:"password2: "|cut:"terms: " }}</li>
-                                            {% endif %}
-                                        {% endwith %}
+                                        <li>{{ message }}</li>
                                     {% endfor %}
                                 </ul>
                             </div>
@@ -42,84 +34,49 @@
                 </div>
                 {% endif %}
 
-<!-- Full Name -->
-<div>
-    <label for="full_name" class="block text-sm font-medium text-gray-700">
-        Full Name
-    </label>
-    <div class="mt-1">
-        <input id="full_name" 
-               name="full_name" 
-               type="text" 
-               required
-               value="{{ form.full_name.value|default:'' }}"
-               class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-amber-500 focus:border-amber-500 sm:text-sm">
-    </div>
-    {% if form.full_name.errors %}
-    <p class="mt-2 text-sm text-red-600">
-        {% for error in form.full_name.errors %}
-            {{ error|cut:"full_name: " }}
-        {% endfor %}
-    </p>
-    {% endif %}
-</div>
+                <!-- First Name -->
+                <div>
+                    <label for="first_name" class="block text-sm font-medium text-gray-700">First Name</label>
+                    <div class="mt-1">
+                        <input id="first_name" name="first_name" type="text" required
+                               class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-amber-500 focus:border-amber-500 sm:text-sm">
+                    </div>
+                </div>
+
+                <!-- Last Name -->
+                <div>
+                    <label for="last_name" class="block text-sm font-medium text-gray-700">Last Name</label>
+                    <div class="mt-1">
+                        <input id="last_name" name="last_name" type="text" required
+                               class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-amber-500 focus:border-amber-500 sm:text-sm">
+                    </div>
+                </div>
 
                 <!-- Username -->
                 <div>
-                    <label for="username" class="block text-sm font-medium text-gray-700">
-                        Username
-                    </label>
+                    <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
                     <div class="mt-1">
                         <input id="username" name="username" type="text" required
-                        value="{{ form.username.value|default:'' }}"
-                        class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-amber-500 focus:border-amber-500 sm:text-sm">
+                               class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-amber-500 focus:border-amber-500 sm:text-sm">
                     </div>
-<!-- Form field errors -->
-{% if form.username.errors %}
-<p class="mt-2 text-sm text-red-600">
-    {% for error in form.username.errors %}
-        {{ error|cut:"username: " }}
-    {% endfor %}
-</p>
-{% endif %}
                 </div>
 
                 <!-- Email -->
                 <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700">
-                        Email address
-                    </label>
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
                     <div class="mt-1">
                         <input id="email" name="email" type="email" required
-    value="{{ form.email.value|default:'' }}"
-    class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-amber-500 focus:border-amber-500 sm:text-sm">
+                               class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-amber-500 focus:border-amber-500 sm:text-sm">
                     </div>
-                    {% if form.email.errors %}
-                    <p class="mt-2 text-sm text-red-600">
-                        {% for error in form.email.errors %}
-                            {{ error|cut:"email: " }}
-                        {% endfor %}
-                    </p>
-                    {% endif %}
                 </div>
 
                 <!-- Phone Number -->
                 <div>
-                    <label for="phone" class="block text-sm font-medium text-gray-700">
-                        Phone Number
-                    </label>
+                    <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number</label>
                     <div class="mt-1">
                         <input id="phone" name="phone" type="tel" required
-    value="{{ form.phone.value|default:'' }}"
-    class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-amber-500 focus:border-amber-500 sm:text-sm">
+                               class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-amber-500 focus:border-amber-500 sm:text-sm">
                     </div>
-                    {% if form.phone.errors %}
-                    <p class="mt-2 text-sm text-red-600">
-                        {% for error in form.phone.errors %}
-                            {{ error|cut:"phone: " }}
-                        {% endfor %}
-                    </p>
-                    {% endif %}
                 </div>
 
                 <div class="mb-6 p-4 bg-gray-50 rounded-md">
@@ -140,71 +97,45 @@
                 
                 <!-- Password -->
                 <div>
-                    <label for="password1" class="block text-sm font-medium text-gray-700">
-                        Password
-                    </label>
+                    <label for="password1" class="block text-sm font-medium text-gray-700">Password</label>
                     <div class="mt-1 relative">
                         <input id="password1" name="password1" type="password" required
-                            class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-amber-500 focus:border-amber-500 sm:text-sm pr-10">
+                               class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-amber-500 focus:border-amber-500 sm:text-sm pr-10">
                         <button type="button" onclick="togglePassword('password1')" class="absolute inset-y-0 right-0 pr-3 flex items-center">
                             <i class="fas fa-eye text-gray-400 hover:text-gray-600"></i>
                         </button>
                     </div>
-                    {% if form.password1.errors %}
-                    <p class="mt-2 text-sm text-red-600">
-                        {% for error in form.password1.errors %}
-                            {{ error|cut:"password1: " }}
-                        {% endfor %}
-                    </p>
-                    {% endif %}
                 </div>
 
                 <!-- Confirm Password -->
                 <div>
-                    <label for="password2" class="block text-sm font-medium text-gray-700">
-                        Confirm password
-                    </label>
+                    <label for="password2" class="block text-sm font-medium text-gray-700">Confirm password</label>
                     <div class="mt-1 relative">
                         <input id="password2" name="password2" type="password" required
-                            class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-amber-500 focus:border-amber-500 sm:text-sm pr-10">
+                               class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-amber-500 focus:border-amber-500 sm:text-sm pr-10">
                         <button type="button" onclick="togglePassword('password2')" class="absolute inset-y-0 right-0 pr-3 flex items-center">
                             <i class="fas fa-eye text-gray-400 hover:text-gray-600"></i>
                         </button>
                     </div>
-                    {% if form.password2.errors %}
-                    <p class="mt-2 text-sm text-red-600">
-                        {% for error in form.password2.errors %}
-                            {{ error|cut:"password2: " }}
-                        {% endfor %}
-                    </p>
-                    {% endif %}
                 </div>
 
-<!-- Terms and Conditions -->
-<div>
-    <div class="flex items-center">
-        <input id="terms" 
-               name="terms" 
-               type="checkbox" 
-               required
-               {% if form.terms.value %}checked{% endif %}
-               class="h-4 w-4 text-amber-600 focus:ring-amber-500 border-gray-300 rounded">
-        <label for="terms" class="ml-2 block text-sm text-gray-900">
-            I agree to the <a href="#" class="text-amber-600 hover:text-amber-500">Terms and Conditions</a>
-        </label>
-    </div>
-    {% if form.terms.errors %}
-    <p class="mt-2 text-sm text-red-600">
-        {% for error in form.terms.errors %}
-            {{ error|cut:"terms: " }}
-        {% endfor %}
-    </p>
-    {% endif %}
-</div>
+                <!-- Terms and Conditions -->
+                <div>
+                    <div class="flex items-center">
+                        <input id="terms" 
+                               name="terms" 
+                               type="checkbox" 
+                               required
+                               class="h-4 w-4 text-amber-600 focus:ring-amber-500 border-gray-300 rounded">
+                        <label for="terms" class="ml-2 block text-sm text-gray-900">
+                            I agree to the <a href="#" class="text-amber-600 hover:text-amber-500">Terms and Conditions</a>
+                        </label>
+                    </div>
+                </div>
 
                 <div>
                     <button type="submit"
-                        class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500">
+                            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500">
                         Create Account
                     </button>
                 </div>
@@ -213,7 +144,6 @@
     </div>
 </div>
 {% endblock %}
-
 
 {% block extra_js %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
@@ -259,15 +189,15 @@
         });
     }
 
-// Add event listener to password field
-document.addEventListener('DOMContentLoaded', function() {
-    const passwordInput = document.getElementById('password1');
-    if (passwordInput) {
-        passwordInput.addEventListener('input', (e) => {
-            validatePassword(e.target.value);
-        });
-    }
-});
+    // Add event listener to password field
+    document.addEventListener('DOMContentLoaded', function() {
+        const passwordInput = document.getElementById('password1');
+        if (passwordInput) {
+            passwordInput.addEventListener('input', (e) => {
+                validatePassword(e.target.value);
+            });
+        }
+    });
 
     // Auto-hide messages after 5 seconds
     document.addEventListener('DOMContentLoaded', function() {

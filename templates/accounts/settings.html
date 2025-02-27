@@ -18,51 +18,54 @@
                 <button class="border-amber-500 text-amber-600 whitespace-nowrap py-4 px-6 border-b-2 font-medium text-sm" aria-current="page">
                     Profile Information
                 </button>
-                <button class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-6 border-b-2 font-medium text-sm">
+                <button class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-6 border-b-2 font-medium text-sm" id="password-tab">
                     Password
-                </button>
-                <button class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-6 border-b-2 font-medium text-sm">
-                    Notifications
-                </button>
-                <button class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-6 border-b-2 font-medium text-sm">
-                    Privacy
                 </button>
             </nav>
         </div>
         
         <!-- Profile Information Form -->
-        <div class="p-6">
-            <form action="#" method="POST">
+        <div class="p-6" id="profile-info">
+            {% if messages %}
+            <div class="mb-4">
+                {% for message in messages %}
+                    <div class="p-4 rounded-md {% if message.tags == 'success' %}bg-green-100 text-green-700{% elif message.tags == 'error' %}bg-red-100 text-red-700{% else %}bg-blue-100 text-blue-700{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <form action="{% url 'accounts:settings' %}" method="POST">
                 {% csrf_token %}
+                <input type="hidden" name="form_type" value="profile_info">
                 <div class="space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label for="first_name" class="block text-sm font-medium text-gray-700">First Name</label>
-                            <input type="text" name="first_name" id="first_name" value="{{ request.user.first_name }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500">
+                            <input type="text" name="first_name" id="first_name" value="{{ request.user.first_name }}" required
+                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500">
                         </div>
-                        
                         <div>
                             <label for="last_name" class="block text-sm font-medium text-gray-700">Last Name</label>
-                            <input type="text" name="last_name" id="last_name" value="{{ request.user.last_name }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500">
+                            <input type="text" name="last_name" id="last_name" value="{{ request.user.last_name }}" required
+                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500">
                         </div>
                     </div>
-                    
                     <div>
                         <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
-                        <input type="email" name="email" id="email" value="{{ request.user.email }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500">
+                        <input type="email" name="email" id="email" value="{{ request.user.email }}" required
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500">
                     </div>
-                    
                     <div>
                         <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number</label>
-                        <input type="tel" name="phone" id="phone" value="{{ student.phone }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500">
+                        <input type="tel" name="phone" id="phone" value="{{ student.phone }}" required
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500">
                     </div>
-                    
                     <div>
                         <label for="bio" class="block text-sm font-medium text-gray-700">Bio</label>
-                        <textarea name="bio" id="bio" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"></textarea>
+                        <textarea name="bio" id="bio" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500">{{ student.bio }}</textarea>
                         <p class="mt-2 text-sm text-gray-500">Brief description for your profile.</p>
                     </div>
-                    
                     <div class="flex justify-end">
                         <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-amber-500 hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500">
                             Save Changes
@@ -71,6 +74,72 @@
                 </div>
             </form>
         </div>
+
+        <!-- Password Change Form -->
+        <div class="p-6 hidden" id="password-info">
+            <form action="{% url 'accounts:settings' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="form_type" value="password_change">
+                <div class="space-y-6">
+                    <div>
+                        <label for="password1" class="block text-sm font-medium text-gray-700">New Password</label>
+                        <div class="mt-1 relative">
+                            <input type="password" name="password1" id="password1" required
+                                   class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-amber-500 focus:border-amber-500 pr-10">
+                            <button type="button" onclick="togglePassword('password1')" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                <i class="fas fa-eye text-gray-400 hover:text-gray-600"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="password2" class="block text-sm font-medium text-gray-700">Confirm New Password</label>
+                        <div class="mt-1 relative">
+                            <input type="password" name="password2" id="password2" required
+                                   class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-amber-500 focus:border-amber-500 pr-10">
+                            <button type="button" onclick="togglePassword('password2')" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                <i class="fas fa-eye text-gray-400 hover:text-gray-600"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-amber-500 hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500">
+                            Change Password
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
+
+<script>
+    // JavaScript to toggle between profile and password tabs
+    document.getElementById('password-tab').addEventListener('click', function() {
+        document.getElementById('profile-info').classList.add('hidden');
+        document.getElementById('password-info').classList.remove('hidden');
+    });
+
+    document.getElementById('profile-tab').addEventListener('click', function() {
+        document.getElementById('password-info').classList.add('hidden');
+        document.getElementById('profile-info').classList.remove('hidden');
+    });
+
+    function togglePassword(inputId) {
+        const input = document.getElementById(inputId);
+        const icon = event.currentTarget.querySelector('i');
+
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            input.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    }
+</script>
+
 {% endblock %}
