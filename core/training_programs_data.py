@@ -198,5 +198,206 @@ training_programs_data = {
             'Machine Learning Basics',
             'Mathematics & Statistics'
         ]
-    }
+    },
+
+'business-automation': {
+    'title': 'Business Process Automation',
+    'icon': 'fa-solid fa-gears',
+    'description': 'Learn to automate business processes using modern tools and technologies.',
+    'long_description': 'Master the art of business process automation using cutting-edge tools and methodologies. Learn to identify, design, and implement automation solutions that drive efficiency and reduce costs.',
+    'features': [
+        {
+            'icon': 'fa-solid fa-robot',
+            'title': 'RPA Development',
+            'description': 'Build robotic process automation solutions'
+        },
+        {
+            'icon': 'fa-solid fa-diagram-project',
+            'title': 'Workflow Design',
+            'description': 'Design efficient business workflows'
+        },
+        {
+            'icon': 'fa-solid fa-code',
+            'title': 'Integration',
+            'description': 'Connect various business systems'
+        }
+    ],
+    'curriculum': [
+        {
+            'title': 'Automation Fundamentals',
+            'items': [
+                'Process Analysis & Mapping',
+                'Automation Tools Overview',
+                'RPA Fundamentals',
+                'Business Process Management'
+            ]
+        },
+        {
+            'title': 'Tools & Technologies',
+            'items': [
+                'UiPath Development',
+                'Power Automate',
+                'Zapier Integration',
+                'API Development'
+            ]
+        },
+        {
+            'title': 'Advanced Implementation',
+            'items': [
+                'Enterprise Automation',
+                'Cognitive Automation',
+                'Process Mining',
+                'Automation Strategy'
+            ]
+        }
+    ],
+    'outcomes': [
+        'Design Automation Solutions',
+        'Implement RPA Systems',
+        'Optimize Business Processes',
+        'Create Integration Workflows',
+        'Develop Automation Strategy'
+    ],
+    'duration': '14 weeks',
+    'level': 'Intermediate',
+    'prerequisites': [
+        'Basic IT Knowledge',
+        'Understanding of Business Processes',
+        'Basic Programming Concepts'
+    ]
+},
+
+'data-governance': {
+    'title': 'Data Governance & Compliance',
+    'icon': 'fa-solid fa-shield',
+    'description': 'Master data governance principles and compliance requirements for enterprise data management.',
+    'long_description': 'Comprehensive training in data governance frameworks, compliance regulations, and best practices for managing enterprise data assets securely and effectively.',
+    'features': [
+        {
+            'icon': 'fa-solid fa-book',
+            'title': 'Governance Framework',
+            'description': 'Implement data governance structures'
+        },
+        {
+            'icon': 'fa-solid fa-lock',
+            'title': 'Data Security',
+            'description': 'Ensure data protection and privacy'
+        },
+        {
+            'icon': 'fa-solid fa-scale-balanced',
+            'title': 'Compliance',
+            'description': 'Meet regulatory requirements'
+        }
+    ],
+    'curriculum': [
+        {
+            'title': 'Governance Basics',
+            'items': [
+                'Data Governance Principles',
+                'Regulatory Framework',
+                'Privacy Standards',
+                'Risk Management'
+            ]
+        },
+        {
+            'title': 'Implementation',
+            'items': [
+                'Governance Operating Model',
+                'Data Quality Management',
+                'Metadata Management',
+                'Security Controls'
+            ]
+        },
+        {
+            'title': 'Advanced Topics',
+            'items': [
+                'Enterprise Data Strategy',
+                'Compliance Automation',
+                'Audit Management',
+                'Change Management'
+            ]
+        }
+    ],
+    'outcomes': [
+        'Design Governance Framework',
+        'Implement Security Controls',
+        'Ensure Regulatory Compliance',
+        'Manage Data Quality',
+        'Develop Data Policies'
+    ],
+    'duration': '10 weeks',
+    'level': 'Advanced',
+    'prerequisites': [
+        'Data Management Experience',
+        'Basic Security Knowledge',
+        'Understanding of Regulations'
+    ]
+},
+
+'tools-certification': {
+    'title': 'Tools & Technology Certification',
+    'icon': 'fa-solid fa-certificate',
+    'description': 'Get certified in industry-leading tools and technologies for digital transformation.',
+    'long_description': 'Comprehensive certification preparation for various digital transformation tools and technologies, including RPA, BI, and cloud platforms.',
+    'features': [
+        {
+            'icon': 'fa-solid fa-award',
+            'title': 'Certification Prep',
+            'description': 'Prepare for official certifications'
+        },
+        {
+            'icon': 'fa-solid fa-laptop-code',
+            'title': 'Hands-on Practice',
+            'description': 'Real-world tool experience'
+        },
+        {
+            'icon': 'fa-solid fa-graduation-cap',
+            'title': 'Expert Guidance',
+            'description': 'Learn from certified trainers'
+        }
+    ],
+    'curriculum': [
+        {
+            'title': 'RPA Certifications',
+            'items': [
+                'UiPath Certification',
+                'Automation Anywhere',
+                'Blue Prism',
+                'Power Automate'
+            ]
+        },
+        {
+            'title': 'BI Tools',
+            'items': [
+                'Tableau Certification',
+                'Power BI Certification',
+                'Qlik Certification',
+                'Looker'
+            ]
+        },
+        {
+            'title': 'Cloud Platforms',
+            'items': [
+                'AWS Certification',
+                'Azure Certification',
+                'Google Cloud',
+                'Salesforce'
+            ]
+        }
+    ],
+    'outcomes': [
+        'Earn Official Certifications',
+        'Master Industry Tools',
+        'Build Professional Portfolio',
+        'Enhance Career Prospects',
+        'Gain Practical Experience'
+    ],
+    'duration': '8 weeks per certification',
+    'level': 'Various',
+    'prerequisites': [
+        'Basic IT Knowledge',
+        'Tool-specific Requirements',
+        'Dedication to Learning'
+    ]
+}
 }

@@ -1,11 +1,10 @@
-# courses/views.py
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url='accounts:login')
 def course_list(request):
     return render(request, 'courses/list.html')
 
-def digital_marketing(request):
-    return render(request, 'courses/digital_marketing.html')
-
-def web_development(request):
-    return render(request, 'courses/web_development.html')
+@login_required(login_url='accounts:login')
+def course_detail(request, course_slug):
+    return render(request, 'courses/detail.html')

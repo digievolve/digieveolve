@@ -136,31 +136,38 @@
             <!-- Auth Buttons -->
             <div class="hidden lg:flex items-center space-x-4">
                 {% if user.is_authenticated %}
-                    <div class="relative group">
-                        <button class="flex items-center space-x-2 text-gray-700 hover:text-[#f2aa40]">
-                            <span>{{ user.username }}</span>
-                            <i class="fa-solid fa-chevron-down text-xs group-hover:rotate-180 transition-transform"></i>
-                        </button>
-                        <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg hidden group-hover:block border border-gray-100">
-                            <div class="p-2">
-                                <a href="{% url 'accounts:profile' %}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg">
-                                    <i class="fa-solid fa-user w-5 mr-2 text-[#f2aa40]"></i>
-                                    Profile
-                                </a>
-                                <a href="{% url 'accounts:settings' %}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg">
-                                    <i class="fa-solid fa-gear w-5 mr-2 text-[#f2aa40]"></i>
-                                    Settings
-                                </a>
-                                <form method="post" action="{% url 'accounts:logout' %}">
-                                    {% csrf_token %}
-                                    <button type="submit" class="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg">
-                                        <i class="fa-solid fa-right-from-bracket w-5 mr-2 text-[#f2aa40]"></i>
-                                        Logout
-                                    </button>
-                                </form>
-                            </div>
+                <div x-data="{ open: false }" @click.away="open = false" class="relative">
+                    <button @click="open = !open" class="flex items-center space-x-2 text-gray-700 hover:text-[#f2aa40]">
+                        <span>{{ user.username }}</span>
+                        <i class="fa-solid fa-chevron-down text-xs" :class="{ 'rotate-180': open }"></i>
+                    </button>
+                    <div x-show="open"
+                         x-transition:enter="transition ease-out duration-200"
+                         x-transition:enter-start="opacity-0 transform scale-95"
+                         x-transition:enter-end="opacity-100 transform scale-100"
+                         x-transition:leave="transition ease-in duration-150"
+                         x-transition:leave-start="opacity-100 transform scale-100"
+                         x-transition:leave-end="opacity-0 transform scale-95"
+                         class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100">
+                        <div class="p-2">
+                            <a href="{% url 'accounts:profile' %}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg">
+                                <i class="fa-solid fa-user w-5 mr-2 text-[#f2aa40]"></i>
+                                Profile
+                            </a>
+                            <a href="{% url 'accounts:settings' %}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg">
+                                <i class="fa-solid fa-gear w-5 mr-2 text-[#f2aa40]"></i>
+                                Settings
+                            </a>
+                            <form method="post" action="{% url 'accounts:logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg">
+                                    <i class="fa-solid fa-right-from-bracket w-5 mr-2 text-[#f2aa40]"></i>
+                                    Logout
+                                </button>
+                            </form>
                         </div>
                     </div>
+                </div>
                 {% else %}
                     <a href="{% url 'accounts:login' %}" class="bg-[#2C3E50] text-white px-6 py-2 rounded-lg hover:bg-[#34495E] transition-colors">Login</a>
                     <a href="{% url 'accounts:register' %}" class="bg-[#f2aa40] text-white px-6 py-2 rounded-lg hover:bg-[#E69A2F] transition-colors">Register</a>
@@ -294,7 +301,19 @@
                 <a href="{% url 'core:contact' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-50 rounded-lg">Contact</a>
 
                 {% if user.is_authenticated %}
-                    <div class="border-t border-gray-200 mt-2 pt-2">
+                <div x-data="{ open: false }" @click.away="open = false" class="border-t border-gray-200 mt-2 pt-2">
+                    <button @click="open = !open" class="flex items-center justify-between w-full px-4 py-2 text-gray-700 hover:bg-gray-50 rounded-lg">
+                        <span>{{ user.username }}</span>
+                        <i class="fa-solid fa-chevron-down text-xs" :class="{ 'rotate-180': open }"></i>
+                    </button>
+                    <div x-show="open"
+                         x-transition:enter="transition ease-out duration-200"
+                         x-transition:enter-start="opacity-0 transform scale-95"
+                         x-transition:enter-end="opacity-100 transform scale-100"
+                         x-transition:leave="transition ease-in duration-150"
+                         x-transition:leave-start="opacity-100 transform scale-100"
+                         x-transition:leave-end="opacity-0 transform scale-95"
+                         class="pl-4 mt-1 space-y-1">
                         <a href="{% url 'accounts:profile' %}" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-50 rounded-lg">
                             <i class="fa-solid fa-user w-5 mr-2 text-[#f2aa40]"></i>
                             Profile
@@ -303,7 +322,7 @@
                             <i class="fa-solid fa-gear w-5 mr-2 text-[#f2aa40]"></i>
                             Settings
                         </a>
-                        <form method="post" action="{% url 'accounts:logout' %}" class="block">
+                        <form method="post" action="{% url 'accounts:logout' %}">
                             {% csrf_token %}
                             <button type="submit" class="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-50 rounded-lg">
                                 <i class="fa-solid fa-right-from-bracket w-5 mr-2 text-[#f2aa40]"></i>
@@ -311,6 +330,7 @@
                             </button>
                         </form>
                     </div>
+                </div>
                 {% else %}
                     <div class="border-t border-gray-200 mt-2 pt-2 px-4 space-y-2">
                         <a href="{% url 'accounts:login' %}" class="block w-full bg-[#2C3E50] text-white px-4 py-2 rounded-lg hover:bg-[#34495E] transition-colors text-center">Login</a>

@@ -1,9 +1,8 @@
-# core/services_data.py
 
 services_data = {
     'digital-transformation': {
         'title': 'Digital Transformation',
-        'icon': 'fa-solid fa-computer',
+        'icon': 'fa-solid fa-laptop',
         'description': 'Guide businesses through comprehensive digital technology integration to enhance operations and customer value.',
         'long_description': 'Transform your business operations through strategic digital integration, from cloud solutions to AI implementation, creating a future-ready organization that delivers enhanced value to customers.',
         'features': [
@@ -60,7 +59,7 @@ services_data = {
             'Scalable Digital Infrastructure'
         ]
     },
-    'automation-solutions': {
+    'automation': {
         'title': 'Automation Solutions',
         'icon': 'fa-solid fa-robot',
         'description': 'Design and implement cutting-edge automation systems using AI and machine learning.',
@@ -119,7 +118,7 @@ services_data = {
             'Better Resource Utilization'
         ]
     },
-    'research-development': {
+    'research': {
         'title': 'Research & Development',
         'icon': 'fa-solid fa-flask',
         'description': 'Support cutting-edge research in AI, machine learning, and digital innovation.',
@@ -178,7 +177,7 @@ services_data = {
             'Industry Leadership'
         ]
     },
-    'career-development': {
+    'career': {
         'title': 'Career Development',
         'icon': 'fa-solid fa-bullseye',
         'description': 'Comprehensive career support services for professional growth in tech.',
@@ -237,7 +236,7 @@ services_data = {
             'Job Placement Support'
         ]
     },
-    'global-talent': {
+    'global_talent': {
         'title': 'Global Talent Solutions',
         'icon': 'fa-solid fa-globe',
         'description': 'Support for international career opportunities and talent mobility.',

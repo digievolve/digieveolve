@@ -1,3 +1,4 @@
+from django.http import Http404
 from django.shortcuts import redirect, render
 from .forms import ContactForm
 from django.contrib import messages  # Add this import
@@ -46,9 +47,10 @@ def services_page(request):
     return render(request, 'pages/services.html', context)
 
 def service_detail(request, slug):
+    # Get the service data or return 404 if not found
     service = services_data.get(slug)
     if not service:
-        return render(request, 'pages/service_not_found.html')
+        raise Http404("Service not found")
 
     context = {
         'service': service,
