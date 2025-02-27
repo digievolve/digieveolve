@@ -60,6 +60,16 @@ class StudentRegistrationForm(UserCreationForm):
             raise ValidationError('Password must contain at least one number.')
         return password
 
+    def clean_password2(self):
+        password1 = self.cleaned_data.get('password1')
+        password2 = self.cleaned_data.get('password2')
+        if password1 and password2 and password1 != password2:
+            raise ValidationError(
+                'Confirm Password does not match the Main Password.',
+                code='password_mismatch'
+            )
+        return password2
+
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if User.objects.filter(email=email).exists():
@@ -71,16 +81,6 @@ class StudentRegistrationForm(UserCreationForm):
         if not phone.isdigit():
             raise ValidationError("Phone number should contain only digits.")
         return phone
-
-    def clean_password2(self):
-        password1 = self.cleaned_data.get('password1')
-        password2 = self.cleaned_data.get('password2')
-        if password1 and password2 and password1 != password2:
-            raise ValidationError(
-                'Confirm Password does not match the Main Password.',
-                code='password_mismatch'
-            )
-        return password2
 
     def clean(self):
         cleaned_data = super().clean()
