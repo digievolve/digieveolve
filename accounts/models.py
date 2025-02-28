@@ -17,17 +17,21 @@ class StudentProfile(models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name}'s profile"
 
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
+
     class Meta:
         db_table = 'accounts_studentprofile'
 
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        StudentProfile.objects.create(user=instance)
+# @receiver(post_save, sender=User)
+# def create_user_profile(sender, instance, created, **kwargs):
+#     if created:
+#         StudentProfile.objects.create(user=instance)
 
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    instance.studentprofile.save()
+# @receiver(post_save, sender=User)
+# def save_user_profile(sender, instance, **kwargs):
+#     instance.studentprofile.save()
 
 
 class Activity(models.Model):
@@ -41,7 +45,7 @@ class Activity(models.Model):
     student = models.ForeignKey(StudentProfile, on_delete=models.CASCADE)
     activity_type = models.CharField(max_length=20, choices=ACTIVITY_TYPES)
     description = models.CharField(max_length=255)
-    course = models.ForeignKey('courses.Course', on_delete=models.CASCADE, blank=True, null=True)  # Use string reference
+    course = models.ForeignKey('courses.Course', on_delete=models.CASCADE, blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -49,4 +53,4 @@ class Activity(models.Model):
         ordering = ['-timestamp']
 
     def __str__(self):
-        return f"{self.student.full_name} - {self.activity_type} - {self.timestamp.strftime('%Y-%m-%d')}"
+        return f"{self.student.user.username} - {self.activity_type} - {self.timestamp.strftime('%Y-%m-%d')}"

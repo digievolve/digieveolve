@@ -7,13 +7,24 @@ from .models import StudentProfile
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
-        StudentProfile.objects.create(
+        StudentProfile.objects.get_or_create(
             user=instance,
-            first_name=instance.first_name,
-            last_name=instance.last_name,
-            phone=''  # Default phone number can be empty or set to a specific value
+            defaults={
+                'first_name': instance.first_name,
+                'last_name': instance.last_name,
+                'phone': ''
+            }
         )
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
-    instance.studentprofile.save()
+    try:
+        instance.studentprofile.save()
+    except StudentProfile.DoesNotExist:
+        # Create profile if it doesn't exist
+        StudentProfile.objects.create(
+            user=instance,
+            first_name=instance.first_name,
+            last_name=instance.last_name,
+            phone=''
+        )

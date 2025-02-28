@@ -85,11 +85,21 @@ class StudentRegistrationForm(UserCreationForm):
 
         if commit:
             user.save()
-            # Create or update the StudentProfile
-            StudentProfile.objects.update_or_create(
+            # The profile will be created by the signal, but we update it with the phone number
+            profile, created = StudentProfile.objects.get_or_create(
                 user=user,
                 defaults={
+                    'first_name': user.first_name,
+                    'last_name': user.last_name,
                     'phone': self.cleaned_data['phone']
                 }
             )
+
+            if not created:
+                # Update existing profile
+                profile.phone = self.cleaned_data['phone']
+                profile.first_name = user.first_name
+                profile.last_name = user.last_name
+                profile.save()
+
         return user

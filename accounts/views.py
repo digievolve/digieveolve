@@ -51,16 +51,21 @@ def register_view(request):
 
     if request.method == 'POST':
         form = StudentRegistrationForm(request.POST)
-        if form.is_valid():
-            user = form.save()  # This already creates the profile
-            login(request, user)
-            messages.success(request, "Welcome to DigiEvolve! Your account has been created successfully.")
-            return redirect('accounts:profile')
-        else:
-            # Improve error display
-            for field, errors in form.errors.items():
-                for error in errors:
-                    messages.error(request, f"{field.capitalize()}: {error}")
+        try:
+            if form.is_valid():
+                user = form.save()
+                login(request, user)
+                messages.success(request, "Welcome to DigiEvolve! Your account has been created successfully.")
+                return redirect('accounts:profile')
+            else:
+                # Improve error display
+                for field, errors in form.errors.items():
+                    for error in errors:
+                        messages.error(request, f"{field.capitalize()}: {error}")
+        except Exception as e:
+            # Log the error for debugging
+            print(f"Registration error: {str(e)}")
+            messages.error(request, f"An error occurred during registration: {str(e)}")
     else:
         form = StudentRegistrationForm()
 
