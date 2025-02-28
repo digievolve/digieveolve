@@ -174,7 +174,12 @@ if DEBUG:
     ALLOWED_HOSTS = ['localhost', '127.0.0.1']
     STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 else:
-    ALLOWED_HOSTS = ['digieveolve.onrender.com']
+    ALLOWED_HOSTS = [
+    'oyster-app-gevod.ondigitalocean.app',  # Add your DigitalOcean app hostname
+    '127.0.0.1',  # For local development
+    'localhost',  # For local development
+    'digieveolve.onrender.com'
+]
     # Security settings for production
     SECURE_SSL_REDIRECT = True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
