@@ -42,11 +42,12 @@ INSTALLED_APPS = [
     'compressor',
     'django_browser_reload',
     'widget_tweaks',
+    'django_paystack',
+    'courses',
     
     # Local apps
     'core.apps.CoreConfig',
     'accounts.apps.AccountsConfig',
-    'courses.apps.CoursesConfig',
     'services.apps.ServicesConfig',
 ]
 
@@ -74,6 +75,23 @@ MESSAGE_TAGS = {
 
 
 ROOT_URLCONF = 'digievolve.urls'
+
+# Paystack settings
+PAYSTACK_PUBLIC_KEY = 'pk_test_f75b89d4b0b77d11c41a01491f5b6060862ee616'
+PAYSTACK_SECRET_KEY = 'sk_test_d495b7568946469c62d1cd564d5b24bcec017762'
+PAYSTACK_SUCCESS_URL = 'courses:payment_success'
+PAYSTACK_FAILED_URL = 'courses:payment_failed'
+
+
+PAYSTACK_SETTINGS = {
+    'PUBLIC_KEY': PAYSTACK_PUBLIC_KEY,
+    'SECRET_KEY': PAYSTACK_SECRET_KEY,
+    'CALLBACK_URL': PAYSTACK_SUCCESS_URL,
+    'BUTTON_ID': 'paystack-button',  # Default button ID for Paystack
+    'CURRENCY': 'NGN',  # Add this line to specify the currency
+    'BUTTON_CLASS': 'btn btn-primary',
+}
+
 
 TEMPLATES = [
     {

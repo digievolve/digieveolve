@@ -1,0 +1,96 @@
+{% extends 'dashboard_base.html' %}
+
+{% block title %}{{ quiz.title }} | DigiEvolve Hub{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8 max-w-4xl">
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="mb-6 flex justify-between items-center">
+            <h1 class="text-2xl font-bold">{{ quiz.title }}</h1>
+            <div class="text-gray-600">
+                <span id="timer" class="font-medium"></span>
+            </div>
+        </div>
+        
+        <div class="mb-6">
+            <p class="text-gray-600">{{ quiz.description }}</p>
+            <div class="mt-2 flex items-center gap-4">
+                <span class="flex items-center text-gray-500">
+                    <i class="fas fa-clock mr-1"></i> {{ quiz.time_limit }} minutes
+                </span>
+                <span class="flex items-center text-gray-500">
+                    <i class="fas fa-check-circle mr-1"></i> Passing: {{ quiz.passing_score }}%
+                </span>
+            </div>
+        </div>
+        
+        <form method="post" id="quiz-form">
+            {% csrf_token %}
+            
+            {% for question in questions %}
+            <div class="mb-8 p-4 border border-gray-200 rounded-lg">
+                <h3 class="text-lg font-medium mb-3">{{ forloop.counter }}. {{ question.text }}</h3>
+                
+                {% if question.question_type == 'multiple_choice' %}
+                    <div class="space-y-2">
+                        {% for answer in question.answers.all %}
+                        <div class="flex items-center">
+                            <input type="radio" name="question_{{ question.id }}" id="answer_{{ answer.id }}" value="{{ answer.id }}" class="mr-2">
+                            <label for="answer_{{ answer.id }}">{{ answer.text }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% elif question.question_type == 'true_false' %}
+                    <div class="space-y-2">
+                        {% for answer in question.answers.all %}
+                        <div class="flex items-center">
+                            <input type="radio" name="question_{{ question.id }}" id="answer_{{ answer.id }}" value="{{ answer.id }}" class="mr-2">
+                            <label for="answer_{{ answer.id }}">{{ answer.text }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% elif question.question_type == 'short_answer' %}
+                    <textarea name="question_{{ question.id }}" rows="3" class="w-full p-2 border border-gray-300 rounded"></textarea>
+                {% endif %}
+            </div>
+            {% endfor %}
+            
+            <div class="flex justify-end">
+                <button type="submit" class="inline-block bg-amber-500 text-white px-6 py-2 rounded hover:bg-amber-600 transition-colors">
+                    Submit Quiz
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Timer functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const timerElement = document.getElementById('timer');
+        const quizForm = document.getElementById('quiz-form');
+        
+        // Set the time limit in seconds
+        let timeLeft = {{ quiz.time_limit }} * 60;
+        
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            
+            timerElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                alert('Time is up! Your quiz will be submitted automatically.');
+                quizForm.submit();
+            }
+            
+            timeLeft--;
+        }
+        
+        // Update timer immediately and then every second
+        updateTimer();
+        const timerInterval = setInterval(updateTimer, 1000);
+    });
+</script>
+{% endblock %}

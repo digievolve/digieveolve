@@ -9,7 +9,8 @@ def create_user_profile(sender, instance, created, **kwargs):
     if created:
         StudentProfile.objects.create(
             user=instance,
-            full_name=f"{instance.first_name} {instance.last_name}".strip(),
+            first_name=instance.first_name,
+            last_name=instance.last_name,
             phone=''  # Default phone number can be empty or set to a specific value
         )
 

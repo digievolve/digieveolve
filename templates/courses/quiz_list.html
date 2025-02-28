@@ -1,0 +1,77 @@
+{% extends 'dashboard_base.html' %}
+{% load course_filters %}
+
+
+{% block title %}Quizzes - {{ module.title }} | DigiEvolve Hub{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="mb-6">
+        <a href="{% url 'courses:module_detail' course.slug module.id %}" class="text-amber-500 hover:text-amber-600">
+            <i class="fas fa-arrow-left mr-2"></i> Back to Module
+        </a>
+    </div>
+    
+    <h1 class="text-2xl font-bold mb-2">{{ module.title }} - Quizzes</h1>
+    <p class="text-gray-600 mb-6">{{ module.description }}</p>
+    
+    {% if quizzes %}
+    <div class="space-y-4">
+        {% for quiz in quizzes %}
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h2 class="text-xl font-semibold">{{ quiz.title }}</h2>
+                    <p class="text-gray-600 mt-1">{{ quiz.description }}</p>
+                    <div class="mt-2 flex items-center gap-4">
+                        <span class="flex items-center text-gray-500">
+                            <i class="fas fa-clock mr-1"></i> {{ quiz.time_limit }} minutes
+                        </span>
+                        <span class="flex items-center text-gray-500">
+                            <i class="fas fa-check-circle mr-1"></i> Passing: {{ quiz.passing_score }}%
+                        </span>
+                    </div>
+                </div>
+                
+                <div>
+                    {% if quiz_attempts|get_item:quiz.id %}
+                        {% with attempt=quiz_attempts|get_item:quiz.id %}
+                            {% if attempt.is_completed %}
+                                {% if attempt.is_passed %}
+                                    <div class="text-green-600 font-medium mb-2">
+                                        <i class="fas fa-check-circle mr-1"></i> Passed ({{ attempt.score|floatformat:1 }}%)
+                                    </div>
+                                    <a href="{% url 'courses:quiz_result' attempt.id %}" class="text-amber-500 hover:text-amber-600">
+                                        View Results
+                                    </a>
+                                {% else %}
+                                    <div class="text-red-600 font-medium mb-2">
+                                        <i class="fas fa-times-circle mr-1"></i> Failed ({{ attempt.score|floatformat:1 }}%)
+                                    </div>
+                                    <a href="{% url 'courses:take_quiz' quiz.id %}" class="inline-block bg-amber-500 text-white px-4 py-2 rounded hover:bg-amber-600 transition-colors">
+                                        Retry Quiz
+                                    </a>
+                                {% endif %}
+                            {% else %}
+                                <a href="{% url 'courses:take_quiz' quiz.id %}" class="inline-block bg-amber-500 text-white px-4 py-2 rounded hover:bg-amber-600 transition-colors">
+                                    Continue Quiz
+                                </a>
+                            {% endif %}
+                        {% endwith %}
+                    {% else %}
+                        <a href="{% url 'courses:take_quiz' quiz.id %}" class="inline-block bg-amber-500 text-white px-4 py-2 rounded hover:bg-amber-600 transition-colors">
+                            Start Quiz
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="bg-white rounded-lg shadow-md p-6 text-center">
+        <p class="text-gray-600">No quizzes available for this module.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
