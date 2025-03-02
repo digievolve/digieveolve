@@ -68,17 +68,7 @@
                     </div>
                 </div>
 
-                <!-- Add Cloudflare Turnstile CAPTCHA -->
-                <div>
-                    {{ form.captcha }}
-                    {% if form.captcha.errors %}
-                    <div class="mt-1 text-sm text-red-600">
-                        {% for error in form.captcha.errors %}
-                        <p>{{ error }}</p>
-                        {% endfor %}
-                    </div>
-                    {% endif %}
-                </div>
+
 
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
@@ -96,6 +86,10 @@
                     </div>
                 </div>
 
+                <!-- Inside your form, before the submit button -->
+                <div class="cf-turnstile" 
+                data-sitekey="1x00000000000000000000AA" 
+                data-theme="light"></div>
                 <div>
                     <button type="submit"
                         class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500">

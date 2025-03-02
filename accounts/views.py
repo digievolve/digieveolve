@@ -9,7 +9,10 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.db.models import Sum
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.utils import timezone
+import requests
+
+from digievolve import settings
+
 
 # Local application imports
 from .models import Activity, StudentProfile
@@ -19,40 +22,81 @@ from .forms import StudentRegistrationForm, CustomLoginForm  # Add
 
 
 def login_view(request):
-    if request.user.is_authenticated:
-        return redirect('accounts:dashboard')  # Changed from student:dashboard
-
     if request.method == 'POST':
-        form = CustomLoginForm(request, data=request.POST)  # Use CustomLoginForm instead
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        remember_me = request.POST.get('remember_me')
+
+        # Initialize form before Turnstile validation
+        form = AuthenticationForm(request, data=request.POST)
+
+        # Validate Cloudflare Turnstile
+        token = request.POST.get('cf-turnstile-response')
+        if not token:
+            messages.error(request, "Please complete the security check.")
+            return render(request, 'accounts/login.html', {'form': form})
+
+        # Verify the token with Cloudflare
+        secret_key = "0x4AAAAAAA_PrYbgupT5euhBSvuwBQzu0h0"  # Replace with your actual secret key
+        data = {
+            'secret': secret_key,
+            'response': token,
+            'remoteip': request.META.get('REMOTE_ADDR')
+        }
+
+        try:
+            response = requests.post('https://challenges.cloudflare.com/turnstile/v0/siteverify', data=data)
+            result = response.json()
+
+            if not result.get('success', False):
+                messages.error(request, "Security check failed. Please try again.")
+                return render(request, 'accounts/login.html', {'form': form})
+        except Exception as e:
+            # Log the exception
+            print(f"Turnstile verification error: {e}")
+            messages.error(request, "Error verifying security check. Please try again.")
+            return render(request, 'accounts/login.html', {'form': form})
+
+        # Continue with your existing login logic
         if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
+            user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                # Get the next URL or default to accounts dashboard
-                next_url = request.GET.get('next', reverse('accounts:dashboard'))
-                return redirect(next_url)
+
+                if not remember_me:
+                    request.session.set_expiry(0)
+
+                # Record login activity
+                try:
+                    profile = StudentProfile.objects.get(user=user)
+                    Activity.objects.create(
+                        student=profile,
+                        activity_type='login',
+                        description=f"Logged in at {timezone.now().strftime('%Y-%m-%d %H:%M')}"
+                    )
+                except Exception as e:
+                    # Just log the error, don't interrupt the login process
+                    print(f"Error recording login activity: {e}")
+
+                return redirect('core:dashboard')
             else:
                 messages.error(request, "Invalid username or password.")
         else:
-            # Display specific error messages
-            for field, errors in form.errors.items():
-                for error in errors:
-                    messages.error(request, f"{field.capitalize()}: {error}")
+            messages.error(request, "Invalid form submission. Please check your inputs.")
     else:
-        form = CustomLoginForm()  # Use CustomLoginForm instead
+        form = AuthenticationForm()
 
-    return render(request, 'accounts/login.html', {
-        'form': form,
-        'page_title': 'Login to Your Account'
-    })
+    return render(request, 'accounts/login.html', {'form': form})
 
 def register_view(request):
     if request.user.is_authenticated:
         return redirect('accounts:dashboard')
 
     if request.method == 'POST':
+        if not validate_turnstile(request):
+            messages.error(request, "Please complete the security check.")
+            return render(request, 'accounts/login.html', {'form': form})
+        
         form = StudentRegistrationForm(request.POST)
         try:
             if form.is_valid():
@@ -238,3 +282,34 @@ def logout_view(request):
     logout(request)
     messages.success(request, "You have been successfully logged out.")
     return redirect('core:home')
+
+
+# For development/testing
+def validate_turnstile(request):
+    """Validate the Cloudflare Turnstile token"""
+    # Get the token from the request
+    token = request.POST.get('cf-turnstile-response')
+
+    # If using test key, accept any response
+    if settings.DEBUG:
+        return True
+
+    # For production, verify with Cloudflare
+    if not token:
+        return False
+
+    # Verify the token with Cloudflare
+    secret_key = "YOUR_SECRET_KEY"  # Add to settings.py
+    data = {
+        'secret': secret_key,
+        'response': token,
+        'remoteip': request.META.get('REMOTE_ADDR')
+    }
+
+    try:
+        response = requests.post('https://challenges.cloudflare.com/turnstile/v0/siteverify', data=data)
+        result = response.json()
+        return result.get('success', False)
+    except Exception:
+        # Log the exception
+        return False

@@ -52,6 +52,13 @@ INSTALLED_APPS = [
     'services.apps.ServicesConfig',
 ]
 
+# reCAPTCHA settings
+RECAPTCHA_PUBLIC_KEY = 'your_public_key_here'
+RECAPTCHA_PRIVATE_KEY = 'your_private_key_here'
+# Use the following for local development/testing:
+SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -198,8 +205,3 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-# Cloudflare Turnstile Keys
-CLOUDFLARE_TURNSTILE_SITE_KEY = '0x4AAAAAAA_PrbdWkaPF_0vd'
-CLOUDFLARE_TURNSTILE_SECRET_KEY = '0x4AAAAAAA_PrYbgupT5euhBSvuwBQzu0h0'
