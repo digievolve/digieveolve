@@ -12,10 +12,10 @@ from django.urls import reverse
 from django.utils import timezone
 
 # Local application imports
-from .forms import StudentRegistrationForm
 from .models import Activity, StudentProfile
 from courses.models import Certificate, Course, Enrollment  # Import from courses app
 from django.db import models  # Add this import for aggregation
+from .forms import StudentRegistrationForm, CustomLoginForm  # Add
 
 
 def login_view(request):
@@ -23,7 +23,7 @@ def login_view(request):
         return redirect('accounts:dashboard')  # Changed from student:dashboard
 
     if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
+        form = CustomLoginForm(request, data=request.POST)  # Use CustomLoginForm instead
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
@@ -36,9 +36,12 @@ def login_view(request):
             else:
                 messages.error(request, "Invalid username or password.")
         else:
-            messages.error(request, "Please check your username and password and try again.")
+            # Display specific error messages
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field.capitalize()}: {error}")
     else:
-        form = AuthenticationForm()
+        form = CustomLoginForm()  # Use CustomLoginForm instead
 
     return render(request, 'accounts/login.html', {
         'form': form,

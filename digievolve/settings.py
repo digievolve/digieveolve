@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'django_paystack',
     'courses',
+    'utils',
     
     # Local apps
     'core.apps.CoreConfig',
@@ -197,3 +198,8 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Cloudflare Turnstile Keys
+CLOUDFLARE_TURNSTILE_SITE_KEY = '0x4AAAAAAA_PrbdWkaPF_0vd'
+CLOUDFLARE_TURNSTILE_SECRET_KEY = '0x4AAAAAAA_PrYbgupT5euhBSvuwBQzu0h0'

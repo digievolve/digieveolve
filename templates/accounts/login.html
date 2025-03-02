@@ -1,5 +1,15 @@
-<!-- templates/accounts/login.html -->
 {% extends 'base.html' %}
+
+{% block extra_css %}
+<style>
+/* Add this to your CSS file or in a <style> tag in your template */
+    .cf-turnstile {
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
 <div class="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -56,6 +66,18 @@
                             <i class="fas fa-eye text-gray-400 hover:text-gray-600"></i>
                         </button>
                     </div>
+                </div>
+
+                <!-- Add Cloudflare Turnstile CAPTCHA -->
+                <div>
+                    {{ form.captcha }}
+                    {% if form.captcha.errors %}
+                    <div class="mt-1 text-sm text-red-600">
+                        {% for error in form.captcha.errors %}
+                        <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
                 </div>
 
                 <div class="flex items-center justify-between">
