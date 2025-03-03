@@ -207,3 +207,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+CLOUDFLARE_TURNSTILE_SECRET_KEY = '0x4AAAAAAA_PrYbgupT5euhBSvuwBQzu0h0'
+CLOUDFLARE_TURNSTILE_SITE_KEY = '0x4AAAAAAA_PrbdWkaPF_0vd'
+
+TEMPLATES[0]['OPTIONS']['context_processors'].append('accounts.context_processors.settings_context')

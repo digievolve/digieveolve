@@ -1,42 +1,20 @@
+# accounts/forms.py
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from .models import StudentProfile
 from django.db import transaction
 from django.core.exceptions import ValidationError
-from django.contrib.auth.forms import AuthenticationForm
-from utils.widgets import CloudflareTurnstileWidget  # Import the widget
 
 class CustomLoginForm(AuthenticationForm):
-    # Add Turnstile field
-    captcha = forms.CharField(widget=CloudflareTurnstileWidget(), required=True)
-
-    def clean_captcha(self):
-        import requests
-        from django.conf import settings
-
-        # Skip validation in development if TURNSTILE_TESTING is True
-        if getattr(settings, 'TURNSTILE_TESTING', False):
-            return self.cleaned_data.get('captcha')
-
-        captcha_response = self.cleaned_data.get('captcha')
-        secret_key = settings.CLOUDFLARE_TURNSTILE_SECRET_KEY
-        verify_url = 'https://challenges.cloudflare.com/turnstile/v0/siteverify'
-
-        response = requests.post(verify_url, data={
-            'secret': secret_key,
-            'response': captcha_response,
-        })
-        result = response.json()
-
-        if not result.get('success'):
-            raise forms.ValidationError('Invalid CAPTCHA. Please try again.')
-
-        return captcha_response
+    # Add this field for Turnstile
+    cf_turnstile_response = forms.CharField(required=False)  # Make it not required in the form
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Add any custom initialization here
 
 class StudentRegistrationForm(UserCreationForm):
-    captcha = forms.CharField(widget=CloudflareTurnstileWidget())
-
     first_name = forms.CharField(
         max_length=255,
         required=True,
@@ -64,6 +42,9 @@ class StudentRegistrationForm(UserCreationForm):
             'required': 'You must accept the Terms and Conditions to register.'
         }
     )
+    
+    # Add this field for Turnstile
+    cf_turnstile_response = forms.CharField(required=False)  # Make it not required in the form
 
     class Meta:
         model = User
@@ -106,29 +87,6 @@ class StudentRegistrationForm(UserCreationForm):
         if not phone.isdigit():
             raise ValidationError("Phone number should contain only digits.")
         return phone
-
-    def clean_captcha(self):
-        import requests
-        from django.conf import settings
-
-        # Skip validation in development if TURNSTILE_TESTING is True
-        if getattr(settings, 'TURNSTILE_TESTING', False):
-            return self.cleaned_data.get('captcha')
-
-        captcha_response = self.cleaned_data.get('captcha')
-        secret_key = settings.CLOUDFLARE_TURNSTILE_SECRET_KEY
-        verify_url = 'https://challenges.cloudflare.com/turnstile/v0/siteverify'
-
-        response = requests.post(verify_url, data={
-            'secret': secret_key,
-            'response': captcha_response,
-        })
-        result = response.json()
-
-        if not result.get('success'):
-            raise forms.ValidationError('Invalid CAPTCHA. Please try again.')
-
-        return captcha_response
 
     @transaction.atomic
     def save(self, commit=True):

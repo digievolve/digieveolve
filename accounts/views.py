@@ -1,5 +1,5 @@
 # Python standard library imports
-from datetime import timedelta
+from datetime import timedelta, timezone
 
 # Django imports
 from django.contrib import messages
@@ -19,25 +19,36 @@ from .models import Activity, StudentProfile
 from courses.models import Certificate, Course, Enrollment  # Import from courses app
 from django.db import models  # Add this import for aggregation
 from .forms import StudentRegistrationForm, CustomLoginForm  # Add
+import logging
+
+logger = logging.getLogger(__name__)
 
 
-def login_view(request):
+def register_view(request):
+    if request.user.is_authenticated:
+        return redirect('accounts:dashboard')
+
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        remember_me = request.POST.get('remember_me')
+        # Create a copy of POST data that we can modify
+        post_data = request.POST.copy()
 
-        # Initialize form before Turnstile validation
-        form = AuthenticationForm(request, data=request.POST)
-
-        # Validate Cloudflare Turnstile
+        # Get the Turnstile token
         token = request.POST.get('cf-turnstile-response')
+
+        # Add the token to the form data with the correct field name
+        if token:
+            post_data['cf_turnstile_response'] = token
+
+        # Initialize the form with the modified POST data
+        form = StudentRegistrationForm(post_data)
+
+        # Validate Cloudflare Turnstile separately from form validation
         if not token:
             messages.error(request, "Please complete the security check.")
-            return render(request, 'accounts/login.html', {'form': form})
+            return render(request, 'accounts/register.html', {'form': form})
 
         # Verify the token with Cloudflare
-        secret_key = "0x4AAAAAAA_PrYbgupT5euhBSvuwBQzu0h0"  # Replace with your actual secret key
+        secret_key = settings.CLOUDFLARE_TURNSTILE_SECRET_KEY
         data = {
             'secret': secret_key,
             'response': token,
@@ -49,16 +60,86 @@ def login_view(request):
             result = response.json()
 
             if not result.get('success', False):
+                logger.error(f"Turnstile verification failed: {result}")
+                messages.error(request, "Security check failed. Please try again.")
+                return render(request, 'accounts/register.html', {'form': form})
+        except Exception as e:
+            logger.error(f"Turnstile verification error: {e}")
+            messages.error(request, "Error verifying security check. Please try again.")
+            return render(request, 'accounts/register.html', {'form': form})
+
+        # If Turnstile validation passed, proceed with form validation
+        if form.is_valid():
+            try:
+                # Save the user and log them in
+                user = form.save()
+                login(request, user)
+                messages.success(request, "Welcome to DigiEvolve! Your account has been created successfully.")
+                return redirect('accounts:profile')
+            except Exception as e:
+                logger.error(f"Registration error: {e}")
+                messages.error(request, f"An error occurred during registration: {e}")
+        else:
+            # Display form errors as messages
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field.capitalize()}: {error}")
+    else:
+        # Initialize an empty form for GET requests
+        form = StudentRegistrationForm()
+
+    return render(request, 'accounts/register.html', {
+        'form': form,
+        'page_title': 'Create Your Student Account'
+    })
+
+def login_view(request):
+    if request.method == 'POST':
+        # Create a copy of POST data that we can modify
+        post_data = request.POST.copy()
+
+        # Get the Turnstile token
+        token = request.POST.get('cf-turnstile-response')
+
+        # Add the token to the form data with the correct field name
+        if token:
+            post_data['cf_turnstile_response'] = token
+
+        # Initialize form with request and modified POST data
+        form = CustomLoginForm(request=request, data=post_data)
+
+        # Validate Cloudflare Turnstile separately from form validation
+        if not token:
+            messages.error(request, "Please complete the security check.")
+            return render(request, 'accounts/login.html', {'form': form})
+
+        # Verify the token with Cloudflare
+        secret_key = settings.CLOUDFLARE_TURNSTILE_SECRET_KEY
+        data = {
+            'secret': secret_key,
+            'response': token,
+            'remoteip': request.META.get('REMOTE_ADDR')
+        }
+
+        try:
+            response = requests.post('https://challenges.cloudflare.com/turnstile/v0/siteverify', data=data)
+            result = response.json()
+
+            if not result.get('success', False):
+                logger.error(f"Turnstile verification failed: {result}")
                 messages.error(request, "Security check failed. Please try again.")
                 return render(request, 'accounts/login.html', {'form': form})
         except Exception as e:
-            # Log the exception
-            print(f"Turnstile verification error: {e}")
+            logger.error(f"Turnstile verification error: {e}")
             messages.error(request, "Error verifying security check. Please try again.")
             return render(request, 'accounts/login.html', {'form': form})
 
-        # Continue with your existing login logic
+        # If Turnstile validation passed, proceed with form validation
         if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            remember_me = request.POST.get('remember_me')
+
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
@@ -76,50 +157,20 @@ def login_view(request):
                     )
                 except Exception as e:
                     # Just log the error, don't interrupt the login process
-                    print(f"Error recording login activity: {e}")
+                    logger.error(f"Error recording login activity: {e}")
 
-                return redirect('core:dashboard')
+                return redirect('accounts:dashboard')
             else:
                 messages.error(request, "Invalid username or password.")
         else:
-            messages.error(request, "Invalid form submission. Please check your inputs.")
+            # Display form errors as messages
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field.capitalize()}: {error}")
     else:
-        form = AuthenticationForm()
+        form = CustomLoginForm()
 
     return render(request, 'accounts/login.html', {'form': form})
-
-def register_view(request):
-    if request.user.is_authenticated:
-        return redirect('accounts:dashboard')
-
-    if request.method == 'POST':
-        if not validate_turnstile(request):
-            messages.error(request, "Please complete the security check.")
-            return render(request, 'accounts/login.html', {'form': form})
-        
-        form = StudentRegistrationForm(request.POST)
-        try:
-            if form.is_valid():
-                user = form.save()
-                login(request, user)
-                messages.success(request, "Welcome to DigiEvolve! Your account has been created successfully.")
-                return redirect('accounts:profile')
-            else:
-                # Improve error display
-                for field, errors in form.errors.items():
-                    for error in errors:
-                        messages.error(request, f"{field.capitalize()}: {error}")
-        except Exception as e:
-            # Log the error for debugging
-            print(f"Registration error: {str(e)}")
-            messages.error(request, f"An error occurred during registration: {str(e)}")
-    else:
-        form = StudentRegistrationForm()
-
-    return render(request, 'accounts/register.html', {
-        'form': form,
-        'page_title': 'Create Your Student Account'
-    })
 
 
 

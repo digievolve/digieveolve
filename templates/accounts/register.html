@@ -132,9 +132,8 @@
                         </label>
                     </div>
                 </div>
-                <!-- Inside your form, before the submit button -->
                 <div class="mb-6">
-                    <div class="cf-turnstile" data-sitekey="0x4AAAAAAA_PrbdWkaPF_0vd" data-theme="light"></div>
+                    <div class="cf-turnstile" data-sitekey="{{ settings.CLOUDFLARE_TURNSTILE_SITE_KEY }}" data-theme="light"></div>
                 </div>
                 <div>
                     <button type="submit"
