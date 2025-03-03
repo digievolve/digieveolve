@@ -12,6 +12,16 @@ import json
 import requests
 from django.conf import settings
 
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from io import BytesIO
+
+import os
+from django.http import HttpResponse, Http404
+from django.template.loader import render_to_string
+# from weasyprint import HTML
+from .models import Certificate
+
 
 
 @login_required(login_url='accounts:login')
@@ -501,10 +511,90 @@ def quiz_result(request, attempt_id):
     return render(request, 'courses/quiz_result.html', context)
 
 
-# courses/views.py
 def public_certificate_view(request, uuid):
-    """View for publicly shared certificates"""
+    """View for publicly sharing certificates"""
     certificate = get_object_or_404(Certificate, uuid=uuid)
+
+    # Handle download request
+    if request.GET.get('download') == 'true':
+        # Get the template
+        template = get_template('courses/pdf_certificate.html')
+
+        # Create context with certificate and additional data
+        context = {
+            'certificate': certificate,
+            'verification_url': request.build_absolute_uri(),
+            'logo_url': request.build_absolute_uri('/static/img/logo.png'),  # Adjust path as needed
+        }
+
+        # Render the template
+        html = template.render(context)
+
+        # Create a PDF
+        result = BytesIO()
+        pdf = pisa.pisaDocument(
+            BytesIO(html.encode("UTF-8")),
+            result,
+            encoding='UTF-8'
+        )
+
+        # Check if PDF generation was successful
+        if not pdf.err:
+            # Create HTTP response with PDF
+            response = HttpResponse(result.getvalue(), content_type='application/pdf')
+            filename = f"certificate_{certificate.certificate_number}.pdf"
+            response['Content-Disposition'] = f'attachment; filename="{filename}"'
+            return response
+        else:
+            # If PDF generation failed, return an error page
+            return HttpResponse("Error generating PDF", status=500)
+
+    # If not a download request, render the normal certificate page
     return render(request, 'courses/public_certificate.html', {
         'certificate': certificate
     })
+
+# Replace the WeasyPrint-based function with one that uses xhtml2pdf
+def download_certificate_pdf(request, uuid):
+    """Generate and download a PDF version of the certificate using xhtml2pdf."""
+    certificate = get_object_or_404(Certificate, uuid=uuid)
+
+    # Get the absolute URL for verification
+    verification_url = request.build_absolute_uri(
+        reverse('courses:public_certificate', kwargs={'uuid': certificate.uuid})
+    )
+
+    # Get the logo URL
+    logo_url = request.build_absolute_uri('/static/img/logo.png')  # Adjust the path as necessary
+
+    # Get the template
+    template = get_template('courses/pdf_certificate.html')
+
+    # Create context with certificate and additional data
+    context = {
+        'certificate': certificate,
+        'verification_url': verification_url,
+        'logo_url': logo_url,
+    }
+
+    # Render the template
+    html = template.render(context)
+
+    # Create a PDF
+    result = BytesIO()
+    pdf = pisa.pisaDocument(
+        BytesIO(html.encode("UTF-8")),
+        result,
+        encoding='UTF-8'
+    )
+
+    # Check if PDF generation was successful
+    if not pdf.err:
+        # Create HTTP response with PDF
+        response = HttpResponse(result.getvalue(), content_type='application/pdf')
+        filename = f"certificate_{certificate.certificate_number}.pdf"
+        response['Content-Disposition'] = f'attachment; filename="{filename}"'
+        return response
+    else:
+        # If PDF generation failed, return an error page
+        return HttpResponse("Error generating PDF", status=500)

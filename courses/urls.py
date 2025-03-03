@@ -16,4 +16,5 @@ urlpatterns = [
     path('<str:course_slug>/initiate-payment/', views.initiate_payment, name='initiate_payment'),
     path('verify-payment/<str:reference>/', views.verify_payment, name='verify_payment'),
     path('certificate/public/<uuid:uuid>/', views.public_certificate_view, name='public_certificate'),
+    path('certificate/<uuid:uuid>/pdf/', views.download_certificate_pdf, name='download_certificate_pdf'),
 ]

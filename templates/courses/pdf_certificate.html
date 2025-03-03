@@ -1,0 +1,142 @@
+<!-- templates/courses/pdf_certificate.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{{ certificate.course.title }} Certificate</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .certificate {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background-color: #fff;
+            border: 20px solid #f59e0b;
+            padding: 20px;
+        }
+        .certificate-header {
+            background-color: #f59e0b;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .certificate-title {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 0;
+        }
+        .certificate-subtitle {
+            font-size: 18px;
+            margin-top: 5px;
+        }
+        .certificate-content {
+            padding: 40px;
+            text-align: center;
+        }
+        .certificate-statement {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        .certificate-name {
+            font-size: 30px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .certificate-course {
+            font-size: 24px;
+            font-weight: bold;
+            color: #f59e0b;
+            margin: 20px 0;
+        }
+        .certificate-details {
+            display: flex;
+            justify-content: space-between;
+            max-width: 500px;
+            margin: 30px auto 0;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        .certificate-detail {
+            text-align: left;
+        }
+        .certificate-detail-label {
+            font-size: 12px;
+            color: #888;
+        }
+        .certificate-detail-value {
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .certificate-footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            background-color: #f9fafb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .certificate-logo {
+            height: 40px;
+        }
+        .certificate-verification {
+            text-align: right;
+            font-size: 12px;
+        }
+        .certificate-verification-label {
+            color: #888;
+        }
+        .certificate-verification-url {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="certificate">
+        <div class="certificate-header">
+            <h1 class="certificate-title">Certificate of Completion</h1>
+            <p class="certificate-subtitle">DigiEvolve Hub</p>
+        </div>
+        
+        <div class="certificate-content">
+            <p class="certificate-statement">This is to certify that</p>
+            <h2 class="certificate-name">{{ certificate.student.full_name }}</h2>
+            <p class="certificate-statement">has successfully completed the course</p>
+            <h3 class="certificate-course">{{ certificate.course.title }}</h3>
+            
+            <div class="certificate-details">
+                <div class="certificate-detail">
+                    <p class="certificate-detail-label">Certificate No.</p>
+                    <p class="certificate-detail-value">{{ certificate.certificate_number }}</p>
+                </div>
+                <div class="certificate-detail">
+                    <p class="certificate-detail-label">Issue Date</p>
+                    <p class="certificate-detail-value">{{ certificate.issued_date|date:"F d, Y" }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="certificate-footer">
+            <div>
+                <img src="{{ logo_url }}" alt="DigiEvolve Hub Logo" class="certificate-logo">
+            </div>
+            <div class="certificate-verification">
+                <p class="certificate-verification-label">Verify this certificate at:</p>
+                <p class="certificate-verification-url">{{ verification_url }}</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

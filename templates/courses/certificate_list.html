@@ -1,22 +1,27 @@
 {% extends 'dashboard_base.html' %}
+{% load static %}
 
 {% block title %}My Certificates | DigiEvolve Hub{% endblock %}
 
 {% block content %}
 <div class="container mx-auto px-4 py-8">
-    <div class="mx-auto">
-        <h1 class="text-2xl font-bold mb-6">My Certificates</h1>
-        
-        {% if certificates %}
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {% for certificate in certificates %}
-            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <!-- Page Header -->
+    <div class="mb-8">
+        <h1 class="text-2xl font-semibold text-gray-900">My Certificates</h1>
+        <p class="text-gray-600">View and download your earned certificates</p>
+    </div>
+    
+    {% if certificates %}
+    <!-- Certificates Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for certificate in certificates %}
+            <div class="bg-white rounded-lg shadow-md overflow-visible hover:shadow-lg transition-shadow duration-300">
                 <div class="p-6">
                     <div class="flex items-center justify-center mb-4">
                         <i class="fas fa-certificate text-amber-500 text-5xl"></i>
                     </div>
                     
-                    <h3 class="text-lg font-medium text-center">
+                    <h3 class="text-lg font-medium text-center text-gray-900">
                         {{ certificate.course.title }}
                     </h3>
                     
@@ -25,28 +30,186 @@
                         <p class="text-sm text-gray-600">Issued on: {{ certificate.issued_date|date:"F d, Y" }}</p>
                     </div>
                     
-                    <div class="mt-6 flex justify-center">
-                        <a href="#" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-amber-600 rounded-md hover:bg-amber-700">
-                            <i class="fas fa-download mr-2"></i> Download
+                    <div class="mt-6 flex justify-center space-x-3">
+                        <a href="{% url 'courses:public_certificate' uuid=certificate.uuid %}" 
+                           class="inline-flex items-center px-3 py-2 text-sm font-medium text-amber-600 bg-amber-100 rounded-md hover:bg-amber-200">
+                            <i class="fas fa-eye mr-1"></i> View
                         </a>
+                        <a href="{% url 'courses:public_certificate' uuid=certificate.uuid %}?download=true" 
+                           class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-amber-600 rounded-md hover:bg-amber-700">
+                            <i class="fas fa-download mr-1"></i> Download
+                        </a>
+                        
+                        <!-- Share Button that opens modal -->
+                        <button 
+                            onclick="openShareModal('{{ certificate.course.title }}', '{{ request.scheme }}://{{ request.get_host }}{% url 'courses:public_certificate' uuid=certificate.uuid %}')"
+                            class="inline-flex items-center px-3 py-2 text-sm font-medium text-blue-600 bg-blue-100 rounded-md hover:bg-blue-200">
+                            <i class="fas fa-share-alt mr-1"></i> Share
+                        </button>
                     </div>
                 </div>
             </div>
-            {% endfor %}
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-12 bg-white rounded-lg shadow-md">
+        <div class="text-gray-400 mb-4">
+            <i class="fas fa-certificate text-6xl"></i>
         </div>
-        {% else %}
-        <div class="text-center py-12 bg-white rounded-lg shadow-md">
-            <div class="text-gray-400 mb-4">
-                <i class="fas fa-certificate text-6xl"></i>
+        <h3 class="text-lg font-medium text-gray-900">No Certificates Yet</h3>
+        <p class="mt-2 text-gray-600">Complete courses to earn certificates</p>
+        <a href="{% url 'courses:list' %}" 
+           class="mt-4 inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-amber-600 rounded-md hover:bg-amber-700">
+            Browse Courses
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Share Modal -->
+<div id="shareModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+        <!-- Background overlay -->
+        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+        </div>
+
+        <!-- Modal panel -->
+        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                    <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-amber-100 sm:mx-0 sm:h-10 sm:w-10">
+                        <i class="fas fa-share-alt text-amber-600 text-xl"></i>
+                    </div>
+                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                            Share Your Certificate
+                        </h3>
+                        <div class="mt-2">
+                            <p class="text-sm text-gray-500" id="certificate-title">
+                                Share your achievement with your network!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <div class="grid grid-cols-2 gap-4">
+                        <!-- LinkedIn -->
+                        <a id="linkedin-share" href="#" target="_blank" rel="noopener noreferrer"
+                           class="flex flex-col items-center justify-center p-4 rounded-lg bg-blue-50 hover:bg-blue-100 transition-colors duration-200">
+                            <i class="fab fa-linkedin text-blue-600 text-4xl mb-2"></i>
+                            <span class="text-sm font-medium text-gray-700">LinkedIn</span>
+                        </a>
+                        
+                        <!-- Twitter -->
+                        <a id="twitter-share" href="#" target="_blank" rel="noopener noreferrer"
+                           class="flex flex-col items-center justify-center p-4 rounded-lg bg-blue-50 hover:bg-blue-100 transition-colors duration-200">
+                            <i class="fab fa-twitter text-blue-400 text-4xl mb-2"></i>
+                            <span class="text-sm font-medium text-gray-700">Twitter</span>
+                        </a>
+                        
+                        <!-- Facebook -->
+                        <a id="facebook-share" href="#" target="_blank" rel="noopener noreferrer"
+                           class="flex flex-col items-center justify-center p-4 rounded-lg bg-blue-50 hover:bg-blue-100 transition-colors duration-200">
+                            <i class="fab fa-facebook text-blue-800 text-4xl mb-2"></i>
+                            <span class="text-sm font-medium text-gray-700">Facebook</span>
+                        </a>
+                        
+                        <!-- WhatsApp -->
+                        <a id="whatsapp-share" href="#" target="_blank" rel="noopener noreferrer"
+                           class="flex flex-col items-center justify-center p-4 rounded-lg bg-green-50 hover:bg-green-100 transition-colors duration-200">
+                            <i class="fab fa-whatsapp text-green-500 text-4xl mb-2"></i>
+                            <span class="text-sm font-medium text-gray-700">WhatsApp</span>
+                        </a>
+                    </div>
+                    
+                    <!-- Email -->
+                    <a id="email-share" href="#"
+                       class="mt-4 flex items-center justify-center p-4 rounded-lg bg-amber-50 hover:bg-amber-100 transition-colors duration-200">
+                        <i class="fas fa-envelope text-amber-600 text-2xl mr-3"></i>
+                        <span class="text-sm font-medium text-gray-700">Share via Email</span>
+                    </a>
+                    
+                    <!-- Copy Link -->
+                    <div class="mt-4">
+                        <div class="flex items-center">
+                            <input id="certificate-link" type="text" readonly class="flex-1 p-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent">
+                            <button onclick="copyModalLink()" class="bg-amber-600 text-white px-4 py-2 rounded-r-md hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <p id="copy-message" class="mt-1 text-sm text-green-600 hidden">Link copied to clipboard!</p>
+                    </div>
+                </div>
             </div>
-            <h3 class="text-lg font-medium text-gray-900">No Certificates Yet</h3>
-            <p class="mt-2 text-gray-600">Complete courses to earn certificates</p>
-            <a href="{% url 'courses:list' %}" 
-               class="mt-4 inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-amber-600 rounded-md hover:bg-amber-700">
-                Browse Courses
-            </a>
+            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button type="button" onclick="closeShareModal()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-amber-600 text-base font-medium text-white hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 sm:ml-3 sm:w-auto sm:text-sm">
+                    Close
+                </button>
+            </div>
         </div>
-        {% endif %}
     </div>
 </div>
+
+<!-- Scripts -->
+<script>
+let currentCertificateLink = '';
+
+function openShareModal(title, link) {
+    // Set certificate title and link
+    document.getElementById('certificate-title').textContent = 'Share your "' + title + '" certificate';
+    document.getElementById('certificate-link').value = link;
+    currentCertificateLink = link;
+    
+    // Set share links
+    document.getElementById('linkedin-share').href = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(link);
+    document.getElementById('twitter-share').href = 'https://twitter.com/intent/tweet?url=' + encodeURIComponent(link) + '&text=' + encodeURIComponent('I earned a ' + title + ' certificate from DigiEvolve Hub!');
+    document.getElementById('facebook-share').href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(link);
+    document.getElementById('whatsapp-share').href = 'https://wa.me/?text=' + encodeURIComponent('I earned a ' + title + ' certificate from DigiEvolve Hub! ' + link);
+    document.getElementById('email-share').href = 'mailto:?subject=' + encodeURIComponent('I earned a ' + title + ' certificate!') + '&body=' + encodeURIComponent('Check out my certificate from DigiEvolve Hub: ' + link);
+    
+    // Show modal
+    document.getElementById('shareModal').classList.remove('hidden');
+    document.body.classList.add('overflow-hidden');
+}
+
+function closeShareModal() {
+    document.getElementById('shareModal').classList.add('hidden');
+    document.body.classList.remove('overflow-hidden');
+    document.getElementById('copy-message').classList.add('hidden');
+}
+
+function copyModalLink() {
+    const linkInput = document.getElementById('certificate-link');
+    linkInput.select();
+    document.execCommand('copy');
+    
+    // Show copy message
+    const copyMessage = document.getElementById('copy-message');
+    copyMessage.classList.remove('hidden');
+    
+    // Hide message after 2 seconds
+    setTimeout(() => {
+        copyMessage.classList.add('hidden');
+    }, 2000);
+}
+
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(function() {
+        // Show a temporary success message
+        const notification = document.createElement('div');
+        notification.textContent = 'Link copied to clipboard!';
+        notification.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg';
+        document.body.appendChild(notification);
+        
+        // Remove the notification after 2 seconds
+        setTimeout(() => {
+            notification.remove();
+        }, 2000);
+    }).catch(function(err) {
+        console.error('Could not copy text: ', err);
+    });
+}
+</script>
 {% endblock %}

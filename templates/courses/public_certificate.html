@@ -1,12 +1,17 @@
 <!-- templates/courses/public_certificate.html -->
-{% extends 'base.html' %}
+{% extends 'dashboard_base.html' %}
 {% load static %}
 
 {% block title %}{{ certificate.course.title }} Certificate | DigiEvolve Hub{% endblock %}
 
+{% block extra_head %}
+<!-- Include html2pdf.js library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{% endblock %}
+
 {% block content %}
 <div class="container mx-auto px-4 py-12">
-    <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+    <div id="certificate-container" class="max-w-3xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
         <!-- Certificate Header -->
         <div class="bg-amber-500 text-white p-6 text-center">
             <h1 class="text-3xl font-bold">Certificate of Completion</h1>
@@ -51,40 +56,108 @@
         </div>
     </div>
     
-    <!-- Social Sharing -->
-    <div class="max-w-3xl mx-auto mt-8 text-center">
-        <h4 class="text-lg font-medium mb-4">Share this certificate</h4>
-        <div class="flex justify-center space-x-4">
-            <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.build_absolute_uri }}" 
-               target="_blank" rel="noopener noreferrer"
-               class="bg-blue-600 text-white p-3 rounded-full hover:bg-blue-700">
-                <i class="fab fa-linkedin-in"></i>
-            </a>
-            <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text=I earned a {{ certificate.course.title }} certificate from DigiEvolve Hub!" 
-               target="_blank" rel="noopener noreferrer"
-               class="bg-blue-400 text-white p-3 rounded-full hover:bg-blue-500">
-                <i class="fab fa-twitter"></i>
-            </a>
-            <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" 
-               target="_blank" rel="noopener noreferrer"
-               class="bg-blue-800 text-white p-3 rounded-full hover:bg-blue-900">
-                <i class="fab fa-facebook-f"></i>
-            </a>
-            <a href="https://wa.me/?text=I earned a {{ certificate.course.title }} certificate from DigiEvolve Hub! {{ request.build_absolute_uri }}" 
-               target="_blank" rel="noopener noreferrer"
-               class="bg-green-500 text-white p-3 rounded-full hover:bg-green-600">
-                <i class="fab fa-whatsapp"></i>
-            </a>
-            <button onclick="copyToClipboard('{{ request.build_absolute_uri }}')" 
-                    class="bg-gray-600 text-white p-3 rounded-full hover:bg-gray-700">
-                <i class="fas fa-link"></i>
+    <!-- Download and Share Options -->
+    <div class="max-w-3xl mx-auto mt-8">
+        <div class="flex flex-wrap justify-center gap-4 mb-6">
+            <button onclick="generatePDF()" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-amber-600 rounded-md hover:bg-amber-700">
+                <i class="fas fa-file-pdf mr-2"></i> Download PDF
             </button>
+            <a href="{% url 'courses:public_certificate' uuid=certificate.uuid %}?download=true" 
+               class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
+                <i class="fas fa-image mr-2"></i> Download Image
+            </a>
+        </div>
+        
+        <!-- Social Sharing -->
+        <div class="text-center">
+            <h4 class="text-lg font-medium mb-4">Share this certificate</h4>
+            <div class="flex justify-center space-x-4">
+                <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.build_absolute_uri }}" 
+                   target="_blank" rel="noopener noreferrer"
+                   class="bg-blue-600 text-white p-3 rounded-full hover:bg-blue-700">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text=I earned a {{ certificate.course.title }} certificate from DigiEvolve Hub!" 
+                   target="_blank" rel="noopener noreferrer"
+                   class="bg-blue-400 text-white p-3 rounded-full hover:bg-blue-500">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" 
+                   target="_blank" rel="noopener noreferrer"
+                   class="bg-blue-800 text-white p-3 rounded-full hover:bg-blue-900">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://wa.me/?text=I earned a {{ certificate.course.title }} certificate from DigiEvolve Hub! {{ request.build_absolute_uri }}" 
+                   target="_blank" rel="noopener noreferrer"
+                   class="bg-green-500 text-white p-3 rounded-full hover:bg-green-600">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+                <button onclick="copyToClipboard('{{ request.build_absolute_uri }}')" 
+                        class="bg-gray-600 text-white p-3 rounded-full hover:bg-gray-700">
+                    <i class="fas fa-link"></i>
+                </button>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- Script for copy to clipboard functionality -->
+<!-- Add this to your template -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<!-- Script for PDF generation and copy to clipboard functionality -->
 <script>
+function generatePDF() {
+    // Check if html2pdf is available
+    if (typeof html2pdf === 'undefined') {
+        alert('PDF generation library not loaded. Please refresh the page and try again.');
+        return;
+    }
+    
+    // Show loading indicator
+    const loadingIndicator = document.createElement('div');
+    loadingIndicator.className = 'fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50';
+    loadingIndicator.innerHTML = '<div class="bg-white p-4 rounded-lg shadow-lg"><p class="text-lg font-medium">Generating PDF...</p></div>';
+    document.body.appendChild(loadingIndicator);
+    
+    // Get the certificate container
+    const element = document.getElementById('certificate-container');
+    
+    // Make sure the element exists
+    if (!element) {
+        alert('Certificate container not found.');
+        document.body.removeChild(loadingIndicator);
+        return;
+    }
+    
+    // Clone the element to avoid modifying the original
+    const clone = element.cloneNode(true);
+    
+    // Set options for html2pdf
+    const opt = {
+        margin: 0,
+        filename: 'certificate_{{ certificate.certificate_number }}.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+    };
+    
+    // Generate PDF with error handling
+    html2pdf()
+        .set(opt)
+        .from(clone)
+        .save()
+        .then(() => {
+            // Remove loading indicator when done
+            document.body.removeChild(loadingIndicator);
+        })
+        .catch(error => {
+            console.error('PDF generation failed:', error);
+            alert('Failed to generate PDF. Please try again later.');
+            document.body.removeChild(loadingIndicator);
+        });
+}
+
+
 function copyToClipboard(text) {
     navigator.clipboard.writeText(text).then(function() {
         // Show a temporary success message
