@@ -15,4 +15,5 @@ urlpatterns = [
     path('quiz/result/<int:attempt_id>/', views.quiz_result, name='quiz_result'),
     path('<str:course_slug>/initiate-payment/', views.initiate_payment, name='initiate_payment'),
     path('verify-payment/<str:reference>/', views.verify_payment, name='verify_payment'),
+    path('certificate/public/<uuid:uuid>/', views.public_certificate_view, name='public_certificate'),
 ]

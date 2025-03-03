@@ -1,10 +1,11 @@
 <!-- templates/accounts/certificates.html -->
 {% extends 'dashboard_base.html' %}
+{% load static %}
 
 {% block title %}My Certificates | DigiEvolve Hub{% endblock %}
 
 {% block content %}
-<div class="container mx-auto">
+<div class="container mx-auto px-4">
     <!-- Page Header -->
     <div class="mb-8">
         <h1 class="text-2xl font-semibold text-gray-900">My Certificates</h1>
@@ -14,7 +15,7 @@
     <!-- Certificates Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {% for certificate in certificates %}
-            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
                 <div class="p-6">
                     <div class="flex items-center justify-center mb-4">
                         <i class="fas fa-certificate text-amber-500 text-5xl"></i>
@@ -29,15 +30,60 @@
                         <p class="text-sm text-gray-600">Issued on: {{ certificate.issued_date|date:"F d, Y" }}</p>
                     </div>
                     
-                    <div class="mt-6 flex justify-center space-x-4">
-                        <a href="{% url 'certificates:view' certificate.id %}" 
-                           class="inline-flex items-center px-4 py-2 text-sm font-medium text-amber-600 bg-amber-100 rounded-md hover:bg-amber-200">
-                            <i class="fas fa-eye mr-2"></i> View
+                    <div class="mt-6 flex justify-center space-x-3">
+                        <a href="{% url 'courses:certificate_detail' certificate.id %}" 
+                           class="inline-flex items-center px-3 py-2 text-sm font-medium text-amber-600 bg-amber-100 rounded-md hover:bg-amber-200">
+                            <i class="fas fa-eye mr-1"></i> View
                         </a>
-                        <a href="{% url 'certificates:download' certificate.id %}" 
-                           class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-amber-600 rounded-md hover:bg-amber-700">
-                            <i class="fas fa-download mr-2"></i> Download
+                        <a href="{% url 'courses:certificate_detail' certificate.id %}?download=true" 
+                           class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-amber-600 rounded-md hover:bg-amber-700">
+                            <i class="fas fa-download mr-1"></i> Download
                         </a>
+                        <div class="relative" x-data="{ open: false }">
+                            <button @click="open = !open" 
+                                    class="inline-flex items-center px-3 py-2 text-sm font-medium text-blue-600 bg-blue-100 rounded-md hover:bg-blue-200">
+                                <i class="fas fa-share-alt mr-1"></i> Share
+                            </button>
+                            <div x-show="open" 
+                                 @click.away="open = false"
+                                 class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
+                                <div class="py-1">
+                                    <!-- LinkedIn -->
+                                    <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.scheme }}://{{ request.get_host }}{% url 'courses:public_certificate' uuid=certificate.uuid %}" 
+                                       target="_blank" rel="noopener noreferrer"
+                                       class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fab fa-linkedin text-blue-600 mr-2"></i> LinkedIn
+                                    </a>
+                                    
+                                    <!-- Twitter/X -->
+                                    <a href="https://twitter.com/intent/tweet?url={{ request.scheme }}://{{ request.get_host }}{% url 'courses:public_certificate' uuid=certificate.uuid %}&text=I earned a {{ certificate.course.title }} certificate from DigiEvolve Hub!" 
+                                       target="_blank" rel="noopener noreferrer"
+                                       class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fab fa-twitter text-blue-400 mr-2"></i> Twitter
+                                    </a>
+                                    
+                                    <!-- Facebook -->
+                                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.scheme }}://{{ request.get_host }}{% url 'courses:public_certificate' uuid=certificate.uuid %}" 
+                                       target="_blank" rel="noopener noreferrer"
+                                       class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fab fa-facebook text-blue-800 mr-2"></i> Facebook
+                                    </a>
+                                    
+                                    <!-- WhatsApp -->
+                                    <a href="https://wa.me/?text=I earned a {{ certificate.course.title }} certificate from DigiEvolve Hub! {{ request.scheme }}://{{ request.get_host }}{% url 'courses:public_certificate' uuid=certificate.uuid %}" 
+                                       target="_blank" rel="noopener noreferrer"
+                                       class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fab fa-whatsapp text-green-500 mr-2"></i> WhatsApp
+                                    </a>
+                                    
+                                    <!-- Copy Link -->
+                                    <button onclick="copyToClipboard('{{ request.scheme }}://{{ request.get_host }}{% url 'courses:public_certificate' uuid=certificate.uuid %}')" 
+                                            class="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-link text-gray-500 mr-2"></i> Copy Link
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -56,4 +102,24 @@
         {% endfor %}
     </div>
 </div>
+
+<!-- Script for copy to clipboard functionality -->
+<script>
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(function() {
+        // Show a temporary success message
+        const notification = document.createElement('div');
+        notification.textContent = 'Link copied to clipboard!';
+        notification.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg';
+        document.body.appendChild(notification);
+        
+        // Remove the notification after 2 seconds
+        setTimeout(() => {
+            notification.remove();
+        }, 2000);
+    }).catch(function(err) {
+        console.error('Could not copy text: ', err);
+    });
+}
+</script>
 {% endblock %}

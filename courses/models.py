@@ -1,5 +1,7 @@
 # courses/models.py
+import uuid
 from django.db import models
+from django.urls import reverse
 from accounts.models import StudentProfile
 
 # courses/models.py
@@ -50,9 +52,19 @@ class Certificate(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     issued_date = models.DateTimeField(auto_now_add=True)
     certificate_number = models.CharField(max_length=50, unique=True)
+    uuid = models.UUIDField(unique=True, editable=False, null=True)
+
+    def save(self, *args, **kwargs):
+        if not self.uuid:
+            self.uuid = uuid.uuid4()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.student.user.username} - {self.course.title}"
+
+    def get_public_url(self):
+        """Return a shareable URL for the certificate"""
+        return reverse('courses:public_certificate', kwargs={'uuid': self.uuid})
     
 # courses/models.py
 class Payment(models.Model):

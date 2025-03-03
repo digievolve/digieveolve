@@ -1,0 +1,105 @@
+<!-- templates/courses/public_certificate.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ certificate.course.title }} Certificate | DigiEvolve Hub{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-12">
+    <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+        <!-- Certificate Header -->
+        <div class="bg-amber-500 text-white p-6 text-center">
+            <h1 class="text-3xl font-bold">Certificate of Completion</h1>
+            <p class="mt-2">DigiEvolve Hub</p>
+        </div>
+        
+        <!-- Certificate Content -->
+        <div class="p-8 text-center">
+            <div class="mb-8">
+                <p class="text-gray-600 mb-4">This is to certify that</p>
+                <h2 class="text-2xl font-bold text-gray-900">{{ certificate.student.full_name }}</h2>
+                <p class="text-gray-600 mt-4 mb-4">has successfully completed the course</p>
+                <h3 class="text-xl font-bold text-amber-600">{{ certificate.course.title }}</h3>
+            </div>
+            
+            <div class="border-t border-gray-200 pt-6 mt-6">
+                <div class="flex justify-between items-center max-w-md mx-auto">
+                    <div class="text-left">
+                        <p class="text-sm text-gray-500">Certificate No.</p>
+                        <p class="font-medium">{{ certificate.certificate_number }}</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm text-gray-500">Issue Date</p>
+                        <p class="font-medium">{{ certificate.issued_date|date:"F d, Y" }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Certificate Footer -->
+        <div class="bg-gray-50 p-6">
+            <div class="flex justify-between items-center">
+                <div>
+                    <img src="{% static 'img/logo.png' %}" alt="DigiEvolve Hub Logo" class="h-10" 
+                         onerror="this.src='https://placehold.co/200x80/e2e8f0/94a3b8?text=DigiEvolve'; this.onerror='';">
+                </div>
+                <div class="text-right">
+                    <p class="text-sm text-gray-500">Verify this certificate at:</p>
+                    <p class="text-sm font-medium">{{ request.build_absolute_uri }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Social Sharing -->
+    <div class="max-w-3xl mx-auto mt-8 text-center">
+        <h4 class="text-lg font-medium mb-4">Share this certificate</h4>
+        <div class="flex justify-center space-x-4">
+            <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.build_absolute_uri }}" 
+               target="_blank" rel="noopener noreferrer"
+               class="bg-blue-600 text-white p-3 rounded-full hover:bg-blue-700">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+            <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text=I earned a {{ certificate.course.title }} certificate from DigiEvolve Hub!" 
+               target="_blank" rel="noopener noreferrer"
+               class="bg-blue-400 text-white p-3 rounded-full hover:bg-blue-500">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" 
+               target="_blank" rel="noopener noreferrer"
+               class="bg-blue-800 text-white p-3 rounded-full hover:bg-blue-900">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://wa.me/?text=I earned a {{ certificate.course.title }} certificate from DigiEvolve Hub! {{ request.build_absolute_uri }}" 
+               target="_blank" rel="noopener noreferrer"
+               class="bg-green-500 text-white p-3 rounded-full hover:bg-green-600">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+            <button onclick="copyToClipboard('{{ request.build_absolute_uri }}')" 
+                    class="bg-gray-600 text-white p-3 rounded-full hover:bg-gray-700">
+                <i class="fas fa-link"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Script for copy to clipboard functionality -->
+<script>
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(function() {
+        // Show a temporary success message
+        const notification = document.createElement('div');
+        notification.textContent = 'Link copied to clipboard!';
+        notification.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg';
+        document.body.appendChild(notification);
+        
+        // Remove the notification after 2 seconds
+        setTimeout(() => {
+            notification.remove();
+        }, 2000);
+    }).catch(function(err) {
+        console.error('Could not copy text: ', err);
+    });
+}
+</script>
+{% endblock %}

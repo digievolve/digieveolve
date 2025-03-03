@@ -14,7 +14,8 @@
         <img src="{% static 'images/learning-resources.jpg' %}"
              alt="Learning Resources"
              class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300"
-             onload="this.classList.remove('opacity-0'); document.getElementById('hero-skeleton').style.display='none';">
+             onload="this.classList.remove('opacity-0'); document.getElementById('hero-skeleton').style.display='none';"
+             onerror="this.src='https://placehold.co/1200x600/e2e8f0/64748b?text=Learning+Resources'; this.classList.remove('opacity-0'); document.getElementById('hero-skeleton').style.display='none';">
     </div>
     <div class="container mx-auto px-4 relative z-10">
         <div class="max-w-3xl mx-auto text-center">
@@ -26,91 +27,331 @@
     </div>
 </section>
 
-<!-- Resources Grid -->
-<section class="py-16 bg-white">
+
+<!-- Resources Header & Filter -->
+<section class="py-10 bg-white border-b">
     <div class="container mx-auto px-4">
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Learning Materials -->
-            <div class="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow"
-                 data-aos="fade-up" data-aos-delay="50">
-                <div class="p-6">
-                    <div class="flex items-center mb-4">
-                        <div class="bg-amber-50 p-3 rounded-full">
-                            <i class="fas fa-book text-amber-500 text-2xl"></i>
-                        </div>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-4">Learning Materials</h3>
-                    
-                    <div class="mb-4">
-                        <h4 class="font-medium mb-2">Technical Documentation</h4>
-                        <p class="text-gray-600 text-sm mb-2">
-                            Comprehensive guides for data analytics, science, engineering, and AI tools
-                        </p>
-                        <div class="flex flex-wrap gap-2">
-                            <a href="#python" class="text-sm text-amber-500 hover:text-amber-600">Python</a>
-                            <a href="#bigml" class="text-sm text-amber-500 hover:text-amber-600">BigML</a>
-                            <a href="#tableau" class="text-sm text-amber-500 hover:text-amber-600">Tableau</a>
-                            <a href="#power-platforms" class="text-sm text-amber-500 hover:text-amber-600">Power Platforms</a>
-                        </div>
-                    </div>
-                </div>
+        <div class="flex flex-col md:flex-row md:justify-between md:items-center">
+            <h2 class="text-2xl font-bold mb-4 md:mb-0">Learning Resources</h2>
+            <div class="flex flex-wrap gap-2">
+                <a href="{% url 'core:resources' %}" class="bg-amber-500 text-white px-4 py-2 rounded hover:bg-amber-600 transition-colors">
+                    All
+                </a>
+                <a href="{% url 'core:resources' %}?category=learning-materials" class="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-amber-500 hover:text-white transition-colors">
+                    Learning Materials
+                </a>
+                <a href="{% url 'core:resources' %}?category=career-resources" class="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-amber-500 hover:text-white transition-colors">
+                    Career Resources
+                </a>
+                <a href="{% url 'core:resources' %}?category=research-papers" class="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-amber-500 hover:text-white transition-colors">
+                    Research Papers
+                </a>
             </div>
-
-            <!-- Career Resources -->
-            <div class="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow"
-                 data-aos="fade-up" data-aos-delay="100">
-                <div class="p-6">
-                    <div class="flex items-center mb-4">
-                        <div class="bg-amber-50 p-3 rounded-full">
-                            <i class="fas fa-briefcase text-amber-500 text-2xl"></i>
-                        </div>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-4">Career Resources</h3>
-                    
-                    <div class="mb-4">
-                        <h4 class="font-medium mb-2">Career Guides</h4>
-                        <p class="text-gray-600 text-sm mb-2">
-                            Comprehensive guides for career planning and development
-                        </p>
-                        <div class="flex flex-wrap gap-2">
-                            <a href="#career-pathways" class="text-sm text-amber-500 hover:text-amber-600">Career Pathways</a>
-                            <a href="#industry-insights" class="text-sm text-amber-500 hover:text-amber-600">Industry Insights</a>
-                            <a href="#salary-guides" class="text-sm text-amber-500 hover:text-amber-600">Salary Guides</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Research Materials -->
-            <div class="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow"
-                 data-aos="fade-up" data-aos-delay="150">
-                <div class="p-6">
-                    <div class="flex items-center mb-4">
-                        <div class="bg-amber-50 p-3 rounded-full">
-                            <i class="fas fa-file-alt text-amber-500 text-2xl"></i>
-                        </div>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-4">Research Materials</h3>
-                    
-                    <div class="mb-4">
-                        <h4 class="font-medium mb-2">Research Papers</h4>
-                        <p class="text-gray-600 text-sm mb-2">
-                            Latest publications in AI, ML, and data science
-                        </p>
-                        <div class="flex flex-wrap gap-2">
-                            <a href="#ai-ethics" class="text-sm text-amber-500 hover:text-amber-600">AI Ethics</a>
-                            <a href="#machine-learning" class="text-sm text-amber-500 hover:text-amber-600">Machine Learning</a>
-                            <a href="#data-governance" class="text-sm text-amber-500 hover:text-amber-600">Data Governance</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Continue with other resource categories... -->
         </div>
     </div>
 </section>
 
+
+<!-- Resources Grid -->
+<section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Resource Card - Python -->
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+                 data-aos="fade-up" data-aos-delay="50">
+                <div class="relative pb-48">
+                    <img src="{% static 'images/resources/python-docs.jpg' %}" 
+                         alt="Python Documentation" 
+                         class="absolute inset-0 h-full w-full object-cover"
+                         onerror="this.src='https://placehold.co/600x400/e2e8f0/64748b?text=Python+Documentation'">
+                    <div class="absolute top-0 right-0 m-2">
+                        <span class="bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded-full">
+                            Technical
+                        </span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold mb-3">Python for Data Analysis</h3>
+                    <p class="text-gray-600 mb-4">
+                        Comprehensive guides, tutorials, and reference materials for using Python in data analytics and science.
+                    </p>
+                    
+                    <!-- Content list -->
+                    <ul class="mb-4 space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-file-pdf text-amber-500 mt-1 mr-2"></i>
+                            <div>
+                                <!-- To match your model's get_absolute_url: -->
+                                <a href="{% url 'resources:category_detail' 'python' %}" class="text-gray-800 hover:text-amber-500 font-medium">View all Python resources</a>
+                                <p class="text-sm text-gray-500">Quick reference for common Pandas operations</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-file-code text-amber-500 mt-1 mr-2"></i>
+                            <div>
+                                <a href="{% url 'resources:detail' 'data-visualization-guide' %}" class="text-gray-800 hover:text-amber-500 font-medium">Data Visualization Guide</a>
+                                <p class="text-sm text-gray-500">Tutorial on creating effective visualizations</p>
+                            </div>
+                        </li>
+                    </ul>
+                    
+                    <div class="border-t pt-4">
+                        <a href="{% url 'resources:category' 'python' %}" class="text-amber-500 hover:text-amber-600 font-medium">
+                            View all Python resources <i class="fas fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resource Card - Career Resources -->
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+                 data-aos="fade-up" data-aos-delay="100">
+                <div class="relative pb-48">
+                    <img src="{% static 'images/resources/career.jpg' %}" 
+                         alt="Career Resources" 
+                         class="absolute inset-0 h-full w-full object-cover"
+                         onerror="this.src='https://placehold.co/600x400/e2e8f0/64748b?text=Career+Resources'">
+                    <div class="absolute top-0 right-0 m-2">
+                        <span class="bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded-full">
+                            Career
+                        </span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold mb-3">Career Development</h3>
+                    <p class="text-gray-600 mb-4">
+                        Resources to help you navigate and advance your career in tech and data fields.
+                    </p>
+                    
+                    <ul class="mb-4 space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-file-pdf text-amber-500 mt-1 mr-2"></i>
+                            <div>
+                                <a href="{% url 'resources:detail' 'career-pathways-guide' %}" class="text-gray-800 hover:text-amber-500 font-medium">Career Pathways Guide</a>
+                                <p class="text-sm text-gray-500">Roadmaps for different tech careers</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-file-alt text-amber-500 mt-1 mr-2"></i>
+                            <div>
+                                <a href="{% url 'resources:detail' 'salary-survey-2024' %}" class="text-gray-800 hover:text-amber-500 font-medium">Salary Survey 2024</a>
+                                <p class="text-sm text-gray-500">Comprehensive salary information</p>
+                            </div>
+                        </li>
+                    </ul>
+                    
+                    <div class="border-t pt-4">
+                        <a href="{% url 'resources:category' 'career' %}" class="text-amber-500 hover:text-amber-600 font-medium">
+                            View all career resources <i class="fas fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resource Card - Research -->
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+                 data-aos="fade-up" data-aos-delay="150">
+                <div class="relative pb-48">
+                    <img src="{% static 'images/resources/research.jpg' %}" 
+                         alt="Research Materials" 
+                         class="absolute inset-0 h-full w-full object-cover"
+                         onerror="this.src='https://placehold.co/600x400/e2e8f0/64748b?text=Research+Materials'">
+                    <div class="absolute top-0 right-0 m-2">
+                        <span class="bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded-full">
+                            Research
+                        </span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold mb-3">Research Papers</h3>
+                    <p class="text-gray-600 mb-4">
+                        Latest academic and industry research in AI, ML, and data science fields.
+                    </p>
+                    
+                    <ul class="mb-4 space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-file-pdf text-amber-500 mt-1 mr-2"></i>
+                            <div>
+                                <a href="{% url 'resources:detail' 'ai-ethics-framework' %}" class="text-gray-800 hover:text-amber-500 font-medium">AI Ethics Framework</a>
+                                <p class="text-sm text-gray-500">Research on ethical AI development</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-file-pdf text-amber-500 mt-1 mr-2"></i>
+                            <div>
+                                <a href="{% url 'resources:detail' 'data-governance-study' %}" class="text-gray-800 hover:text-amber-500 font-medium">Data Governance Study</a>
+                                <p class="text-sm text-gray-500">Best practices for data management</p>
+                            </div>
+                        </li>
+                    </ul>
+                    
+                    <div class="border-t pt-4">
+                        <a href="{% url 'resources:category' 'research' %}" class="text-amber-500 hover:text-amber-600 font-medium">
+                            View all research papers <i class="fas fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Blog Posts -->
+<section class="py-12 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="text-2xl font-bold">Latest Articles & Insights</h2>
+            <a href="{% url 'blog:list' %}" class="text-amber-500 hover:text-amber-600 font-medium">
+                View all articles <i class="fas fa-arrow-right ml-1"></i>
+            </a>
+        </div>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Blog Post 1 -->
+            <div class="bg-white rounded-lg shadow overflow-hidden hover:shadow-lg transition-shadow">
+                <div class="relative pb-60">
+                    <img src="{% static 'images/blog/python-analytics.jpg' %}" 
+                         alt="Python for Data Analytics" 
+                         class="absolute inset-0 h-full w-full object-cover"
+                         onerror="this.src='https://placehold.co/600x400/e2e8f0/64748b?text=Python+Analytics'">
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center text-sm text-gray-500 mb-2">
+                        <span class="bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded">Python</span>
+                        <span class="mx-2">•</span>
+                        <span>Oct 15, 2024</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Getting Started with Python for Data Analytics</h3>
+                    <p class="text-gray-600 mb-4">Learn how to leverage Python's powerful libraries for data analysis and visualization.</p>
+                    <a href="{% url 'blog:detail' 'getting-started-with-python' %}" class="text-amber-500 hover:text-amber-600 font-medium">Read more</a>
+                </div>
+            </div>
+            
+            <!-- Blog Post 2 -->
+            <div class="bg-white rounded-lg shadow overflow-hidden hover:shadow-lg transition-shadow">
+                <div class="relative pb-60">
+                    <img src="{% static 'images/blog/career-transition.jpg' %}" 
+                         alt="Career Transition to Data Science" 
+                         class="absolute inset-0 h-full w-full object-cover"
+                         onerror="this.src='https://placehold.co/600x400/e2e8f0/64748b?text=Career+Transition'">
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center text-sm text-gray-500 mb-2">
+                        <span class="bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded">Career</span>
+                        <span class="mx-2">•</span>
+                        <span>Oct 10, 2024</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">5 Steps to Transition into a Data Science Career</h3>
+                    <p class="text-gray-600 mb-4">Practical advice for professionals looking to make the switch to data science.</p>
+                    <a href="{% url 'blog:detail' 'transition-to-data-science' %}" class="text-amber-500 hover:text-amber-600 font-medium">Read more</a>
+                </div>
+            </div>
+            
+            <!-- Blog Post 3 -->
+            <div class="bg-white rounded-lg shadow overflow-hidden hover:shadow-lg transition-shadow">
+                <div class="relative pb-60">
+                    <img src="{% static 'images/blog/ai-ethics.jpg' %}" 
+                         alt="AI Ethics" 
+                         class="absolute inset-0 h-full w-full object-cover"
+                         onerror="this.src='https://placehold.co/600x400/e2e8f0/64748b?text=AI+Ethics'">
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center text-sm text-gray-500 mb-2">
+                        <span class="bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded">AI</span>
+                        <span class="mx-2">•</span>
+                        <span>Oct 5, 2024</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Ethical Considerations in AI Development</h3>
+                    <p class="text-gray-600 mb-4">Understanding the ethical implications and responsibilities when developing AI systems.</p>
+                    <a href="{% url 'blog:detail' 'ethical-ai-development' %}" class="text-amber-500 hover:text-amber-600 font-medium">Read more</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Popular Topics -->
+<section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <h2 class="text-2xl font-bold mb-8 text-center">Popular Topics</h2>
+        
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <!-- Topic Card - Python -->
+            <a href="{% url 'resources:category' 'python' %}" class="relative group rounded-lg overflow-hidden shadow-md">
+                <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent z-10"></div>
+                <img src="{% static 'images/topics/python.jpg' %}" 
+                     alt="Python" 
+                     class="w-full h-40 object-cover transform group-hover:scale-105 transition-transform"
+                     onerror="this.src='https://placehold.co/400x300/e2e8f0/64748b?text=Python'">
+                <div class="absolute bottom-0 left-0 p-4 z-20">
+                    <h3 class="text-white font-semibold">Python</h3>
+                    <span class="text-xs text-amber-200">24 resources</span>
+                </div>
+            </a>
+            
+            <!-- Topic Card - Data Science -->
+            <a href="{% url 'resources:category' 'data-science' %}" class="relative group rounded-lg overflow-hidden shadow-md">
+                <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent z-10"></div>
+                <img src="{% static 'images/topics/data-science.jpg' %}" 
+                     alt="Data Science" 
+                     class="w-full h-40 object-cover transform group-hover:scale-105 transition-transform"
+                     onerror="this.src='https://placehold.co/400x300/e2e8f0/64748b?text=Data+Science'">
+                <div class="absolute bottom-0 left-0 p-4 z-20">
+                    <h3 class="text-white font-semibold">Data Science</h3>
+                    <span class="text-xs text-amber-200">18 resources</span>
+                </div>
+            </a>
+            
+            <!-- Topic Card - Career Development -->
+            <a href="{% url 'resources:category' 'career' %}" class="relative group rounded-lg overflow-hidden shadow-md">
+                <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent z-10"></div>
+                <img src="{% static 'images/topics/career.jpg' %}" 
+                     alt="Career Development" 
+                     class="w-full h-40 object-cover transform group-hover:scale-105 transition-transform"
+                     onerror="this.src='https://placehold.co/400x300/e2e8f0/64748b?text=Career+Development'">
+                <div class="absolute bottom-0 left-0 p-4 z-20">
+                    <h3 class="text-white font-semibold">Career Development</h3>
+                    <span class="text-xs text-amber-200">12 resources</span>
+                </div>
+            </a>
+            
+            <!-- Topic Card - AI Ethics -->
+            <a href="{% url 'resources:category' 'ai-ethics' %}" class="relative group rounded-lg overflow-hidden shadow-md">
+                <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent z-10"></div>
+                <img src="{% static 'images/topics/ai-ethics.jpg' %}" 
+                     alt="AI Ethics" 
+                     class="w-full h-40 object-cover transform group-hover:scale-105 transition-transform"
+                     onerror="this.src='https://placehold.co/400x300/e2e8f0/64748b?text=AI+Ethics'">
+                <div class="absolute bottom-0 left-0 p-4 z-20">
+                    <h3 class="text-white font-semibold">AI Ethics</h3>
+                    <span class="text-xs text-amber-200">8 resources</span>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+
+<!-- Newsletter Signup -->
+<section class="py-16 bg-gray-800 text-white">
+    <div class="container mx-auto px-4">
+        <div class="max-w-3xl mx-auto text-center">
+            <h2 class="text-3xl font-bold mb-4">Stay Updated</h2>
+            <p class="text-lg text-gray-300 mb-8">
+                Subscribe to our newsletter to receive the latest resources, articles, and insights directly to your inbox.
+            </p>
+            <form action="{% url 'core:newsletter_signup' %}" method="post" class="flex flex-col sm:flex-row gap-4">
+                {% csrf_token %}
+                <input type="email" name="email" placeholder="Your email address" 
+                       class="flex-grow px-4 py-3 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-amber-500" required>
+                <button type="submit" 
+                        class="bg-amber-500 hover:bg-amber-600 text-white font-semibold px-6 py-3 rounded-lg transition-colors">
+                    Subscribe
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
 <!-- Call to Action -->
 <section class="py-16 bg-amber-50">
     <div class="container mx-auto px-4 text-center">

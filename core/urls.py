@@ -12,4 +12,5 @@ urlpatterns = [
     path('services/', views.services_page, name='services'),
     path('services/<str:slug>/', views.service_detail, name='service_detail'),
     path('training-programs/<str:slug>/', views.training_detail, name='training_detail'),
+    path('newsletter-signup/', views.newsletter_signup, name='newsletter_signup'),
 ]

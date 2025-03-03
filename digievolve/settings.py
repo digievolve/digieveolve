@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'django_paystack',
     'courses',
     'utils',
+    'blog',
+    'resources',
     
     # Local apps
     'core.apps.CoreConfig',

@@ -499,3 +499,12 @@ def quiz_result(request, attempt_id):
     }
 
     return render(request, 'courses/quiz_result.html', context)
+
+
+# courses/views.py
+def public_certificate_view(request, uuid):
+    """View for publicly shared certificates"""
+    certificate = get_object_or_404(Certificate, uuid=uuid)
+    return render(request, 'courses/public_certificate.html', {
+        'certificate': certificate
+    })
