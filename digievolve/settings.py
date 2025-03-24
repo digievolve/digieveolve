@@ -181,14 +181,14 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 DEBUG = 'RENDER' not in os.environ
 
 if DEBUG:
-    ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'digievolvehub.com']
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'digievolvehub.com', 'www.digievolvehub.com']
     STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 else:
     ALLOWED_HOSTS = [
     '.ondigitalocean.app',  # Add your DigitalOcean app hostname
     '127.0.0.1',  # For local development
     'localhost',  # For local development
-    'digieveolve.onrender.com', 'oyster-app-gevod.ondigitalocean.app', 'digievolvehub.com'
+    'digieveolve.onrender.com', 'oyster-app-gevod.ondigitalocean.app', 'digievolvehub.com', 'www.digievolvehub.com'
 ]
     # Security settings for production
     SECURE_SSL_REDIRECT = True
