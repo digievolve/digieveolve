@@ -1,0 +1,1 @@
+web: gunicorn digievolve.wsgi --bind 0.0.0.0:$PORT
