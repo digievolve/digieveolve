@@ -210,6 +210,7 @@ else:
         'oyster-app-gevod.ondigitalocean.app',
         'www.digievolvehub.com',
         'digievolvehub-888181009730.us-central1.run.app',
+        'digievolvehub-janta.ondigitalocean.app'
     ]
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
     SECURE_SSL_REDIRECT = True
