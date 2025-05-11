@@ -191,7 +191,7 @@ CSRF_TRUSTED_ORIGINS = [
 # Host and Security Settings based on environment
 if DEBUG:
     ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'digievolvehub.com', 'www.digievolvehub.com',
-                     'digievolvehub-888181009730.us-central1.run.app']
+                     'digievolvehub-888181009730.us-central1.run.app', 'digievolvehub-janta.ondigitalocean.app']
     STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
     CSRF_TRUSTED_ORIGINS += [
         'http://localhost:8000',
