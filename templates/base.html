@@ -52,19 +52,15 @@
     <link rel="preload" as="image" href="{% static 'images/consulting-meeting.jpg' %}">
     <link rel="preload" as="image" href="{% static 'images/ai-visualization.jpg' %}">
     <link rel="preload" as="image" href="{% static 'logo.png' %}">
+
+    {% csrf_token %}
 </head>
 <body class="flex flex-col min-h-screen bg-white">
     {% include 'includes/header.html' %}
-    
     <main class="flex-grow">
         {% block content %}{% endblock %}
     </main>
-    
     {% include 'includes/footer.html' %}
-    
-
-    <!-- Add to base.html head -->
-
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
 <!-- Add to base.html before closing body -->
@@ -112,7 +108,51 @@
             }
         }
     </script>
-
+    <script>
+        // Get CSRF token from cookie
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    
+        // Add CSRF token to all AJAX requests
+        const csrftoken = getCookie('csrftoken');
+        if (csrftoken) {
+            document.addEventListener('DOMContentLoaded', function() {
+                // For fetch requests
+                window.fetch = new Proxy(window.fetch, {
+                    apply(fetch, that, args) {
+                        if (args.length >= 1) {
+                            if (args[1] && args[1].method && args[1].method.toUpperCase() !== 'GET') {
+                                if (!args[1].headers) {
+                                    args[1].headers = {};
+                                }
+                                args[1].headers['X-CSRFToken'] = csrftoken;
+                            }
+                        }
+                        return fetch.apply(that, args);
+                    }
+                });
+    
+                // For XMLHttpRequest
+                const oldSend = XMLHttpRequest.prototype.send;
+                XMLHttpRequest.prototype.send = function(data) {
+                    this.setRequestHeader('X-CSRFToken', csrftoken);
+                    return oldSend.apply(this, arguments);
+                };
+            });
+        }
+    </script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>

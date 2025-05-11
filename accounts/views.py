@@ -30,11 +30,14 @@ from django.db.models import Count, Sum, Q, F, FloatField, Avg, DecimalField
 from .decorators import admin_login_required
 from django.http import JsonResponse
 import json
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.middleware.csrf import get_token as get_csrf_token
+
 
 
 logger = logging.getLogger(__name__)
 
-
+@ensure_csrf_cookie
 def register_view(request):
     if request.user.is_authenticated:
         return redirect('accounts:dashboard')
@@ -106,10 +109,12 @@ def register_view(request):
 
     return render(request, 'accounts/register.html', {
         'form': form,
-        'page_title': 'Create Your Student Account'
+        'page_title': 'Create Your Student Account',
+        'csrf_token': get_csrf_token(request),  # Add this line
     })
 
 
+@ensure_csrf_cookie
 def login_view(request):
     if request.method == 'POST':
         # Create a copy of POST data that we can modify

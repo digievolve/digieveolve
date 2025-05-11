@@ -218,11 +218,11 @@ else:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_BROWSER_XSS_FILTER = True
-
-# Additional Security Settings
-CSRF_COOKIE_HTTPONLY = True
-CSRF_USE_SESSIONS = True
-SESSION_COOKIE_HTTPONLY = True
+    # Additional Security Settings
+    CSRF_COOKIE_HTTPONLY = True
+    CSRF_USE_SESSIONS = True
+    SESSION_COOKIE_HTTPONLY = True
+    CSRF_COOKIE_SAMESITE = 'Lax'
 
 # Media files settings
 MEDIA_URL = 'media/'
