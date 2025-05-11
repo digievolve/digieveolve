@@ -191,7 +191,7 @@ CSRF_TRUSTED_ORIGINS = [
 # Host and Security Settings based on environment
 if DEBUG:
     ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'digievolvehub.com', 'www.digievolvehub.com',
-                     'digievolvehub-888181009730.us-central1.run.app', 'digievolvehub-janta.ondigitalocean.app']
+                     'digievolvehub-888181009730.us-central1.run.app', 'digievolvehub-janta.ondigitalocean.app', 'digieveolve-ta1w.onrender.com']
     STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
     CSRF_TRUSTED_ORIGINS += [
         'http://localhost:8000',
@@ -210,7 +210,8 @@ else:
         'oyster-app-gevod.ondigitalocean.app',
         'www.digievolvehub.com',
         'digievolvehub-888181009730.us-central1.run.app',
-        'digievolvehub-janta.ondigitalocean.app'
+        'digievolvehub-janta.ondigitalocean.app',
+        'digieveolve-ta1w.onrender.com'
     ]
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
     SECURE_SSL_REDIRECT = True
