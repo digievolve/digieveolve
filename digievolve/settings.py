@@ -224,15 +224,20 @@ CSRF_TRUSTED_ORIGINS = [
     'https://digieveolve.onrender.com',
 ]
 
+# Improve your cache configuration
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-        'LOCATION': os.getenv('REDIS_URL', 'redis://localhost:6379/0'),
-        'TIMEOUT': 300,  # 5 minutes
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': os.getenv('REDIS_URL', 'redis://localhost:6379/1'),
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
             'COMPRESSOR': 'django_redis.compressors.zlib.ZlibCompressor',
-        }
+            'SOCKET_CONNECT_TIMEOUT': 5,  # seconds
+            'SOCKET_TIMEOUT': 5,  # seconds
+            'IGNORE_EXCEPTIONS': True,
+        },
+        'KEY_PREFIX': 'digievolve',
+        'TIMEOUT': 60 * 60 * 24,  # 24 hours
     }
 }
 
@@ -283,6 +288,15 @@ else:
     SESSION_COOKIE_HTTPONLY = True
     CSRF_COOKIE_SAMESITE = 'Lax'
 
+    # Add image optimization pipeline
+IMAGEKIT_DEFAULT_CACHEFILE_STRATEGY = 'imagekit.cachefiles.strategies.Optimistic'
+IMAGEKIT_SPEC_CACHEFILE_NAMER = 'imagekit.cachefiles.namers.source_name_dot_hash'
+IMAGEKIT_DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# Add webp support
+IMAGEKIT_DEFAULT_FORMAT = 'webp'
+IMAGEKIT_WEBP_QUALITY = 80  # Reduce quality for smaller files
+
 # Media files settings
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -298,3 +312,14 @@ CLOUDFLARE_TURNSTILE_SECRET_KEY = os.getenv('CLOUDFLARE_TURNSTILE_SECRET_KEY')
 if is_cloud_run:
     DATABASES['default']['CONN_MAX_AGE'] = 300  # Connection persistence
     DATABASES['default']['DISABLE_SERVER_SIDE_CURSORS'] = False  # For large datasets
+
+
+if not DEBUG:
+    # Remove development tools
+    INSTALLED_APPS.remove('django_browser_reload')
+    MIDDLEWARE.remove('django_browser_reload.middleware.BrowserReloadMiddleware')
+    
+    # Disable Django debug toolbar
+    DEBUG_TOOLBAR_CONFIG = {
+        'SHOW_TOOLBAR_CALLBACK': lambda _request: DEBUG
+    }
