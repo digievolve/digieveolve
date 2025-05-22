@@ -17,7 +17,6 @@
     <title>{% block title %}DigiEvolve Hub{% endblock %}</title>
     
     <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- Tailwind Config for Skeleton Loading -->
     <script>
@@ -67,9 +66,15 @@
 <script>
     AOS.init();
 </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
     <!-- Flowbite JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
     
+    <!-- Add preconnect for external domains -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://challenges.cloudflare.com">
+
     <!-- Add this before the closing </body> tag -->
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     

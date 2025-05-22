@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'django.contrib.postgres',  # Add this line
+
 
     # Third party apps
     'tailwind',
@@ -62,6 +64,7 @@ INSTALLED_APPS = [
     'utils',
     'blog',
     'resources',
+    'imagekit',
 
     # Local apps
     'core.apps.CoreConfig',
@@ -86,6 +89,8 @@ MIDDLEWARE = [
     'django_browser_reload.middleware.BrowserReloadMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
+MIDDLEWARE.insert(1, 'django.middleware.gzip.GZipMiddleware')
+
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
@@ -107,13 +112,35 @@ PAYSTACK_SETTINGS = {
     'BUTTON_CLASS': 'btn btn-primary',
 }
 
+# TEMPLATES = [
+#     {
+#         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+#         'DIRS': [
+#             BASE_DIR / 'templates',
+#         ],
+#         'APP_DIRS': True,
+#         'OPTIONS': {
+#             'context_processors': [
+#                 'django.template.context_processors.debug',
+#                 'django.template.context_processors.request',
+#                 'django.contrib.auth.context_processors.auth',
+#                 'django.contrib.messages.context_processors.messages',
+#                 'accounts.context_processors.settings_context',
+#             ],
+#         },
+#     },
+# ]
+
+
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             BASE_DIR / 'templates',
         ],
-        'APP_DIRS': True,
+        # Remove APP_DIRS: True and add explicit loaders
+        'APP_DIRS': False,  # Changed from True to False
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -122,9 +149,18 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'accounts.context_processors.settings_context',
             ],
+            # Add loaders configuration
+            'loaders': [
+                ('django.template.loaders.cached.Loader', [
+                    'django.template.loaders.filesystem.Loader',
+                    'django.template.loaders.app_directories.Loader',
+                ]),
+            ],
         },
     },
 ]
+
+
 
 WSGI_APPLICATION = 'digievolve.wsgi.application'
 
@@ -188,6 +224,26 @@ CSRF_TRUSTED_ORIGINS = [
     'https://digieveolve.onrender.com',
 ]
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': os.getenv('REDIS_URL', 'redis://localhost:6379/0'),
+        'TIMEOUT': 300,  # 5 minutes
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            'COMPRESSOR': 'django_redis.compressors.zlib.ZlibCompressor',
+        }
+    }
+}
+
+# Enable template caching
+TEMPLATES[0]['OPTIONS']['loaders'] = [
+    ('django.template.loaders.cached.Loader', [
+        'django.template.loaders.filesystem.Loader',
+        'django.template.loaders.app_directories.Loader',
+    ]),
+]
+
 # Host and Security Settings based on environment
 if DEBUG:
     ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'digievolvehub.com', 'www.digievolvehub.com',
@@ -214,6 +270,8 @@ else:
         'digieveolve-ta1w.onrender.com'
     ]
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    WHITENOISE_MAX_AGE = 31536000  # 1 year cache
+    WHITENOISE_SKIP_COMPRESS_EXTENSIONS = []  # Compress all files
     SECURE_SSL_REDIRECT = True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SESSION_COOKIE_SECURE = True
@@ -235,3 +293,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Cloudflare Turnstile Settings
 CLOUDFLARE_TURNSTILE_SITE_KEY = os.getenv('CLOUDFLARE_TURNSTILE_SITE_KEY')
 CLOUDFLARE_TURNSTILE_SECRET_KEY = os.getenv('CLOUDFLARE_TURNSTILE_SECRET_KEY')
+
+
+if is_cloud_run:
+    DATABASES['default']['CONN_MAX_AGE'] = 300  # Connection persistence
+    DATABASES['default']['DISABLE_SERVER_SIDE_CURSORS'] = False  # For large datasets

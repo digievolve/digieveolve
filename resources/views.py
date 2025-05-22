@@ -14,7 +14,9 @@ import os
 
 def resource_list(request):
     # Get all resources with filters
-    resources_list = Resource.objects.all().order_by('-updated_date')
+    resources_list = Resource.objects.select_related('category').only(
+        'title', 'slug', 'description', 'category__title'
+    ).order_by('-updated_date')
 
     # Apply search filter
     search_query = request.GET.get('search', '')
