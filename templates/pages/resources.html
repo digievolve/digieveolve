@@ -11,7 +11,7 @@
              id="hero-skeleton">
             <i class="fas fa-image text-gray-300 text-5xl"></i>
         </div>
-        <img src="{% static 'images/learning-resources.jpg' %}"
+        <img src="{% static 'images/learning-resources.webp' %}"
              alt="Learning Resources"
              class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300"
              onload="this.classList.remove('opacity-0'); document.getElementById('hero-skeleton').style.display='none';"
@@ -48,7 +48,7 @@
                          alt="{{ post.title }}" 
                          class="absolute inset-0 h-full w-full object-cover">
                     {% else %}
-                    <img src="{% static 'images/blog/python-analytics.jpg' %}" 
+                    <img src="{% static 'images/blog/python-analytics.webp' %}" 
                          alt="{{ post.title }}" 
                          class="absolute inset-0 h-full w-full object-cover"
                          onerror="this.src='https://placehold.co/600x400/e2e8f0/64748b?text={{ post.title|urlencode }}'">
@@ -69,7 +69,7 @@
             <!-- If no blog posts, show placeholder content -->
             <div class="bg-white rounded-lg shadow overflow-hidden hover:shadow-lg transition-shadow">
                 <div class="relative pb-60">
-                    <img src="{% static 'images/blog/python-analytics.jpg' %}" 
+                    <img src="{% static 'images/blog/python-analytics.webp' %}" 
                          alt="Python for Data Analytics" 
                          class="absolute inset-0 h-full w-full object-cover"
                          onerror="this.src='https://placehold.co/600x400/e2e8f0/64748b?text=Python+Analytics'">
@@ -88,7 +88,7 @@
             
             <div class="bg-white rounded-lg shadow overflow-hidden hover:shadow-lg transition-shadow">
                 <div class="relative pb-60">
-                    <img src="{% static 'images/blog/career-transition.jpg' %}" 
+                    <img src="{% static 'images/blog/career-transition.webp' %}" 
                          alt="Career Transition to Data Science" 
                          class="absolute inset-0 h-full w-full object-cover"
                          onerror="this.src='https://placehold.co/600x400/e2e8f0/64748b?text=Career+Transition'">
@@ -107,7 +107,7 @@
             
             <div class="bg-white rounded-lg shadow overflow-hidden hover:shadow-lg transition-shadow">
                 <div class="relative pb-60">
-                    <img src="{% static 'images/blog/ai-ethics.jpg' %}" 
+                    <img src="{% static 'images/blog/ai-ethics.webp' %}" 
                          alt="AI Ethics" 
                          class="absolute inset-0 h-full w-full object-cover"
                          onerror="this.src='https://placehold.co/600x400/e2e8f0/64748b?text=AI+Ethics'">

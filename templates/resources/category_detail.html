@@ -4,8 +4,8 @@
 {% block content %}
 <!-- Set variables for static URLs at the top of your template -->
 <script>
-    const resourcePlaceholderUrl = "{% static 'images/learning-resources.jpg' %}";
-    const videoPlaceholderUrl = "{% static 'img/video-placeholder.jpg' %}";
+    const resourcePlaceholderUrl = "{% static 'images/learning-resources.webp' %}";
+    const videoPlaceholderUrl = "{% static 'img/video-placeholder.webp' %}";
 </script>
 
 <section class="py-16 bg-gray-50">
@@ -31,7 +31,7 @@
                      class="absolute inset-0 h-full w-full object-cover"
                      onerror="this.src=resourcePlaceholderUrl; this.onerror='';">
                 {% else %}
-                <img src="{% static 'images/learning-resources.jpg' %}" 
+                <img src="{% static 'images/learning-resources.webp' %}" 
                      alt="{{ resource_category.title }}" 
                      class="absolute inset-0 h-full w-full object-cover"
                      onerror="this.src=resourcePlaceholderUrl; this.onerror='';">
